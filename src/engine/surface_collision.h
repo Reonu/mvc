@@ -6,7 +6,7 @@
 #include "types.h"
 
 // Range level area is 16384x16384 (-8192 to +8192 in x and z)
-#define LEVEL_BOUNDARY_MAX  0x2000 // 8192
+#define LEVEL_BOUNDARY_MAX  0x4000 // 8192
 
 #define CELL_SIZE           (1 << 10) // 0x400
 

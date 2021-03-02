@@ -4,7 +4,7 @@ extern const Collision bob_area_1_collision[];
 extern const MacroObject bob_area_1_macro_objs[];
 extern Lights1 bob_dl_sm64_material_lights;
 extern Vtx bob_dl_Cube_mesh_vtx_cull[8];
-extern Vtx bob_dl_Cube_mesh_vtx_0[24];
+extern Vtx bob_dl_Cube_mesh_vtx_0[116];
 extern Gfx bob_dl_Cube_mesh_tri_0[];
 extern Gfx mat_bob_dl_sm64_material[];
 extern Gfx bob_dl_Cube_mesh[];
