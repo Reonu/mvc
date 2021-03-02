@@ -1698,6 +1698,10 @@ void func_sh_8025574C(void) {
 s32 execute_mario_action(UNUSED struct Object *o) {
     s32 inLoop = TRUE;
 
+    if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->pos[1] < 0)) {
+        gMarioState->pos[1] = gMarioState->pos[1] + 100;
+    }
+
     if (gMarioState->action) {
         gMarioState->marioObj->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
         mario_reset_bodystate(gMarioState);
