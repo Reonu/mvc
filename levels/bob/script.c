@@ -47,7 +47,7 @@ const LevelScript level_bob_entry[] = {
 		MARIO_POS(0x01, 0, 0, 200, 0),
 		TERRAIN(bob_area_1_collision),
 		MACRO_OBJECTS(bob_area_1_macro_objs),
-		SET_BACKGROUND_MUSIC(0x00, SEQ_LEVEL_GRASS),
+		SET_BACKGROUND_MUSIC(0x00, SEQ_STREAMED_BFMOUNT),
 		TERRAIN_TYPE(TERRAIN_GRASS),
 	END_AREA(),
 
