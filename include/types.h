@@ -348,6 +348,14 @@ struct MarioState
              f32 canJump;
              f32 debugMode;
              f32 canDive;
+             f32 canKick;
+             f32 canDoubleJump;
+             f32 canTripleJump;
+             f32 canWallKick;
+             f32 canLongJump;
+             f32 canBLJ;
+             f32 surfboard;
+             f32 canSwim;
 };
 
 #endif // TYPES_H

@@ -1595,7 +1595,7 @@ s32 update_boss_fight_camera(struct Camera *c, Vec3f focus, Vec3f pos) {
     vec3f_set_dist_and_angle(focus, pos, focusDistance, 0x1000, yaw);
     // Find the floor of the arena
     pos[1] = find_floor(c->areaCenX, CELL_HEIGHT_LIMIT, c->areaCenZ, &floor);
-    if (floor != NULL) {
+    /*if (floor != NULL) {
         nx = floor->normal.x;
         ny = floor->normal.y;
         nz = floor->normal.z;
@@ -1608,7 +1608,7 @@ s32 update_boss_fight_camera(struct Camera *c, Vec3f focus, Vec3f pos) {
             case AREA_WF:
                 pos[1] += 125.f;
         }
-    }
+    }*/
 
     //! Must be same line to match on -O2
     // Prevent the camera from going to the ground in the outside boss fight
@@ -6605,7 +6605,7 @@ s16 camera_course_processing(struct Camera *c) {
             case AREA_TTC:
                 set_mode_if_not_set_by_surface(c, CAMERA_MODE_OUTWARD_RADIAL);
                 break;
-
+/*
             case AREA_BOB:
                 if (set_mode_if_not_set_by_surface(c, CAMERA_MODE_NONE) == 0) {
                     if (sMarioGeometry.currFloorType == SURFACE_BOSS_FIGHT_CAMERA) {
@@ -6619,7 +6619,7 @@ s16 camera_course_processing(struct Camera *c) {
                     }
                 }
                 break;
-
+*/
             case AREA_WDW_MAIN:
                 switch (sMarioGeometry.currFloorType) {
                     case SURFACE_INSTANT_WARP_1B:

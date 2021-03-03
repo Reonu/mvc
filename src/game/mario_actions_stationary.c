@@ -27,7 +27,7 @@ s32 check_common_idle_cancels(struct MarioState *m) {
         return set_mario_action(m, ACT_SHOCKWAVE_BOUNCE, 0);
     }
 
-    if (m->input & INPUT_A_PRESSED && gMarioState->canJump == 1) {
+    if (m->input & INPUT_A_PRESSED && (gMarioState->canJump == 1 || gMarioState->debugMode ==1)) {
         return set_jumping_action(m, ACT_JUMP, 0);
     }
 
@@ -48,7 +48,7 @@ s32 check_common_idle_cancels(struct MarioState *m) {
         return set_mario_action(m, ACT_WALKING, 0);
     }
 
-    if (m->input & INPUT_B_PRESSED) {
+    if (m->input & INPUT_B_PRESSED && (gMarioState->canKick == 1 || gMarioState->debugMode == 1)) {
         return set_mario_action(m, ACT_PUNCHING, 0);
     }
 
@@ -497,7 +497,7 @@ s32 act_standing_against_wall(struct MarioState *m) {
         return set_mario_action(m, ACT_FIRST_PERSON, 0);
     }
 
-    if (m->input & INPUT_B_PRESSED) {
+    if (m->input & INPUT_B_PRESSED && (gMarioState->canKick == 1 || gMarioState->debugMode == 1)) {
         return set_mario_action(m, ACT_PUNCHING, 0);
     }
 
@@ -554,7 +554,7 @@ s32 act_crouching(struct MarioState *m) {
         return set_mario_action(m, ACT_START_CRAWLING, 0);
     }
 
-    if (m->input & INPUT_B_PRESSED) {
+    if (m->input & INPUT_B_PRESSED && (gMarioState->canKick == 1 || gMarioState->debugMode == 1)) {
         return set_mario_action(m, ACT_PUNCHING, 9);
     }
 
@@ -626,7 +626,7 @@ s32 act_braking_stop(struct MarioState *m) {
         return set_mario_action(m, ACT_FREEFALL, 0);
     }
 
-    if (m->input & INPUT_B_PRESSED) {
+    if (m->input & INPUT_B_PRESSED && (gMarioState->canKick == 1 || gMarioState->debugMode == 1)) {
         return set_mario_action(m, ACT_PUNCHING, 0);
     }
 
@@ -857,7 +857,7 @@ s32 check_common_landing_cancels(struct MarioState *m, u32 action) {
         return check_common_action_exits(m);
     }
 
-    if (m->input & INPUT_B_PRESSED) {
+    if (m->input & INPUT_B_PRESSED && (gMarioState->canKick == 1 || gMarioState->debugMode == 1)) {
         return set_mario_action(m, ACT_PUNCHING, 0);
     }
 

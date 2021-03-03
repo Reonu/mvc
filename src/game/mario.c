@@ -1728,6 +1728,9 @@ s32 execute_mario_action(UNUSED struct Object *o) {
     if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->pos[1] < -2700)) {
         gMarioState->pos[1] = gMarioState->pos[1] + 50;
     }
+    if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->canSwim != 1 && gMarioState->debugMode != 1 )) {
+        gMarioState->health = 0;
+    }
 
     if (gMarioState->action) {
         gMarioState->marioObj->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;

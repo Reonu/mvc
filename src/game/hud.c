@@ -268,12 +268,16 @@ void render_hud_power_meter(void) {
  * Renders the amount of lives Mario has.
  */
 void render_hud_mario_lives(void) {
-    print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(22), HUD_TOP_Y, ","); // 'Mario Head' glyph
+   /*print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(22), HUD_TOP_Y, ","); // 'Mario Head' glyph
     print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(38), HUD_TOP_Y, "*"); // 'X' glyph
-    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), HUD_TOP_Y, "%d", gMarioState->pos[1]);
+    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), HUD_TOP_Y, "%d", gMarioState->pos[1]);*/
 }
 void render_debug_mode(void) {
-    print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), HUD_BOTTOM_Y, "DEBUG MODE");
+    print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(120), HUD_BOTTOM_Y, "DEBUG MODE");
+    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 20, "%d", gMarioState->pos[0]);
+    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 40, "%d", gMarioState->pos[2]);
+    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 60, "%d", gMarioState->pos[1]);
+    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 80, "%d", gMarioState->surfboard);
 }
 
 /**
