@@ -19,6 +19,7 @@ const GeoLayout bob_area_1_geo[] = {
 					GEO_DISPLAY_LIST(1, bob_dl_Castle_low_poly_mesh_layer_1),
 				GEO_CLOSE_NODE(),
 			GEO_CLOSE_NODE(),
+			GEO_TRANSLATE_NODE_WITH_DL(1, 84, 194, 1136, bob_dl_Cube_mesh_layer_1),
 		GEO_CLOSE_NODE(),
 		GEO_TRANSLATE_NODE_WITH_DL(5, 0, -5186, 0, bob_dl_Water_mesh_layer_5),
 	GEO_CLOSE_NODE(),
