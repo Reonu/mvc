@@ -1115,7 +1115,7 @@ s32 hurt_and_set_mario_action(struct MarioState *m, u32 action, u32 actionArg, s
  * actions. A common variant of the below function.
  */
 s32 check_common_action_exits(struct MarioState *m) {
-    if (m->input & INPUT_A_PRESSED) {
+    if ((m->input & INPUT_A_PRESSED) && (m->canJump == 1 || m->debugMode)) {
         return set_mario_action(m, ACT_JUMP, 0);
     }
     if (m->input & INPUT_OFF_FLOOR) {
@@ -1276,6 +1276,14 @@ void update_mario_button_inputs(struct MarioState *m) {
 
     if (m->controller->buttonDown & A_BUTTON) {
         m->input |= INPUT_A_DOWN;
+    }
+    if (m->controller->buttonPressed & L_TRIG) {
+        if (m->debugMode == 0) {
+            m->debugMode = 1;
+        }
+        else {
+            m->debugMode = 0;
+        }
     }
 
     // Don't update for these buttons if squished.
@@ -1717,8 +1725,8 @@ void func_sh_8025574C(void) {
 s32 execute_mario_action(UNUSED struct Object *o) {
     s32 inLoop = TRUE;
 
-    if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->pos[1] < 0)) {
-        gMarioState->pos[1] = gMarioState->pos[1] + 100;
+    if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->pos[1] < -2700)) {
+        gMarioState->pos[1] = gMarioState->pos[1] + 50;
     }
 
     if (gMarioState->action) {

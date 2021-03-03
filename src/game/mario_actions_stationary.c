@@ -27,7 +27,7 @@ s32 check_common_idle_cancels(struct MarioState *m) {
         return set_mario_action(m, ACT_SHOCKWAVE_BOUNCE, 0);
     }
 
-    if (m->input & INPUT_A_PRESSED && gMarioState->numStars >= 1) {
+    if (m->input & INPUT_A_PRESSED && gMarioState->canJump == 1) {
         return set_jumping_action(m, ACT_JUMP, 0);
     }
 

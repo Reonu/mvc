@@ -788,7 +788,7 @@ s32 act_walking(struct MarioState *m) {
         return begin_braking_action(m);
     }
 
-    if (m->input & INPUT_A_PRESSED) {
+    if (m->input & INPUT_A_PRESSED && (m->canJump == 1 || m->debugMode)) {
         return set_jump_from_landing(m);
     }
 
@@ -889,7 +889,7 @@ s32 act_hold_walking(struct MarioState *m) {
         return set_mario_action(m, ACT_THROWING, 0);
     }
 
-    if (m->input & INPUT_A_PRESSED) {
+    if (m->input & INPUT_A_PRESSED && (m->canJump == 1 || m->debugMode)) {
         return set_jumping_action(m, ACT_HOLD_JUMP, 0);
     }
 
@@ -964,7 +964,7 @@ s32 act_turning_around(struct MarioState *m) {
         return set_mario_action(m, ACT_BEGIN_SLIDING, 0);
     }
 
-    if (m->input & INPUT_A_PRESSED) {
+    if (m->input & INPUT_A_PRESSED && (m->canJump == 1 || m->debugMode)) {
         return set_jumping_action(m, ACT_SIDE_FLIP, 0);
     }
 
@@ -1015,7 +1015,7 @@ s32 act_finish_turning_around(struct MarioState *m) {
         return set_mario_action(m, ACT_BEGIN_SLIDING, 0);
     }
 
-    if (m->input & INPUT_A_PRESSED) {
+    if (m->input & INPUT_A_PRESSED && (m->canJump == 1 || m->debugMode)) {
         return set_jumping_action(m, ACT_SIDE_FLIP, 0);
     }
 
@@ -1078,7 +1078,7 @@ s32 act_decelerating(struct MarioState *m) {
             return set_mario_action(m, ACT_BEGIN_SLIDING, 0);
         }
 
-        if (m->input & INPUT_A_PRESSED) {
+        if (m->input & INPUT_A_PRESSED && (m->canJump == 1 || m->debugMode)) {
             return set_jump_from_landing(m);
         }
 
@@ -1147,7 +1147,7 @@ s32 act_hold_decelerating(struct MarioState *m) {
         return set_mario_action(m, ACT_THROWING, 0);
     }
 
-    if (m->input & INPUT_A_PRESSED) {
+    if (m->input & INPUT_A_PRESSED && (m->canJump == 1 || m->debugMode)) {
         return set_jumping_action(m, ACT_HOLD_JUMP, 0);
     }
 
@@ -1200,7 +1200,7 @@ s32 act_hold_decelerating(struct MarioState *m) {
 s32 act_riding_shell_ground(struct MarioState *m) {
     s16 startYaw = m->faceAngle[1];
 
-    if (m->input & INPUT_A_PRESSED) {
+    if (m->input & INPUT_A_PRESSED && (m->canJump == 1 || m->debugMode)) {
         return set_mario_action(m, ACT_RIDING_SHELL_JUMP, 0);
     }
 
@@ -1255,7 +1255,7 @@ s32 act_crawling(struct MarioState *m) {
         return set_mario_action(m, ACT_STOP_CRAWLING, 0);
     }
 
-    if (m->input & INPUT_A_PRESSED) {
+    if (m->input & INPUT_A_PRESSED && (m->canJump == 1 || m->debugMode)) {
         return set_jumping_action(m, ACT_JUMP, 0);
     }
 
@@ -1414,7 +1414,7 @@ void common_slide_action(struct MarioState *m, u32 endAction, u32 airAction, s32
 s32 common_slide_action_with_jump(struct MarioState *m, u32 stopAction, u32 jumpAction, u32 airAction,
                                   s32 animation) {
     if (m->actionTimer == 5) {
-        if (m->input & INPUT_A_PRESSED) {
+        if (m->input & INPUT_A_PRESSED && (m->canJump == 1 || m->debugMode)) {
             return set_jumping_action(m, jumpAction, 0);
         }
     } else {
@@ -1458,7 +1458,7 @@ s32 act_crouch_slide(struct MarioState *m) {
 
     if (m->actionTimer < 30) {
         m->actionTimer++;
-        if (m->input & INPUT_A_PRESSED) {
+        if (m->input & INPUT_A_PRESSED &&(m->canJump == 1 || m->debugMode)) {
             if (m->forwardVel > 10.0f) {
                 return set_jumping_action(m, ACT_LONG_JUMP, 0);
             }
@@ -1473,7 +1473,7 @@ s32 act_crouch_slide(struct MarioState *m) {
         }
     }
 
-    if (m->input & INPUT_A_PRESSED) {
+    if (m->input & INPUT_A_PRESSED && (m->canJump == 1 || m->debugMode)) {
         return set_jumping_action(m, ACT_JUMP, 0);
     }
 
@@ -1487,7 +1487,7 @@ s32 act_crouch_slide(struct MarioState *m) {
 }
 
 s32 act_slide_kick_slide(struct MarioState *m) {
-    if (m->input & INPUT_A_PRESSED) {
+    if (m->input & INPUT_A_PRESSED && (m->canJump == 1 || m->debugMode)) {
 #if ENABLE_RUMBLE
         queue_rumble_data(5, 80);
 #endif
@@ -1519,7 +1519,7 @@ s32 act_slide_kick_slide(struct MarioState *m) {
 
 s32 stomach_slide_action(struct MarioState *m, u32 stopAction, u32 airAction, s32 animation) {
     if (m->actionTimer == 5) {
-        if (!(m->input & INPUT_ABOVE_SLIDE) && (m->input & (INPUT_A_PRESSED | INPUT_B_PRESSED))) {
+        if (!(m->input & INPUT_ABOVE_SLIDE) && (m->input & (INPUT_A_PRESSED | INPUT_B_PRESSED) && (m->canJump == 1 || m->debugMode))) {
 #if ENABLE_RUMBLE
             queue_rumble_data(5, 80);
 #endif
@@ -1555,7 +1555,7 @@ s32 act_hold_stomach_slide(struct MarioState *m) {
 }
 
 s32 act_dive_slide(struct MarioState *m) {
-    if (!(m->input & INPUT_ABOVE_SLIDE) && (m->input & (INPUT_A_PRESSED | INPUT_B_PRESSED))) {
+    if (!(m->input & INPUT_ABOVE_SLIDE) && (m->input & (INPUT_A_PRESSED | INPUT_B_PRESSED) && (m->canJump == 1 || m->debugMode))) {
 #if ENABLE_RUMBLE
         queue_rumble_data(5, 80);
 #endif

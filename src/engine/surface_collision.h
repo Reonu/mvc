@@ -5,12 +5,7 @@
 
 #include "types.h"
 
-<<<<<<< HEAD
-// Range level area is 16384x16384 (-8192 to +8192 in x and z)
-#define LEVEL_BOUNDARY_MAX  0x4000 // 8192
-=======
 #include "engine/extended_bounds.h"
->>>>>>> thecozies/water-surface-type
 
 
 #define CELL_HEIGHT_LIMIT           20000
