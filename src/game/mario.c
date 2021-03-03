@@ -1799,6 +1799,7 @@ void init_mario(void) {
     gMarioState->framesSinceB = 0xFF;
 
     gMarioState->invincTimer = 0;
+    gMarioState->canJump = 0;
 
     if (save_file_get_flags()
         & (SAVE_FLAG_CAP_ON_GROUND | SAVE_FLAG_CAP_ON_KLEPTO | SAVE_FLAG_CAP_ON_UKIKI

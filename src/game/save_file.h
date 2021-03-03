@@ -8,7 +8,7 @@
 
 #include "course_table.h"
 
-#define EEPROM_SIZE 0x200
+#define EEPROM_SIZE 0x400
 #define NUM_SAVE_FILES 4
 
 struct SaveBlockSignature
@@ -26,7 +26,7 @@ struct SaveFile
     u8 capArea;
     Vec3s capPos;
 
-    u32 flags;
+    u64 flags;
 
     // Star flags for each course.
     // The most significant bit of the byte *following* each course is set if the
@@ -109,6 +109,7 @@ extern s8 gLevelToCourseNumTable[];
 #define SAVE_FLAG_COLLECTED_TOAD_STAR_3  /* 0x04000000 */ (1 << 26)
 #define SAVE_FLAG_COLLECTED_MIPS_STAR_1  /* 0x08000000 */ (1 << 27)
 #define SAVE_FLAG_COLLECTED_MIPS_STAR_2  /* 0x10000000 */ (1 << 28)
+#define SAVE_FLAG_CAN_JUMP               /* Swim       */ (1 << 29)
 
 #define SAVE_FLAG_TO_STAR_FLAG(cmd) (((cmd) >> 24) & 0x7F)
 #define STAR_FLAG_TO_SAVE_FLAG(cmd) ((cmd) << 24)

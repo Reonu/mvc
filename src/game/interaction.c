@@ -770,7 +770,7 @@ u32 interact_star_or_key(struct MarioState *m, UNUSED u32 interactType, struct O
     u32 starGrabAction = ACT_STAR_DANCE_EXIT;
     u32 noExit = (o->oInteractionSubtype & INT_SUBTYPE_NO_EXIT) != 0;
     u32 grandStar = (o->oInteractionSubtype & INT_SUBTYPE_GRAND_STAR) != 0;
-
+    noExit = 1;
     if (m->health >= 0x100) {
         mario_stop_riding_and_holding(m);
 #if ENABLE_RUMBLE
@@ -784,6 +784,7 @@ u32 interact_star_or_key(struct MarioState *m, UNUSED u32 interactType, struct O
                 m->capTimer = 1;
             }
         }
+
 
         if (noExit) {
             starGrabAction = ACT_STAR_DANCE_NO_EXIT;
@@ -817,7 +818,12 @@ u32 interact_star_or_key(struct MarioState *m, UNUSED u32 interactType, struct O
             drop_queued_background_music();
             fadeout_level_music(126);
         }
-
+        if (gMarioState->numStars == 1) {
+            save_file_set_flags(SAVE_FLAG_CAN_JUMP);
+            save_file_do_save(gCurrSaveFileNum-1);
+            gMarioState->canJump = 1;
+        }
+        
         play_sound(SOUND_MENU_STAR_SOUND, m->marioObj->header.gfx.cameraToObject);
 #ifndef VERSION_JP
         update_mario_sound_and_camera(m);

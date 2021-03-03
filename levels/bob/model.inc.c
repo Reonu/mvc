@@ -155,8 +155,8 @@ u8 bob_dl_SUPER_MARIO_64_5F328955_0_2_all_ci8_pal_rgba16[] = {
 	0xef, 0x1b, 
 };
 
-Gfx bob_dl_SUPER_MARIO_64_1CA18F8F_0_2_all_ci8_aligner[] = {gsSPEndDisplayList()};
-u8 bob_dl_SUPER_MARIO_64_1CA18F8F_0_2_all_ci8[] = {
+Gfx bob_dl_water_semi_transparent_ci8_aligner[] = {gsSPEndDisplayList()};
+u8 bob_dl_water_semi_transparent_ci8[] = {
 	0x00, 0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 
 	0x05, 0x07, 0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 
 	0x0e, 0x0f, 0x10, 0x0a, 0x0a, 0x10, 0x11, 0x11, 
@@ -288,8 +288,8 @@ u8 bob_dl_SUPER_MARIO_64_1CA18F8F_0_2_all_ci8[] = {
 	
 };
 
-Gfx bob_dl_SUPER_MARIO_64_1CA18F8F_0_2_all_ci8_pal_rgba16_aligner[] = {gsSPEndDisplayList()};
-u8 bob_dl_SUPER_MARIO_64_1CA18F8F_0_2_all_ci8_pal_rgba16[] = {
+Gfx bob_dl_water_semi_transparent_ci8_pal_rgba16_aligner[] = {gsSPEndDisplayList()};
+u8 bob_dl_water_semi_transparent_ci8_pal_rgba16[] = {
 	0x13, 0xf7, 0x0c, 0x7b, 0x0c, 0x39, 0x1c, 0x79, 
 	0x2c, 0x79, 0x14, 0x39, 0x0b, 0xf9, 0x24, 0x79, 
 	0x2c, 0xb9, 0x24, 0x77, 0x0b, 0xb5, 0x13, 0xf3, 
@@ -341,15 +341,15 @@ u8 bob_dl_SUPER_MARIO_64_1CA18F8F_0_2_all_ci8_pal_rgba16[] = {
 Vtx bob_dl_Island_mesh_layer_1_vtx_cull[8] = {
 	{{{-1203, -974, -1203},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
 	{{{-1203, -974, 1203},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
-	{{{-1203, -841, 1203},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
-	{{{-1203, -841, -1203},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
+	{{{-1203, -601, 1203},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
+	{{{-1203, -601, -1203},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
 	{{{1203, -974, -1203},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
 	{{{1203, -974, 1203},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
-	{{{1203, -841, 1203},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
-	{{{1203, -841, -1203},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
+	{{{1203, -601, 1203},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
+	{{{1203, -601, -1203},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
 };
 
-Vtx bob_dl_Island_mesh_layer_1_vtx_0[20] = {
+Vtx bob_dl_Island_mesh_layer_1_vtx_0[44] = {
 	{{{-1002, -841, 1002},0, {3227, 3229},{0x0, 0x7F, 0x0, 0xFF}}},
 	{{{1002, -841, 1002},0, {3208, -2220},{0x0, 0x7F, 0x0, 0xFF}}},
 	{{{1002, -841, -1002},0, {-2241, -2237},{0x0, 0x7F, 0x0, 0xFF}}},
@@ -370,19 +370,50 @@ Vtx bob_dl_Island_mesh_layer_1_vtx_0[20] = {
 	{{{1002, -841, -1002},0, {-2241, -2237},{0x0, 0x6A, 0xBA, 0xFF}}},
 	{{{1203, -974, -1203},0, {-2903, -2922},{0x0, 0x6A, 0xBA, 0xFF}}},
 	{{{-1203, -974, -1203},0, {-2903, 3871},{0x0, 0x6A, 0xBA, 0xFF}}},
+	{{{205, -801, -28},0, {368, 1008},{0x81, 0x0, 0x0, 0xFF}}},
+	{{{205, -601, -28},0, {624, 1008},{0x81, 0x0, 0x0, 0xFF}}},
+	{{{205, -601, -228},0, {624, 752},{0x81, 0x0, 0x0, 0xFF}}},
+	{{{205, -801, -228},0, {368, 752},{0x81, 0x0, 0x0, 0xFF}}},
+	{{{205, -801, -228},0, {368, 752},{0x0, 0x0, 0x81, 0xFF}}},
+	{{{205, -601, -228},0, {624, 752},{0x0, 0x0, 0x81, 0xFF}}},
+	{{{405, -601, -228},0, {624, 496},{0x0, 0x0, 0x81, 0xFF}}},
+	{{{405, -801, -228},0, {368, 496},{0x0, 0x0, 0x81, 0xFF}}},
+	{{{405, -801, -228},0, {368, 496},{0x7F, 0x0, 0x0, 0xFF}}},
+	{{{405, -601, -228},0, {624, 496},{0x7F, 0x0, 0x0, 0xFF}}},
+	{{{405, -601, -28},0, {624, 240},{0x7F, 0x0, 0x0, 0xFF}}},
+	{{{405, -801, -28},0, {368, 240},{0x7F, 0x0, 0x0, 0xFF}}},
+	{{{405, -801, -28},0, {368, 240},{0x0, 0x0, 0x7F, 0xFF}}},
+	{{{405, -601, -28},0, {624, 240},{0x0, 0x0, 0x7F, 0xFF}}},
+	{{{205, -601, -28},0, {624, -16},{0x0, 0x0, 0x7F, 0xFF}}},
+	{{{205, -801, -28},0, {368, -16},{0x0, 0x0, 0x7F, 0xFF}}},
+	{{{205, -801, -228},0, {112, 496},{0x0, 0x81, 0x0, 0xFF}}},
+	{{{405, -801, -228},0, {368, 496},{0x0, 0x81, 0x0, 0xFF}}},
+	{{{405, -801, -28},0, {368, 240},{0x0, 0x81, 0x0, 0xFF}}},
+	{{{205, -801, -28},0, {112, 240},{0x0, 0x81, 0x0, 0xFF}}},
+	{{{405, -601, -228},0, {624, 496},{0x0, 0x7F, 0x0, 0xFF}}},
+	{{{205, -601, -228},0, {880, 496},{0x0, 0x7F, 0x0, 0xFF}}},
+	{{{205, -601, -28},0, {880, 240},{0x0, 0x7F, 0x0, 0xFF}}},
+	{{{405, -601, -28},0, {624, 240},{0x0, 0x7F, 0x0, 0xFF}}},
 };
 
 Gfx bob_dl_Island_mesh_layer_1_tri_0[] = {
-	gsSPVertex(bob_dl_Island_mesh_layer_1_vtx_0 + 0, 20, 0),
+	gsSPVertex(bob_dl_Island_mesh_layer_1_vtx_0 + 0, 32, 0),
 	gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
 	gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
 	gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0),
 	gsSP2Triangles(12, 13, 14, 0, 12, 14, 15, 0),
 	gsSP2Triangles(16, 17, 18, 0, 16, 18, 19, 0),
+	gsSP2Triangles(20, 21, 22, 0, 20, 22, 23, 0),
+	gsSP2Triangles(24, 25, 26, 0, 24, 26, 27, 0),
+	gsSP2Triangles(28, 29, 30, 0, 28, 30, 31, 0),
+	gsSPVertex(bob_dl_Island_mesh_layer_1_vtx_0 + 32, 12, 0),
+	gsSP2Triangles(0, 1, 2, 0, 0, 2, 3, 0),
+	gsSP2Triangles(4, 5, 6, 0, 4, 6, 7, 0),
+	gsSP2Triangles(8, 9, 10, 0, 8, 10, 11, 0),
 	gsSPEndDisplayList(),
 };
 
-Vtx bob_dl_Water_mesh_layer_1_vtx_cull[8] = {
+Vtx bob_dl_Water_mesh_layer_5_vtx_cull[8] = {
 	{{{-8191, 2723, -8142},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
 	{{{-8191, 2723, 8142},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
 	{{{-8191, 2723, 8142},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
@@ -393,7 +424,7 @@ Vtx bob_dl_Water_mesh_layer_1_vtx_cull[8] = {
 	{{{8191, 2723, -8142},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
 };
 
-Vtx bob_dl_Water_mesh_layer_1_vtx_0[29] = {
+Vtx bob_dl_Water_mesh_layer_5_vtx_0[29] = {
 	{{{8191, 2723, 4071},0, {-11039, -5061},{0x0, 0x7F, 0x0, 0xFF}}},
 	{{{4125, 2723, 8142},0, {-5314, -10636},{0x0, 0x7F, 0x0, 0xFF}}},
 	{{{8191, 2723, 8142},0, {-11039, -10636},{0x0, 0x7F, 0x0, 0xFF}}},
@@ -425,8 +456,8 @@ Vtx bob_dl_Water_mesh_layer_1_vtx_0[29] = {
 	{{{8191, 2723, 4071},0, {-11039, -5061},{0x0, 0x7F, 0x0, 0xFF}}},
 };
 
-Gfx bob_dl_Water_mesh_layer_1_tri_0[] = {
-	gsSPVertex(bob_dl_Water_mesh_layer_1_vtx_0 + 0, 29, 0),
+Gfx bob_dl_Water_mesh_layer_5_tri_0[] = {
+	gsSPVertex(bob_dl_Water_mesh_layer_5_vtx_0 + 0, 29, 0),
 	gsSP2Triangles(0, 1, 2, 0, 0, 3, 1, 0),
 	gsSP2Triangles(3, 4, 1, 0, 3, 5, 4, 0),
 	gsSP2Triangles(6, 5, 3, 0, 6, 7, 5, 0),
@@ -485,29 +516,32 @@ Gfx mat_revert_bob_dl_sand_layer1_area1[] = {
 
 Gfx mat_bob_dl_f3d_material[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT, TEXEL0, 0, SHADE, 0, 0, 0, 0, ENVIRONMENT),
+	gsDPSetCombineLERP(TEXEL0, 0, SHADE, 0, TEXEL0, 0, PRIMITIVE, 0, TEXEL0, 0, SHADE, 0, TEXEL0, 0, PRIMITIVE, 0),
+	gsSPClearGeometryMode(G_CULL_BACK),
 	gsSPTexture(65535, 65535, 0, 0, 1),
 	gsDPSetTextureLUT(G_TT_RGBA16),
-	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, bob_dl_SUPER_MARIO_64_1CA18F8F_0_2_all_ci8_pal_rgba16),
+	gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, bob_dl_water_semi_transparent_ci8_pal_rgba16),
 	gsDPTileSync(),
 	gsDPSetTile(0, 0, 0, 256, 7, 0, G_TX_WRAP | G_TX_NOMIRROR, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 0, 0),
 	gsDPLoadSync(),
 	gsDPLoadTLUTCmd(7, 180),
 	gsDPPipeSync(),
 	gsDPTileSync(),
-	gsDPSetTextureImage(G_IM_FMT_CI, G_IM_SIZ_8b, 32, bob_dl_SUPER_MARIO_64_1CA18F8F_0_2_all_ci8),
+	gsDPSetTextureImage(G_IM_FMT_CI, G_IM_SIZ_8b, 32, bob_dl_water_semi_transparent_ci8),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 7, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPLoadSync(),
 	gsDPLoadTile(7, 0, 0, 124, 124),
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
+	gsDPSetPrimColor(0, 0, 254, 254, 254, 255),
 	gsSPSetLights1(bob_dl_f3d_material_lights),
 	gsSPEndDisplayList(),
 };
 
 Gfx mat_revert_bob_dl_f3d_material[] = {
 	gsDPPipeSync(),
+	gsSPSetGeometryMode(G_CULL_BACK),
 	gsDPSetTextureLUT(G_TT_NONE),
 	gsSPEndDisplayList(),
 };
@@ -523,13 +557,13 @@ Gfx bob_dl_Island_mesh_layer_1[] = {
 	gsSPEndDisplayList(),
 };
 
-Gfx bob_dl_Water_mesh_layer_1[] = {
+Gfx bob_dl_Water_mesh_layer_5[] = {
 	gsSPClearGeometryMode(G_LIGHTING),
-	gsSPVertex(bob_dl_Water_mesh_layer_1_vtx_cull + 0, 8, 0),
+	gsSPVertex(bob_dl_Water_mesh_layer_5_vtx_cull + 0, 8, 0),
 	gsSPSetGeometryMode(G_LIGHTING),
 	gsSPCullDisplayList(0, 7),
 	gsSPDisplayList(mat_bob_dl_f3d_material),
-	gsSPDisplayList(bob_dl_Water_mesh_layer_1_tri_0),
+	gsSPDisplayList(bob_dl_Water_mesh_layer_5_tri_0),
 	gsSPDisplayList(mat_revert_bob_dl_f3d_material),
 	gsSPEndDisplayList(),
 };
