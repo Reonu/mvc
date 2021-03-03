@@ -1,0 +1,10 @@
+extern const GeoLayout shell2_geo[];
+extern Lights1 shell2_sm64_material_lights;
+extern u8 shell2_white_i8[];
+extern Vtx shell2_Cube_mesh_vtx_cull[8];
+extern Vtx shell2_Cube_mesh_vtx_0[64];
+extern Gfx shell2_Cube_mesh_tri_0[];
+extern Gfx mat_shell2_sm64_material[];
+extern Gfx mat_revert_shell2_sm64_material[];
+extern Gfx shell2_Cube_mesh[];
+extern Gfx shell2_material_revert_render_settings[];
