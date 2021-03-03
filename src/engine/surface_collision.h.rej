@@ -1,0 +1,13 @@
+--- src/engine/surface_collision.h
++++ src/engine/surface_collision.h
+@@ -7,6 +7,10 @@
+ 
+ #define LEVEL_BOUNDARY_MAX 0x2000
+ #define CELL_SIZE          0x400
++#define NUM_CELLS          16 // Change this to 32 for x2 extended bounds
++
++#define CELL_HEIGHT_LIMIT   20000.f
++#define FLOOR_LOWER_LIMIT  -11000.f
+ 
+ struct WallCollisionData
+ {
