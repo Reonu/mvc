@@ -18,3 +18,4 @@
 #include "mario/geo.inc.c"
 
 #include "shell2/geo.inc.c"
+#include "mario_swim_board/geo.inc.c"

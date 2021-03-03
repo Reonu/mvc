@@ -346,4 +346,6 @@ extern const Gfx white_particle_small_unused_dl[];
 
 #include "shell2/geo_header.h"
 
+#include "mario_swim_board/geo_header.h"
+
 #endif

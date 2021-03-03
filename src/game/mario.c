@@ -1277,7 +1277,7 @@ void update_mario_button_inputs(struct MarioState *m) {
     if (m->controller->buttonDown & A_BUTTON) {
         m->input |= INPUT_A_DOWN;
     }
-    if (m->controller->buttonPressed & L_TRIG) {
+    if (m->controller->buttonPressed & L_JPAD) {
         if (m->debugMode == 0) {
             m->debugMode = 1;
         }
@@ -1286,6 +1286,36 @@ void update_mario_button_inputs(struct MarioState *m) {
         }
     }
 
+
+void dismount_shell(struct MarioState *m)
+{
+    struct Object* riddenObj = m->riddenObj;
+    if (riddenObj != NULL)
+    {
+        m->riddenObj = NULL;
+        riddenObj->oInteractStatus = INT_STATUS_STOP_RIDING;
+        obj_mark_for_deletion(riddenObj);
+    }
+    // Use freefall instead of jump to prevent gaining height after dismounting shell
+    set_mario_action(m, ACT_FREEFALL, 0);
+}
+
+    if (m->controller->buttonPressed & L_TRIG && m->surfboard == 1 ){
+        if (m->action & ACT_FLAG_RIDING_SHELL)
+            {
+                dismount_shell(m);
+                m->marioObj->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_MARIO_SWIM_BOARD];
+            }
+        else if ((m->action == ACT_WALKING) || (m->action == ACT_IDLE) || (m->action == ACT_JUMP)) {
+        struct Object* shellObj = spawn_object_with_scale(m->marioObj, MODEL_SHELL2, bhvKoopaShell, 1);
+        set_mario_action(m, ACT_RIDING_SHELL_GROUND, 0);
+        shellObj->oInteractStatus |= INT_STATUS_INTERACTED;
+        shellObj->oAction = 1;
+        m->riddenObj = shellObj;
+        m->marioObj->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_MARIO];
+        }
+
+    }
     // Don't update for these buttons if squished.
     if (m->squishTimer == 0) {
         if (m->controller->buttonPressed & B_BUTTON) {
@@ -1731,14 +1761,20 @@ s32 execute_mario_action(UNUSED struct Object *o) {
     if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->canSwim != 1 && gMarioState->debugMode != 1 )) {
         gMarioState->health = 0;
     }
-
+    if (gMarioState->surfboard == 1) {
+        if (gMarioState->action & ACT_FLAG_RIDING_SHELL){
+            o->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_MARIO];
+        }
+        else {
+            o->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_MARIO_SWIM_BOARD];
+        }
+    }
     if (gMarioState->action) {
         gMarioState->marioObj->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
         mario_reset_bodystate(gMarioState);
         update_mario_inputs(gMarioState);
         mario_handle_special_floors(gMarioState);
         mario_process_interactions(gMarioState);
-
         // If Mario is OOB, stop executing actions.
         if (gMarioState->floor == NULL) {
             return 0;

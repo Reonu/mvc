@@ -27,3 +27,4 @@
 #include "sparkle_animation/model.inc.c"
 
 #include "shell2/model.inc.c"
+#include "mario_swim_board/model.inc.c"
