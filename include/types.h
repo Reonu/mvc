@@ -347,6 +347,7 @@ struct MarioState
     /*0xC4*/ f32 unkC4;
              f32 canJump;
              f32 debugMode;
+             f32 canDive;
 };
 
 #endif // TYPES_H

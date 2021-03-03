@@ -487,7 +487,7 @@ s32 check_ground_dive_or_punch(struct MarioState *m) {
 
     if (m->input & INPUT_B_PRESSED) {
         //! Speed kick (shoutouts to SimpleFlips)
-        if (m->forwardVel >= 29.0f && m->controller->stickMag > 48.0f) {
+        if (m->forwardVel >= 29.0f && m->controller->stickMag > 48.0f && (m->canDive == 1 || m->debugMode)) {
             m->vel[1] = 20.0f;
             return set_mario_action(m, ACT_DIVE, 1);
         }
@@ -1519,7 +1519,7 @@ s32 act_slide_kick_slide(struct MarioState *m) {
 
 s32 stomach_slide_action(struct MarioState *m, u32 stopAction, u32 airAction, s32 animation) {
     if (m->actionTimer == 5) {
-        if (!(m->input & INPUT_ABOVE_SLIDE) && (m->input & (INPUT_A_PRESSED | INPUT_B_PRESSED) && (m->canJump == 1 || m->debugMode))) {
+        if (!(m->input & INPUT_ABOVE_SLIDE) && (m->input & (INPUT_A_PRESSED | INPUT_B_PRESSED) && (m->canDive == 1 || m->debugMode))) {
 #if ENABLE_RUMBLE
             queue_rumble_data(5, 80);
 #endif
