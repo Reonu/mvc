@@ -18,7 +18,7 @@ extern Vtx bob_dl_Castle_low_poly_mesh_layer_1_vtx_cull[8];
 extern Vtx bob_dl_Castle_low_poly_mesh_layer_1_vtx_0[63];
 extern Gfx bob_dl_Castle_low_poly_mesh_layer_1_tri_0[];
 extern Vtx bob_dl_Cube_mesh_layer_1_vtx_cull[8];
-extern Vtx bob_dl_Cube_mesh_layer_1_vtx_0[34];
+extern Vtx bob_dl_Cube_mesh_layer_1_vtx_0[36];
 extern Gfx bob_dl_Cube_mesh_layer_1_tri_0[];
 extern Vtx bob_dl_Water_mesh_layer_5_vtx_cull[8];
 extern Vtx bob_dl_Water_mesh_layer_5_vtx_0[29];

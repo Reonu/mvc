@@ -413,8 +413,9 @@ void save_file_reload(void) {
 void save_file_collect_star_or_key(s16 coinScore, s16 starIndex) {
     s32 fileIndex = gCurrSaveFileNum - 1;
     s32 courseIndex = gCurrCourseNum - 1;
+    s32 starByte = (starIndex / 7) - 1;
+    s32 starFlag = 1 << (starIndex % 7);
 
-    s32 starFlag = 1 << starIndex;
     UNUSED s32 flags = save_file_get_flags();
 
     gLastCompletedCourseNum = courseIndex + 1;
@@ -456,8 +457,8 @@ void save_file_collect_star_or_key(s16 coinScore, s16 starIndex) {
             break;
 
         default:
-            if (!(save_file_get_star_flags(fileIndex, courseIndex) & starFlag)) {
-                save_file_set_star_flags(fileIndex, courseIndex, starFlag);
+            if (!(save_file_get_star_flags(fileIndex, starByte) & starFlag)) {
+                save_file_set_star_flags(fileIndex, starByte, starFlag);
             }
             break;
     }
