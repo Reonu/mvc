@@ -114,6 +114,7 @@ const LevelScript level_main_scripts_entry[] = {
     LOAD_MODEL_FROM_GEO(MODEL_CARTOON_STAR,            cartoon_star_geo),
     LOAD_MODEL_FROM_GEO(MODEL_SHELL2,                  shell2_geo),
     LOAD_MODEL_FROM_GEO(MODEL_MARIO_SWIM_BOARD,        mario_swim_board_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_GREEN_SPRING,            green_spring_geo),
     FREE_LEVEL_POOL(),
     CALL(/*arg*/ 0, /*func*/ lvl_init_from_save_file),
     LOOP_BEGIN(),
