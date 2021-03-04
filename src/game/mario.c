@@ -1115,7 +1115,7 @@ s32 hurt_and_set_mario_action(struct MarioState *m, u32 action, u32 actionArg, s
  * actions. A common variant of the below function.
  */
 s32 check_common_action_exits(struct MarioState *m) {
-    if ((m->input & INPUT_A_PRESSED) && (m->canJump == 1 || m->debugMode)) {
+    if ((m->input & INPUT_A_PRESSED) && (m->canJump == 1 || m->unlockEverything)) {
         return set_mario_action(m, ACT_JUMP, 0);
     }
     if (m->input & INPUT_OFF_FLOOR) {
@@ -1285,7 +1285,19 @@ void update_mario_button_inputs(struct MarioState *m) {
             m->debugMode = 0;
         }
     }
-
+    if (m->debugMode == 1) {
+        if (m->controller->buttonPressed & R_JPAD) {
+            if (m->unlockEverything == 0) {
+                m->unlockEverything = 1;
+            }
+            else {
+                m->unlockEverything = 0;
+            }
+        }
+    }
+    else {
+        m->unlockEverything = 0;
+    }
 
 void dismount_shell(struct MarioState *m)
 {
@@ -1758,7 +1770,7 @@ s32 execute_mario_action(UNUSED struct Object *o) {
     if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->pos[1] < -2700)) {
         gMarioState->pos[1] = gMarioState->pos[1] + 50;
     }
-    if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->canSwim != 1 && gMarioState->debugMode != 1 )) {
+    if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->canSwim != 1 && gMarioState->unlockEverything != 1 )) {
         gMarioState->health = 0;
     }
     if (gMarioState->surfboard == 1) {
@@ -1769,6 +1781,17 @@ s32 execute_mario_action(UNUSED struct Object *o) {
             o->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_MARIO_SWIM_BOARD];
         }
     }
+    /*
+    * Moveset system
+    */
+    if (gMarioState->numStars >= 1) {
+            gMarioState->canDive = 1;
+        }
+
+    /*
+    * End of moveset system
+    */
+
     if (gMarioState->action) {
         gMarioState->marioObj->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
         mario_reset_bodystate(gMarioState);
@@ -1865,12 +1888,7 @@ void init_mario(void) {
     gMarioState->framesSinceB = 0xFF;
 
     gMarioState->invincTimer = 0;
-    if (gMarioState->numStars >= 1) {
-        gMarioState->canJump = 1;
-    }
-    else{
-        gMarioState->canJump = 0;
-    }
+
     if (save_file_get_flags()
         & (SAVE_FLAG_CAP_ON_GROUND | SAVE_FLAG_CAP_ON_KLEPTO | SAVE_FLAG_CAP_ON_UKIKI
            | SAVE_FLAG_CAP_ON_MR_BLIZZARD)) {

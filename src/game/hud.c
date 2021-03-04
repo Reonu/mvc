@@ -277,7 +277,35 @@ void render_debug_mode(void) {
     print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 20, "%d", gMarioState->pos[0]);
     print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 40, "%d", gMarioState->pos[2]);
     print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 60, "%d", gMarioState->pos[1]);
-    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 80, "%d", gMarioState->surfboard);
+    //print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 80, "%d", gMarioState->surfboard);
+    if (gMarioState->canJump == 1) {
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(10), 180, "UMP");
+    }
+    if (gMarioState->canDive == 1) {
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(70), 180, "DIBE");
+    }
+    if (gMarioState->canSwim == 1) {
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(130), 180, "SWIM");
+    }
+    if (gMarioState->canDoubleJump == 1) {
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(190), 180, "DUMP");
+    }
+    if (gMarioState->canKick == 1){
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(10), 200, "KICK");
+    }
+    if (gMarioState->canLongJump == 1){
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(70), 200, "LUMP");
+    }
+    if (gMarioState->canTripleJump == 1){
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(140), 200, "TUMP");
+    }
+    if (gMarioState->canWallKick == 1){
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(200), 200, "WK");
+    }
+    if (gMarioState->unlockEverything == 1) {
+        print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(78), 180, "UE ON");
+
+    }
 }
 
 /**

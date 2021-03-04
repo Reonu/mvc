@@ -102,7 +102,7 @@ s32 check_fall_damage(struct MarioState *m, u32 hardFallAction) {
 }
 
 s32 check_kick_or_dive_in_air(struct MarioState *m) {
-    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->debugMode == 1)) {
+    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->unlockEverything == 1)) {
         return set_mario_action(m, m->forwardVel > 28.0f ? ACT_DIVE : ACT_JUMP_KICK, 0);
     }
     return FALSE;
@@ -478,7 +478,7 @@ s32 act_triple_jump(struct MarioState *m) {
         return set_mario_action(m, ACT_SPECIAL_TRIPLE_JUMP, 0);
     }
 
-    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->debugMode)) {
+    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->unlockEverything)) {
         return set_mario_action(m, ACT_DIVE, 0);
     }
 
@@ -521,7 +521,7 @@ s32 act_backflip(struct MarioState *m) {
 s32 act_freefall(struct MarioState *m) {
     s32 animation;
 
-    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->debugMode)) {
+    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->unlockEverything)) {
         return set_mario_action(m, ACT_DIVE, 0);
     }
 
@@ -589,7 +589,7 @@ s32 act_hold_freefall(struct MarioState *m) {
 }
 
 s32 act_side_flip(struct MarioState *m) {
-    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->debugMode)) {
+    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->unlockEverything)) {
         return set_mario_action(m, ACT_DIVE, 0);
     }
 
@@ -612,7 +612,7 @@ s32 act_side_flip(struct MarioState *m) {
 }
 
 s32 act_wall_kick_air(struct MarioState *m) {
-    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->debugMode)) {
+    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->unlockEverything)) {
         return set_mario_action(m, ACT_DIVE, 0);
     }
 
@@ -882,7 +882,7 @@ s32 act_hold_water_jump(struct MarioState *m) {
 }
 
 s32 act_steep_jump(struct MarioState *m) {
-    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->debugMode)) {
+    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->unlockEverything)) {
         return set_mario_action(m, ACT_DIVE, 0);
     }
 
@@ -1141,7 +1141,7 @@ u32 common_air_knockback_step(struct MarioState *m, u32 landAction, u32 hardFall
 }
 
 s32 check_wall_kick(struct MarioState *m) {
-    if ((m->input & INPUT_A_PRESSED) && m->wallKickTimer != 0 && m->prevAction == ACT_AIR_HIT_WALL && (m->canWallKick == 1 || m->debugMode == 1)) {
+    if ((m->input & INPUT_A_PRESSED) && m->wallKickTimer != 0 && m->prevAction == ACT_AIR_HIT_WALL && (m->canWallKick == 1 || m->unlockEverything == 1)) {
         m->faceAngle[1] += 0x8000;
         return set_mario_action(m, ACT_WALL_KICK_AIR, 0);
     }
@@ -1308,7 +1308,7 @@ s32 act_air_hit_wall(struct MarioState *m) {
     }
 
     if (++(m->actionTimer) <= 2) {
-        if (m->input & INPUT_A_PRESSED) {
+        if (m->input & INPUT_A_PRESSED && (gMarioState->canWallKick == 1 || gMarioState->unlockEverything == 1)) {
             m->vel[1] = 52.0f;
             m->faceAngle[1] += 0x8000;
             return set_mario_action(m, ACT_WALL_KICK_AIR, 0);
@@ -1881,14 +1881,14 @@ s32 act_flying_triple_jump(struct MarioState *m) {
         if (m->area->camera->mode == CAMERA_MODE_BEHIND_MARIO) {
             set_camera_mode(m->area->camera, m->area->camera->defMode, 1);
         }
-        if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->debugMode)) {
+        if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->unlockEverything)) {
             return set_mario_action(m, ACT_DIVE, 0);
         } else {
             return set_mario_action(m, ACT_GROUND_POUND, 0);
         }
     }
 #else
-    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->debugMode)) {
+    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->unlockEverything)) {
         return set_mario_action(m, ACT_DIVE, 0);
     }
 
@@ -2000,7 +2000,7 @@ s32 act_vertical_wind(struct MarioState *m) {
 }
 
 s32 act_special_triple_jump(struct MarioState *m) {
-    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->debugMode)) {
+    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->unlockEverything)) {
         return set_mario_action(m, ACT_DIVE, 0);
     }
 
