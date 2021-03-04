@@ -485,14 +485,16 @@ s32 analog_stick_held_back(struct MarioState *m) {
 s32 check_ground_dive_or_punch(struct MarioState *m) {
     UNUSED s32 unused;
 
-    if (m->input & INPUT_B_PRESSED && (m->canKick == 1 || m->unlockEverything == 1)) {
+    if (m->input & INPUT_B_PRESSED) {
         //! Speed kick (shoutouts to SimpleFlips)
         if (m->forwardVel >= 29.0f && m->controller->stickMag > 48.0f && (m->canDive == 1 || m->unlockEverything == 1)) {
             m->vel[1] = 20.0f;
             return set_mario_action(m, ACT_DIVE, 1);
         }
-
-        return set_mario_action(m, ACT_MOVE_PUNCHING, 0);
+        if (m->canKick == 1 || m->unlockEverything == 1){
+            return set_mario_action(m, ACT_MOVE_PUNCHING, 0);
+        }
+        
     }
 
     return FALSE;
@@ -964,7 +966,7 @@ s32 act_turning_around(struct MarioState *m) {
         return set_mario_action(m, ACT_BEGIN_SLIDING, 0);
     }
 
-    if (m->input & INPUT_A_PRESSED && (m->canJump == 1 || m->unlockEverything == 1)) {
+    if (m->input & INPUT_A_PRESSED && (m->canSideFlip == 1 || m->unlockEverything == 1)) {
         return set_jumping_action(m, ACT_SIDE_FLIP, 0);
     }
 
@@ -1015,7 +1017,7 @@ s32 act_finish_turning_around(struct MarioState *m) {
         return set_mario_action(m, ACT_BEGIN_SLIDING, 0);
     }
 
-    if (m->input & INPUT_A_PRESSED && (m->canJump == 1 || m->unlockEverything == 1)) {
+    if (m->input & INPUT_A_PRESSED && (m->canSideFlip == 1 || m->unlockEverything == 1)) {
         return set_jumping_action(m, ACT_SIDE_FLIP, 0);
     }
 
@@ -1555,7 +1557,7 @@ s32 act_hold_stomach_slide(struct MarioState *m) {
 }
 
 s32 act_dive_slide(struct MarioState *m) {
-    if (!(m->input & INPUT_ABOVE_SLIDE) && (m->input & (INPUT_A_PRESSED | INPUT_B_PRESSED) && (m->canJump == 1 || m->unlockEverything == 1))) {
+    if (!(m->input & INPUT_ABOVE_SLIDE) && (m->input & (INPUT_A_PRESSED | INPUT_B_PRESSED) && (m->canDive == 1 || m->unlockEverything == 1))) {
 #if ENABLE_RUMBLE
         queue_rumble_data(5, 80);
 #endif
