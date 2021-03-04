@@ -26,6 +26,7 @@
 #define MODEL_MARIO                       0x01        // mario_geo
 #define MODEL_MARIO_SWIM_BOARD            0x02        // unused
 #define MODEL_SHELL2                      0xFF        // surfboard
+#define MODEL_GREEN_SPRING                0xFE        // Green spring
 
 /* Various static level geometry, the geo layout differs but terrain object presets treat them the same.*/
 

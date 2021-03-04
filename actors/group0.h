@@ -348,4 +348,6 @@ extern const Gfx white_particle_small_unused_dl[];
 
 #include "mario_swim_board/geo_header.h"
 
+#include "green_spring/geo_header.h"
+
 #endif

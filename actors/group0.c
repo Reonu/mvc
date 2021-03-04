@@ -28,3 +28,4 @@
 
 #include "shell2/model.inc.c"
 #include "mario_swim_board/model.inc.c"
+#include "green_spring/model.inc.c"
