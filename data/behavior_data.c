@@ -1876,6 +1876,7 @@ const BehaviorScript bhvGreenSpring[] = {
     SET_INT(oIntangibleTimer, 0),
     SET_HOME(),
     BEGIN_LOOP(),
+        CALL_NATIVE(bhv_green_spring),
         SET_INT(oInteractStatus, 0),
     END_LOOP(),
 };

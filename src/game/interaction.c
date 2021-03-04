@@ -1087,8 +1087,7 @@ u32 interact_igloo_barrier(struct MarioState *m, UNUSED u32 interactType, struct
     m->usedObj = o;
     interaction = determine_interaction(m, o);
     if (interaction & INT_HIT_FROM_ABOVE) {
-            o->action = 1;
-            o->header.gfx.scale[1] *= 0.5f;
+            o->oAction = 1;
             if (o->oInteractionSubtype & INT_SUBTYPE_TWIRL_BOUNCE) {
                 bounce_off_object(m, o, 80.0f);
                 reset_mario_pitch(m);
