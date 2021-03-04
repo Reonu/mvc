@@ -1083,8 +1083,18 @@ u32 interact_igloo_barrier(struct MarioState *m, UNUSED u32 interactType, struct
     // but unfortunately the igloo barrier is the only object with this interaction
     // type)
     u32 interaction;
+    u32 bounceSpeed;
     m->interactObj = o;
     m->usedObj = o;
+    if (o->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_GREEN_SPRING]) {
+        bounceSpeed = 80.0f;
+     }
+    else if (o->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_YELLOW_SPRING]) {
+        bounceSpeed = 120.0f;
+    }
+    else if (o->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_RED_SPRING]) {
+        bounceSpeed = 150.0f;
+    }
     interaction = determine_interaction(m, o);
     if (interaction & INT_HIT_FROM_ABOVE) {
             o->oAction = 1;

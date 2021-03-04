@@ -16,7 +16,7 @@ extern u8 bob_dl_water_semi_transparent_ci8_pal_rgba16[];
 extern Vtx bob_dl_Island_mesh_layer_1_vtx_cull[8];
 extern Vtx bob_dl_Island_mesh_layer_1_vtx_0[40];
 extern Gfx bob_dl_Island_mesh_layer_1_tri_0[];
-extern Vtx bob_dl_Island_mesh_layer_1_vtx_1[48];
+extern Vtx bob_dl_Island_mesh_layer_1_vtx_1[24];
 extern Gfx bob_dl_Island_mesh_layer_1_tri_1[];
 extern Vtx bob_dl_Castle_high_poly_mesh_layer_1_vtx_cull[8];
 extern Vtx bob_dl_Castle_high_poly_mesh_layer_1_vtx_0[636];
