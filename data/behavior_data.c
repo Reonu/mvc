@@ -1873,10 +1873,11 @@ const BehaviorScript bhvGreenSpring[] = {
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
     SET_INTERACT_TYPE(INTERACT_IGLOO_BARRIER),
     SET_HITBOX(/*Radius*/ 100, /*Height*/ 120),
+    CALL_NATIVE(bhv_green_spring_init),
     SET_INT(oIntangibleTimer, 0),
     SET_HOME(),
     BEGIN_LOOP(),
-        CALL_NATIVE(bhv_green_spring),
+        CALL_NATIVE(bhv_green_spring_loop),
         SET_INT(oInteractStatus, 0),
     END_LOOP(),
 };

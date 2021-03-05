@@ -350,4 +350,8 @@ extern const Gfx white_particle_small_unused_dl[];
 
 #include "green_spring/geo_header.h"
 
+#include "yellow_spring/geo_header.h"
+
+#include "red_spring/geo_header.h"
+
 #endif

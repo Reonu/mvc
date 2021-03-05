@@ -1460,7 +1460,7 @@ s32 act_crouch_slide(struct MarioState *m) {
 
     if (m->actionTimer < 30) {
         m->actionTimer++;
-        if (m->input & INPUT_A_PRESSED && (m->canJump == 1 || m->unlockEverything == 1)) {
+        if (m->input & INPUT_A_PRESSED && (m->canLongJump == 1 || m->unlockEverything == 1)) {
             if (m->forwardVel > 10.0f) {
                 return set_jumping_action(m, ACT_LONG_JUMP, 0);
             }

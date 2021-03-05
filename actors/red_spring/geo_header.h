@@ -1,0 +1,13 @@
+extern const GeoLayout red_spring_geo[];
+extern Lights1 red_spring_f3d_material_lights;
+extern Lights1 red_spring_f3d_material_001_lights;
+extern Vtx red_spring_Cube_mesh_layer_1_vtx_cull[8];
+extern Vtx red_spring_Cube_mesh_layer_1_vtx_0[96];
+extern Gfx red_spring_Cube_mesh_layer_1_tri_0[];
+extern Vtx red_spring_Cube_mesh_layer_1_vtx_1[28];
+extern Gfx red_spring_Cube_mesh_layer_1_tri_1[];
+extern Gfx mat_red_spring_f3d_material[];
+extern Gfx mat_red_spring_f3d_material_001[];
+extern Gfx mat_revert_red_spring_f3d_material_001[];
+extern Gfx red_spring_Cube_mesh_layer_1[];
+extern Gfx red_spring_material_revert_render_settings[];

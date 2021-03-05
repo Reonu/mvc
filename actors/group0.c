@@ -29,3 +29,5 @@
 #include "shell2/model.inc.c"
 #include "mario_swim_board/model.inc.c"
 #include "green_spring/model.inc.c"
+#include "yellow_spring/model.inc.c"
+#include "red_spring/model.inc.c"

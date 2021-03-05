@@ -20,3 +20,5 @@
 #include "shell2/geo.inc.c"
 #include "mario_swim_board/geo.inc.c"
 #include "green_spring/geo.inc.c"
+#include "yellow_spring/geo.inc.c"
+#include "red_spring/geo.inc.c"

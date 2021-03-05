@@ -1083,30 +1083,20 @@ u32 interact_igloo_barrier(struct MarioState *m, UNUSED u32 interactType, struct
     // but unfortunately the igloo barrier is the only object with this interaction
     // type)
     u32 interaction;
-    u32 bounceSpeed;
     m->interactObj = o;
     m->usedObj = o;
-    if (o->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_GREEN_SPRING]) {
-        bounceSpeed = 80.0f;
-     }
-    else if (o->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_YELLOW_SPRING]) {
-        bounceSpeed = 120.0f;
-    }
-    else if (o->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_RED_SPRING]) {
-        bounceSpeed = 150.0f;
-    }
     interaction = determine_interaction(m, o);
     if (interaction & INT_HIT_FROM_ABOVE) {
             o->oAction = 1;
             if (o->oInteractionSubtype & INT_SUBTYPE_TWIRL_BOUNCE) {
-                bounce_off_object(m, o, 80.0f);
+                bounce_off_object(m, o, o->oFriction);
                 reset_mario_pitch(m);
 #ifndef VERSION_JP
                 play_sound(SOUND_MARIO_TWIRL_BOUNCE, m->marioObj->header.gfx.cameraToObject);
 #endif
                 return drop_and_set_mario_action(m, ACT_TWIRLING, 0);
             } else {
-                bounce_off_object(m, o, 30.0f);
+                bounce_off_object(m, o, o->oFriction);
             }
     }
     else {
