@@ -477,10 +477,10 @@ s32 act_reading_automatic_dialog(struct MarioState *m) {
         // finished action
         else if (m->actionState == 25) {
             disable_time_stop();
-            if (gNeverEnteredCastle) {
+            /*if (gNeverEnteredCastle) {
                 gNeverEnteredCastle = FALSE;
                 play_cutscene_music(SEQUENCE_ARGS(0, SEQ_LEVEL_INSIDE_CASTLE));
-            }
+            }*/
             if (m->prevAction == ACT_STAR_DANCE_WATER) {
                 set_mario_action(m, ACT_WATER_IDLE, 0); // 100c star?
             } else {

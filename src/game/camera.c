@@ -3084,7 +3084,12 @@ void update_camera(struct Camera *c) {
                     break;
 
                 case CAMERA_MODE_WATER_SURFACE:
-                    mode_water_surface_camera(c);
+                    if (gMarioState->canSwim == 1){
+                        mode_water_surface_camera(c);
+                    }
+                    else{
+                        mode_8_directions_camera(c);
+                    }
                     break;
 
                 case CAMERA_MODE_INSIDE_CANNON:
@@ -3105,7 +3110,12 @@ void update_camera(struct Camera *c) {
                     break;
 
                 case CAMERA_MODE_WATER_SURFACE:
-                    mode_water_surface_camera(c);
+                    if (gMarioState->canSwim == 1){
+                        mode_water_surface_camera(c);
+                    }
+                    else{
+                        mode_8_directions_camera(c);
+                    }
                     break;
 
                 case CAMERA_MODE_INSIDE_CANNON:

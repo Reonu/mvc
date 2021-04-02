@@ -3590,7 +3590,11 @@ const BehaviorScript bhvPaintingDeathWarp[] = {
 };
 
 const BehaviorScript bhvAirborneDeathWarp[] = {
-    BREAK(),
+    //BREAK(),
+    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_warp_stalker_loop),
+    END_LOOP(),
 };
 
 const BehaviorScript bhvAirborneStarCollectWarp[] = {

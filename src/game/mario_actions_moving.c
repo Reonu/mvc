@@ -12,6 +12,7 @@
 #include "memory.h"
 #include "behavior_data.h"
 #include "rumble_init.h"
+#include "level_update.h"
 
 struct LandingAction {
     s16 numFrames;
@@ -1203,7 +1204,7 @@ s32 act_riding_shell_ground(struct MarioState *m) {
     s16 startYaw = m->faceAngle[1];
 
     if (m->input & INPUT_A_PRESSED && (m->canJump == 1 || m->unlockEverything == 1)) {
-        return set_mario_action(m, ACT_RIDING_SHELL_JUMP, 0);
+        //return set_mario_action(m, ACT_RIDING_SHELL_JUMP, 0);
     }
 
     if (m->input & INPUT_Z_PRESSED) {
@@ -1224,6 +1225,7 @@ s32 act_riding_shell_ground(struct MarioState *m) {
 
         case GROUND_STEP_HIT_WALL:
             mario_stop_riding_object(m);
+            gMarioState->surfboard = 0;
             play_sound(m->flags & MARIO_METAL_CAP ? SOUND_ACTION_METAL_BONK : SOUND_ACTION_BONK,
                        m->marioObj->header.gfx.cameraToObject);
             m->particleFlags |= PARTICLE_VERTICAL_STAR;
@@ -1793,7 +1795,10 @@ s32 common_landing_cancels(struct MarioState *m, struct LandingAction *landingAc
 
 s32 act_jump_land(struct MarioState *m) {
     if (common_landing_cancels(m, &sJumpLandAction, set_jumping_action)) {
-        return TRUE;
+        if ((gMarioState->canDoubleJump == 1) || (gMarioState->unlockEverything == 1)) {
+            return TRUE;
+        }
+        
     }
 
     common_landing_action(m, MARIO_ANIM_LAND_FROM_SINGLE_JUMP, ACT_FREEFALL);
@@ -1875,7 +1880,10 @@ s32 act_long_jump_land(struct MarioState *m) {
 
 s32 act_double_jump_land(struct MarioState *m) {
     if (common_landing_cancels(m, &sDoubleJumpLandAction, set_triple_jump_action)) {
-        return TRUE;
+         if ((gMarioState->canTripleJump == 1) || (gMarioState->unlockEverything == 1)) {
+             return TRUE;
+         }
+        
     }
     common_landing_action(m, MARIO_ANIM_LAND_FROM_DOUBLE_JUMP, ACT_FREEFALL);
     return FALSE;

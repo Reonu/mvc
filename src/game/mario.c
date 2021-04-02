@@ -1316,15 +1316,17 @@ void dismount_shell(struct MarioState *m)
         if (m->action & ACT_FLAG_RIDING_SHELL)
             {
                 dismount_shell(m);
-                m->marioObj->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_MARIO_SWIM_BOARD];
+                m->surfboard = 0;
+                //m->marioObj->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_MARIO_SWIM_BOARD];
             }
         else if ((m->action == ACT_WALKING) || (m->action == ACT_IDLE) || (m->action == ACT_JUMP)) {
-        struct Object* shellObj = spawn_object_with_scale(m->marioObj, MODEL_SHELL2, bhvKoopaShell, 1);
-        set_mario_action(m, ACT_RIDING_SHELL_GROUND, 0);
-        shellObj->oInteractStatus |= INT_STATUS_INTERACTED;
-        shellObj->oAction = 1;
-        m->riddenObj = shellObj;
-        m->marioObj->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_MARIO];
+            struct Object* shellObj = spawn_object_with_scale(m->marioObj, MODEL_SHELL2, bhvKoopaShell, 1);
+            set_mario_action(m, ACT_RIDING_SHELL_GROUND, 0);
+            shellObj->oInteractStatus |= INT_STATUS_INTERACTED;
+            shellObj->oAction = 1;
+            m->riddenObj = shellObj;
+            m->marioObj->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_MARIO];
+            m->surfboard = 0;
         }
 
     }
@@ -1771,7 +1773,7 @@ s32 execute_mario_action(UNUSED struct Object *o) {
         gMarioState->pos[1] = gMarioState->pos[1] + 50;
     }
     if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->canSwim != 1 && gMarioState->unlockEverything != 1 )) {
-        gMarioState->health = 0;
+        initiate_warp(LEVEL_BOB,1,0x02,0);
     }
     if (gMarioState->surfboard == 1) {
         if (gMarioState->action & ACT_FLAG_RIDING_SHELL){
@@ -1787,7 +1789,9 @@ s32 execute_mario_action(UNUSED struct Object *o) {
     if (gMarioState->numStars >= 1) {
             gMarioState->canDive = 1;
         }
-
+    if (gMarioState->numStars >= 3) {
+            gMarioState ->canJump = 1;
+    }
     /*
     * End of moveset system
     */

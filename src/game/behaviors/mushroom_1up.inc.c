@@ -1,5 +1,5 @@
 // mushroom_1up.c.inc
-
+s32 height = 0;
 void bhv_1up_interact(void) {
     UNUSED s32 sp1C;
 
@@ -11,7 +11,8 @@ void bhv_1up_interact(void) {
         else{
             gMarioState->numLives++;
         }
-        o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
+        //o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
+
 #if ENABLE_RUMBLE
         queue_rumble_data(5, 80);
 #endif
@@ -23,10 +24,12 @@ void bhv_1up_common_init(void) {
     o->oGravity = 3.0f;
     o->oFriction = 1.0f;
     o->oBuoyancy = 1.0f;
+    
 }
 
 void bhv_1up_init(void) {
     bhv_1up_common_init();
+    height = o->oPosY;
     if (o->oBehParams2ndByte == 1) {
         if (!(save_file_get_flags() & (SAVE_FLAG_HAVE_KEY_1 | SAVE_FLAG_UNLOCKED_BASEMENT_DOOR))) {
             o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
@@ -187,6 +190,12 @@ void bhv_1up_sliding_loop(void) {
 void bhv_1up_loop(void) {
     bhv_1up_interact();
     set_object_visibility(o, 3000);
+    if ((gMarioState->surfboard == 1)) {
+            o->oPosY = (10000);
+    }
+    if (gMarioState->surfboard == 0) {
+            o->oPosY = height;
+    }
 }
 
 void bhv_1up_jump_on_approach_loop(void) {
