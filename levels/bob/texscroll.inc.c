@@ -1,6 +1,6 @@
 void scroll_bob_dl_Water_mesh_layer_5_vtx_0() {
 	int i = 0;
-	int count = 29;
+	int count = 39;
 	int width = 32 * 0x20;
 	int height = 32 * 0x20;
 
