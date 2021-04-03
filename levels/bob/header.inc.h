@@ -64,7 +64,7 @@ extern Gfx bob_dl_Island2_mesh_layer_4_tri_0[];
 extern Vtx bob_dl_Island3_mesh_layer_1_vtx_cull[8];
 extern Vtx bob_dl_Island3_mesh_layer_1_vtx_0[4];
 extern Gfx bob_dl_Island3_mesh_layer_1_tri_0[];
-extern Vtx bob_dl_Island3_mesh_layer_1_vtx_1[56];
+extern Vtx bob_dl_Island3_mesh_layer_1_vtx_1[54];
 extern Gfx bob_dl_Island3_mesh_layer_1_tri_1[];
 extern Vtx bob_dl_Island3_mesh_layer_1_vtx_2[4];
 extern Gfx bob_dl_Island3_mesh_layer_1_tri_2[];
