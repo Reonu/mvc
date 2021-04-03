@@ -612,19 +612,19 @@ void general_star_dance_handler(struct MarioState *m, s32 isInWater) {
                 break;
 
             case 80:
-                if ((m->actionArg & 1) == 0) {
-                    level_trigger_warp(m, WARP_OP_STAR_EXIT);
-                } else {
-                    enable_time_stop();
-                    create_dialog_box_with_response(gLastCompletedStarNum == 7 ? DIALOG_013 : DIALOG_014);
+                //if ((m->actionArg & 1) == 0) {
+                    //level_trigger_warp(m, WARP_OP_STAR_EXIT);
+                //} else {
+                    //enable_time_stop();
+                    //create_dialog_box_with_response(gLastCompletedStarNum == 7 ? DIALOG_013 : DIALOG_014);
                     m->actionState = 1;
-                }
+                //}
                 break;
         }
-    } else if (m->actionState == 1 && gDialogResponse) {
-        if (gDialogResponse == 1) {
+    } else if (m->actionState == 1) {
+        //if (gDialogResponse == 1) {
             save_file_do_save(gCurrSaveFileNum - 1);
-        }
+        //}
         m->actionState = 2;
     } else if (m->actionState == 2 && is_anim_at_end(m)) {
         disable_time_stop();
@@ -1468,17 +1468,17 @@ s32 act_shocked(struct MarioState *m) {
 
     if (m->actionArg == 0) {
         mario_set_forward_vel(m, 0.0f);
-        if (perform_air_step(m, 1) == AIR_STEP_LANDED) {
+        //if (perform_air_step(m, 1) == AIR_STEP_LANDED) {
             play_mario_landing_sound(m, SOUND_ACTION_TERRAIN_LANDING);
             m->actionArg = 1;
-        }
-    } else {
+        //}
+    } //else {
         if (m->actionTimer >= 6) {
             m->invincTimer = 30;
             set_mario_action(m, m->health < 0x0100 ? ACT_ELECTROCUTION : ACT_IDLE, 0);
         }
-        stop_and_set_height_to_floor(m);
-    }
+        //stop_and_set_height_to_floor(m);
+    //}
 
     return FALSE;
 }

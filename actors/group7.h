@@ -25,23 +25,7 @@ extern const struct Animation *const penguin_seg5_anims_05008B74[];
 extern const Collision penguin_seg5_collision_05008B88[];
 
 // snowman
-extern const GeoLayout mr_blizzard_hidden_geo[];
-extern const GeoLayout mr_blizzard_geo[];
-extern const Gfx snowman_seg5_dl_0500C4C8[];
-extern const Gfx snowman_seg5_dl_0500C500[];
-extern const Gfx snowman_seg5_dl_0500C5B0[];
-extern const Gfx snowman_seg5_dl_0500C5E8[];
-extern const Gfx snowman_seg5_dl_0500C620[];
-extern const Gfx snowman_seg5_dl_0500C718[];
-extern const Gfx snowman_seg5_dl_0500C760[];
-extern const Gfx snowman_seg5_dl_0500C978[];
-extern const Gfx snowman_seg5_dl_0500CAA8[];
-extern const Gfx snowman_seg5_dl_0500CB88[];
-extern const Gfx snowman_seg5_dl_0500CBC0[];
-extern const Gfx snowman_seg5_dl_0500CBF8[];
-extern const Gfx snowman_seg5_dl_0500CCB0[];
-extern const Gfx snowman_seg5_dl_0500CCE8[];
-extern const struct Animation *const snowman_seg5_anims_0500D118[];
+
 
 // spindrift
 extern const GeoLayout spindrift_geo[];

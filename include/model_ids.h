@@ -29,6 +29,9 @@
 #define MODEL_GREEN_SPRING                0xFE        // Green spring
 #define MODEL_YELLOW_SPRING               0xFD        // Yellow spring
 #define MODEL_RED_SPRING                  0xFC        // Red spring
+#define MODEL_MR_BLIZZARD_HIDDEN          0xFB        // Mr Blizzard
+#define MODEL_MR_BLIZZARD                 0xFA        // Mr Blizzard
+#define MODEL_FAN_SPRING                  0xF9        // Fan spring
 
 /* Various static level geometry, the geo layout differs but terrain object presets treat them the same.*/
 
@@ -378,8 +381,6 @@
 
 // group 7
 #define MODEL_SPINDRIFT                   0x54        // spindrift_geo
-#define MODEL_MR_BLIZZARD_HIDDEN          0x55        // mr_blizzard_hidden_geo
-#define MODEL_MR_BLIZZARD                 0x56        // mr_blizzard_geo
 #define MODEL_PENGUIN                     0x57        // penguin_geo
 
 // group 8

@@ -357,7 +357,11 @@ struct MarioState
              f32 surfboard;
              f32 canSwim;
              f32 unlockEverything;
-             f32 canSideFlip
+             f32 canSideFlip;
+             f32 canHoldPole;
+             f32 canBackFlip;
+             f32 hadSurfboard;
+             f32 canJumpKick;
 };
 
 #endif // TYPES_H

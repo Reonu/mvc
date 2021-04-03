@@ -342,6 +342,25 @@ extern const Gfx white_particle_small_dl_end[];
 extern const Gfx white_particle_small_dl[];
 extern const Gfx white_particle_small_unused_dl[];
 
+//snowman
+extern const GeoLayout mr_blizzard_hidden_geo[];
+extern const GeoLayout mr_blizzard_geo[];
+extern const Gfx snowman_seg5_dl_0500C4C8[];
+extern const Gfx snowman_seg5_dl_0500C500[];
+extern const Gfx snowman_seg5_dl_0500C5B0[];
+extern const Gfx snowman_seg5_dl_0500C5E8[];
+extern const Gfx snowman_seg5_dl_0500C620[];
+extern const Gfx snowman_seg5_dl_0500C718[];
+extern const Gfx snowman_seg5_dl_0500C760[];
+extern const Gfx snowman_seg5_dl_0500C978[];
+extern const Gfx snowman_seg5_dl_0500CAA8[];
+extern const Gfx snowman_seg5_dl_0500CB88[];
+extern const Gfx snowman_seg5_dl_0500CBC0[];
+extern const Gfx snowman_seg5_dl_0500CBF8[];
+extern const Gfx snowman_seg5_dl_0500CCB0[];
+extern const Gfx snowman_seg5_dl_0500CCE8[];
+extern const struct Animation *const snowman_seg5_anims_0500D118[];
+
 #include "mario/geo_header.h"
 
 #include "shell2/geo_header.h"
@@ -353,5 +372,7 @@ extern const Gfx white_particle_small_unused_dl[];
 #include "yellow_spring/geo_header.h"
 
 #include "red_spring/geo_header.h"
+
+#include "fan_spring/geo_header.h"
 
 #endif

@@ -35,6 +35,7 @@
 
 u32 unused80339F10;
 s8 filler80339F1C[20];
+extern widescreen;
 
 /**************************************************
  *                    ANIMATIONS                  *
@@ -1032,15 +1033,23 @@ s32 set_jump_from_landing(struct MarioState *m) {
         } else {
             switch (m->prevAction) {
                 case ACT_JUMP_LAND:
-                    set_mario_action(m, ACT_DOUBLE_JUMP, 0);
+                    if ((gMarioState->canDoubleJump == 1) || (gMarioState->unlockEverything == 1)){
+                        set_mario_action(m, ACT_DOUBLE_JUMP, 0);
+                    }
                     break;
 
                 case ACT_FREEFALL_LAND:
-                    set_mario_action(m, ACT_DOUBLE_JUMP, 0);
+                    if ((gMarioState->canDoubleJump == 1) || (gMarioState->unlockEverything == 1)) {
+                        set_mario_action(m, ACT_DOUBLE_JUMP, 0);
+                    }
+                    
                     break;
 
                 case ACT_SIDE_FLIP_LAND_STOP:
-                    set_mario_action(m, ACT_DOUBLE_JUMP, 0);
+                    if ((gMarioState->canDoubleJump == 1) || (gMarioState->unlockEverything == 1)) {
+                        set_mario_action(m, ACT_DOUBLE_JUMP, 0);
+                    }
+                    
                     break;
 
                 case ACT_DOUBLE_JUMP_LAND:
@@ -1792,6 +1801,9 @@ s32 execute_mario_action(UNUSED struct Object *o) {
     if (gMarioState->numStars >= 3) {
             gMarioState ->canJump = 1;
     }
+    if (gMarioState->numStars >= 5) {
+        gMarioState->canDoubleJump = 1;
+    }
     /*
     * End of moveset system
     */
@@ -1880,7 +1892,6 @@ s32 execute_mario_action(UNUSED struct Object *o) {
 /**************************************************
  *                  INITIALIZATION                *
  **************************************************/
-
 void init_mario(void) {
     Vec3s capPos;
     struct Object *capObject;
@@ -1892,7 +1903,8 @@ void init_mario(void) {
     gMarioState->framesSinceB = 0xFF;
 
     gMarioState->invincTimer = 0;
-
+    //temporary force widescreen because i want to debug in widescreen
+    widescreen = 1;
     if (save_file_get_flags()
         & (SAVE_FLAG_CAP_ON_GROUND | SAVE_FLAG_CAP_ON_KLEPTO | SAVE_FLAG_CAP_ON_UKIKI
            | SAVE_FLAG_CAP_ON_MR_BLIZZARD)) {

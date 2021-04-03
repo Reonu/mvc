@@ -531,7 +531,10 @@ s32 act_crouching(struct MarioState *m) {
     }
 
     if (m->input & INPUT_A_PRESSED) {
-        return set_jumping_action(m, ACT_BACKFLIP, 0);
+        if (gMarioState->canBackFlip == 1 || gMarioState->unlockEverything == 1){
+            return set_jumping_action(m, ACT_BACKFLIP, 0);
+        }
+        
     }
 
     if (m->input & INPUT_OFF_FLOOR) {

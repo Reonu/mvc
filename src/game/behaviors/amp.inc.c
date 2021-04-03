@@ -318,7 +318,7 @@ static void circling_amp_idle_loop(void) {
     // Oscillate
     o->oAmpYPhase++;
 
-    cur_obj_play_sound_1(SOUND_AIR_AMP_BUZZ);
+    //cur_obj_play_sound_1(SOUND_AIR_AMP_BUZZ);
 }
 
 /**

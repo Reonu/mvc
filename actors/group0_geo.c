@@ -22,3 +22,7 @@
 #include "green_spring/geo.inc.c"
 #include "yellow_spring/geo.inc.c"
 #include "red_spring/geo.inc.c"
+
+#include "snowman/geo.inc.c"
+
+#include "fan_spring/geo.inc.c"

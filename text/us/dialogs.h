@@ -17,24 +17,14 @@
 #endif
 
 DEFINE_DIALOG(DIALOG_000, 1, 6, 30, 200, _("\
-Wow! You're smack in the\n\
-middle of the battlefield.\n\
-You'll find the Power\n\
-Stars that Bowser stole\n\
-inside the painting\n\
-worlds.\n\
-First, talk to the\n\
-Bob-omb Buddy. (Press [B]\n\
-to talk.) He'll certainly\n\
-help you out, and so will\n\
-his " COMRADES " in other\n\
-areas.\n\
-To read signs, stop, face\n\
-them and press [B]. Press [A]\n\
-or [B] to scroll ahead. You\n\
-can talk to some other\n\
-characters by facing them\n\
-and pressing [B]."))
+Mario has spent too much\n\
+time on vacation and\n\
+has forgotten all of\n\
+his moves! Get some\n\
+Power Stars so that\n\
+he can remember!\n\
+This story totally\n\
+makes sense!"))
 
 DEFINE_DIALOG(DIALOG_001, 1, 4, 95, 200, _("\
 Watch out! If you wander\n\
@@ -1701,13 +1691,10 @@ pre-set course.\n\
 It disappears\n\
 automatically, too."))
 
-DEFINE_DIALOG(DIALOG_140, 1, 6, 30, 200, _("\
-Elevator Area\n\
-Right: Hazy Maze\n\
-/// Entrance\n\
-Left: Black Hole\n\
-///Elevator 1\n\
-Arrow: You are here"))
+DEFINE_DIALOG(DIALOG_140, 1, 3, 30, 200, _("\
+You got a surfboard!\n\
+It's a single-use item.\n\
+Use it with L."))
 
 DEFINE_DIALOG(DIALOG_141, 1, 4, 150, 200, _("\
 Mario obtained the\n\
@@ -1721,13 +1708,10 @@ Power Star, Mario\n\
 remembered how to\n\
 perform a single jump!"))
 
-DEFINE_DIALOG(DIALOG_143, 1, 6, 150, 200, _("\
-You've recovered eight of\n\
-the Power Stars! Now you\n\
-can open the door with\n\
-the big Star! But Bowser\n\
-is just ahead...can you\n\
-hear the Princess calling?"))
+DEFINE_DIALOG(DIALOG_143, 1, 3, 150, 200, _("\
+The fifth Power Star\n\
+made Mario remember\n\
+how to double jump!"))
 
 DEFINE_DIALOG(DIALOG_144, 1, 6, 150, 200, _("\
 You've recovered 30\n\

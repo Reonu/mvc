@@ -102,10 +102,16 @@ s32 check_fall_damage(struct MarioState *m, u32 hardFallAction) {
 }
 
 s32 check_kick_or_dive_in_air(struct MarioState *m) {
-    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->unlockEverything == 1)) {
-        return set_mario_action(m, m->forwardVel > 28.0f ? ACT_DIVE : ACT_JUMP_KICK, 0);
+    if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->unlockEverything == 1) && m->forwardVel > 28.0f) {
+        return set_mario_action(m, ACT_DIVE, 0);
     }
-    return FALSE;
+    else if (m->input & INPUT_B_PRESSED && (m->canJumpKick == 1 || m->unlockEverything == 1) && m->forwardVel <= 28.0f) {
+        return set_mario_action(m, ACT_JUMP_KICK, 0);
+    }
+    else{
+        return FALSE;
+    }
+    
 }
 
 s32 should_get_stuck_in_ground(struct MarioState *m) {
@@ -1184,7 +1190,7 @@ s32 act_hard_backward_air_kb(struct MarioState *m) {
     play_sound_if_no_flag(m, SOUND_MARIO_UH, MARIO_MARIO_SOUND_PLAYED);
 #endif
     common_air_knockback_step(m, ACT_HARD_BACKWARD_GROUND_KB, ACT_HARD_BACKWARD_GROUND_KB, 0x0002,
-                              -16.0f);
+                              0);
     return FALSE;
 }
 

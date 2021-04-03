@@ -24,8 +24,14 @@ void bhv_warp_stalker_loop() {
             o->oPosX = gMarioState->pos[0];
             o->oPosY = gMarioState->pos[1];
             o->oPosZ = gMarioState->pos[2];
+            o->oFaceAngleYaw = gMarioState->faceAngle[1];
         }
-
+    }
+    if (gMarioState->debugMode == 0) {
+        o->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
+    }
+    else {
+        o->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
     }
 }
 

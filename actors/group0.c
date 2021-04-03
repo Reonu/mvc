@@ -31,3 +31,9 @@
 #include "green_spring/model.inc.c"
 #include "yellow_spring/model.inc.c"
 #include "red_spring/model.inc.c"
+
+//snowman
+#include "snowman/model.inc.c"
+#include "snowman/anims/data.inc.c"
+#include "snowman/anims/table.inc.c"
+#include "fan_spring/model.inc.c"

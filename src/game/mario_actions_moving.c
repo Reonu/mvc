@@ -358,8 +358,8 @@ void update_shell_speed(struct MarioState *m) {
         m->floor->originOffset = m->waterLevel; //! Negative origin offset
     }
 
-    if (m->floor != NULL && m->floor->type == SURFACE_SLOW) {
-        maxTargetSpeed = 48.0f;
+    if (m->floor != NULL && m->floor->type == SURFACE_HANGABLE) {
+        maxTargetSpeed = 10.0f;
     } else {
         maxTargetSpeed = 64.0f;
     }
@@ -1207,6 +1207,7 @@ s32 act_riding_shell_ground(struct MarioState *m) {
         //return set_mario_action(m, ACT_RIDING_SHELL_JUMP, 0);
     }
 
+
     if (m->input & INPUT_Z_PRESSED) {
         mario_stop_riding_object(m);
         if (m->forwardVel < 24.0f) {
@@ -1783,7 +1784,10 @@ s32 common_landing_cancels(struct MarioState *m, struct LandingAction *landingAc
     }
 
     if (m->input & INPUT_A_PRESSED) {
-        return setAPressAction(m, landingAction->aPressedAction, 0);
+        if ((gMarioState->canDoubleJump == 1) || (gMarioState->unlockEverything == 1)) {
+            return setAPressAction(m, landingAction->aPressedAction, 0);
+        }
+        
     }
 
     if (m->input & INPUT_OFF_FLOOR) {

@@ -15,6 +15,7 @@
 
 #include "actors/common0.h"
 #include "actors/common1.h"
+#include "actors/group0.h"
 #include "actors/group1.h"
 #include "actors/group2.h"
 #include "actors/group3.h"
@@ -3562,7 +3563,11 @@ const BehaviorScript bhvAirborneWarp[] = {
 };
 
 const BehaviorScript bhvHardAirKnockBackWarp[] = {
-    BREAK(),
+    //BREAK(),
+        OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
+    BEGIN_LOOP(),
+        CALL_NATIVE(bhv_warp_stalker_loop),
+    END_LOOP(),
 };
 
 const BehaviorScript bhvSpinAirborneCircleWarp[] = {
@@ -3590,11 +3595,7 @@ const BehaviorScript bhvPaintingDeathWarp[] = {
 };
 
 const BehaviorScript bhvAirborneDeathWarp[] = {
-    //BREAK(),
-    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
-    BEGIN_LOOP(),
-        CALL_NATIVE(bhv_warp_stalker_loop),
-    END_LOOP(),
+    BREAK(),
 };
 
 const BehaviorScript bhvAirborneStarCollectWarp[] = {
