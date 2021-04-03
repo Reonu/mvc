@@ -9,7 +9,7 @@ void bhv_green_spring_init(void) {;
         o->oFriction = 150.0f;
     }
     else {
-        o->oFriction = 80.f;
+        o->oFriction = 65.0f;
     }
 }
 
