@@ -554,6 +554,7 @@ void bhv_volcano_trap_loop(void);
 void bhv_green_spring_loop(void);
 void bhv_green_spring_init(void);
 void bhv_warp_stalker_loop(void);
+void bhv_majora_platform_loop(void);
 
 Gfx *geo_move_mario_part_from_parent(s32 run, UNUSED struct GraphNode *node, Mat4 mtx);
 

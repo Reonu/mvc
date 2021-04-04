@@ -450,7 +450,7 @@ s32 act_jump(struct MarioState *m) {
         return TRUE;
     }
 
-    if (m->input & INPUT_Z_PRESSED) {
+    if (m->input & INPUT_Z_PRESSED && (m->canGroundPound || m->unlockEverything)) {
         return set_mario_action(m, ACT_GROUND_POUND, 0);
     }
 
@@ -469,7 +469,7 @@ s32 act_double_jump(struct MarioState *m) {
         return TRUE;
     }
 
-    if (m->input & INPUT_Z_PRESSED) {
+    if (m->input & INPUT_Z_PRESSED && (m->canGroundPound || m->unlockEverything)) {
         return set_mario_action(m, ACT_GROUND_POUND, 0);
     }
 
@@ -488,7 +488,7 @@ s32 act_triple_jump(struct MarioState *m) {
         return set_mario_action(m, ACT_DIVE, 0);
     }
 
-    if (m->input & INPUT_Z_PRESSED) {
+    if (m->input & INPUT_Z_PRESSED && (m->canGroundPound || m->unlockEverything)) {
         return set_mario_action(m, ACT_GROUND_POUND, 0);
     }
 
@@ -509,7 +509,7 @@ s32 act_triple_jump(struct MarioState *m) {
 }
 
 s32 act_backflip(struct MarioState *m) {
-    if (m->input & INPUT_Z_PRESSED) {
+    if (m->input & INPUT_Z_PRESSED && (m->canGroundPound || m->unlockEverything)) {
         return set_mario_action(m, ACT_GROUND_POUND, 0);
     }
 
@@ -531,7 +531,7 @@ s32 act_freefall(struct MarioState *m) {
         return set_mario_action(m, ACT_DIVE, 0);
     }
 
-    if (m->input & INPUT_Z_PRESSED) {
+    if (m->input & INPUT_Z_PRESSED && (m->canGroundPound || m->unlockEverything)) {
         return set_mario_action(m, ACT_GROUND_POUND, 0);
     }
 
@@ -560,7 +560,7 @@ s32 act_hold_jump(struct MarioState *m) {
         return set_mario_action(m, ACT_AIR_THROW, 0);
     }
 
-    if (m->input & INPUT_Z_PRESSED) {
+    if (m->input & INPUT_Z_PRESSED && (m->canGroundPound || m->unlockEverything)) {
         return drop_and_set_mario_action(m, ACT_GROUND_POUND, 0);
     }
 
@@ -599,7 +599,7 @@ s32 act_side_flip(struct MarioState *m) {
         return set_mario_action(m, ACT_DIVE, 0);
     }
 
-    if (m->input & INPUT_Z_PRESSED) {
+    if (m->input & INPUT_Z_PRESSED && (m->canGroundPound || m->unlockEverything)) {
         return set_mario_action(m, ACT_GROUND_POUND, 0);
     }
 
@@ -622,7 +622,7 @@ s32 act_wall_kick_air(struct MarioState *m) {
         return set_mario_action(m, ACT_DIVE, 0);
     }
 
-    if (m->input & INPUT_Z_PRESSED) {
+    if (m->input & INPUT_Z_PRESSED && (m->canGroundPound || m->unlockEverything) ) {
         return set_mario_action(m, ACT_GROUND_POUND, 0);
     }
 
@@ -1889,7 +1889,7 @@ s32 act_flying_triple_jump(struct MarioState *m) {
         }
         if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->unlockEverything)) {
             return set_mario_action(m, ACT_DIVE, 0);
-        } else {
+        } else if ((m->canGroundPound || m->unlockEverything)) {
             return set_mario_action(m, ACT_GROUND_POUND, 0);
         }
     }
@@ -2010,7 +2010,7 @@ s32 act_special_triple_jump(struct MarioState *m) {
         return set_mario_action(m, ACT_DIVE, 0);
     }
 
-    if (m->input & INPUT_Z_PRESSED) {
+    if (m->input & INPUT_Z_PRESSED && (m->canGroundPound || m->unlockEverything)) {
         return set_mario_action(m, ACT_GROUND_POUND, 0);
     }
 

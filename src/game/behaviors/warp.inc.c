@@ -19,14 +19,17 @@ void bhv_warp_loop(void) {
 }
 
 void bhv_warp_stalker_loop() {
-    if (gMarioState->floor->type == SURFACE_HANGABLE) {
-        if((gMarioState->action & ACT_GROUP_MASK) == ACT_GROUP_MOVING) {
-            o->oPosX = gMarioState->pos[0];
-            o->oPosY = gMarioState->pos[1];
-            o->oPosZ = gMarioState->pos[2];
-            o->oFaceAngleYaw = gMarioState->faceAngle[1];
-        }
-    }
+    if (gMarioState->floor != NULL) {
+            if (gMarioState->floor->type == SURFACE_HANGABLE) {
+                if((gMarioState->action & ACT_GROUP_MASK) == ACT_GROUP_MOVING) {
+                    o->oPosX = gMarioState->pos[0];
+                    o->oPosY = gMarioState->pos[1];
+                    o->oPosZ = gMarioState->pos[2];
+                    o->oFaceAngleYaw = gMarioState->faceAngle[1];
+                }
+            }
+     }
+
     if (gMarioState->debugMode == 0) {
         o->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
     }

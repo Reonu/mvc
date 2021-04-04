@@ -1,4 +1,4 @@
-void bhv_green_spring_init(void) {;
+void bhv_green_spring_init(void) {
     if (o->header.gfx.sharedChild == gLoadedGraphNodes[MODEL_GREEN_SPRING]) {
         o->oFriction = 40.0f;
      }

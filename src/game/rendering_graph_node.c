@@ -10,6 +10,7 @@
 #include "rendering_graph_node.h"
 #include "shadow.h"
 #include "sm64.h"
+#include "level_update.h"
 #define WIDESCREEN
 
 /**
@@ -65,6 +66,9 @@ s16 gCurrAnimFrame;
 f32 gCurAnimTranslationMultiplier;
 u16 *gCurrAnimAttribute;
 s16 *gCurAnimData;
+
+extern sPoolEnd;
+extern sPoolStart;
 
 struct AllocOnlyPool *gDisplayListHeap;
 
@@ -1053,6 +1057,10 @@ void geo_process_root(struct GraphNodeRoot *node, Vp *b, Vp *c, s32 clearColor) 
     if (node->node.flags & GRAPH_RENDER_ACTIVE) {
         Mtx *initialMatrix;
         Vp *viewport = alloc_display_list(sizeof(*viewport));
+        if (gMarioState->debugMode) {
+            print_text_fmt_int(200,60,"%d",main_pool_available());
+            print_text_fmt_int(200,80,"%d",(sPoolEnd - sPoolStart));
+        }
 
         gDisplayListHeap = alloc_only_pool_init(main_pool_available() - sizeof(struct AllocOnlyPool),
                                                 MEMORY_POOL_LEFT);

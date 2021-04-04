@@ -32,6 +32,7 @@
 #define MODEL_MR_BLIZZARD_HIDDEN          0xFB        // Mr Blizzard
 #define MODEL_MR_BLIZZARD                 0xFA        // Mr Blizzard
 #define MODEL_FAN_SPRING                  0xF9        // Fan spring
+#define MODEL_MAJORA_PLATFORM             0xF8
 
 /* Various static level geometry, the geo layout differs but terrain object presets treat them the same.*/
 
