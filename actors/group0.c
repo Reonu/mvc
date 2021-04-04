@@ -37,3 +37,5 @@
 #include "snowman/anims/data.inc.c"
 #include "snowman/anims/table.inc.c"
 #include "fan_spring/model.inc.c"
+#include "majora_platform/model.inc.c"
+#include "majora_platform/collision.inc.c"

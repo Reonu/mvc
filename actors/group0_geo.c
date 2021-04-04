@@ -26,3 +26,4 @@
 #include "snowman/geo.inc.c"
 
 #include "fan_spring/geo.inc.c"
+#include "majora_platform/geo.inc.c"

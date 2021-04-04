@@ -1,0 +1,17 @@
+extern const GeoLayout majora_platform_geo[];
+extern Lights1 majora_platform_Grass_lights;
+extern Lights1 majora_platform_Side_lights;
+extern u8 majora_platform_grass_ci8[];
+extern u8 majora_platform_grass_ci8_pal_rgba16[];
+extern u8 majora_platform_side_ci8[];
+extern u8 majora_platform_side_ci8_pal_rgba16[];
+extern Vtx majora_platform_vanish_001_mesh_layer_1_vtx_0[8];
+extern Gfx majora_platform_vanish_001_mesh_layer_1_tri_0[];
+extern Vtx majora_platform_vanish_001_mesh_layer_1_vtx_1[16];
+extern Gfx majora_platform_vanish_001_mesh_layer_1_tri_1[];
+extern Gfx mat_majora_platform_Grass[];
+extern Gfx mat_revert_majora_platform_Grass[];
+extern Gfx mat_majora_platform_Side[];
+extern Gfx mat_revert_majora_platform_Side[];
+extern Gfx majora_platform_vanish_001_mesh_layer_1[];
+extern Gfx majora_platform_material_revert_render_settings[];

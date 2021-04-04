@@ -375,4 +375,8 @@ extern const struct Animation *const snowman_seg5_anims_0500D118[];
 
 #include "fan_spring/geo_header.h"
 
+#include "majora_platform/geo_header.h"
+
+#include "majora_platform/collision_header.h"
+
 #endif
