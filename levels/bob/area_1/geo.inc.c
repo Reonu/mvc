@@ -29,6 +29,7 @@ const GeoLayout bob_area_1_geo[] = {
 		GEO_OPEN_NODE(),
 			GEO_DISPLAY_LIST(4, bob_dl_Island3_mesh_layer_4),
 		GEO_CLOSE_NODE(),
+		GEO_TRANSLATE_NODE_WITH_DL(5, -6782, -2121, -7026, bob_dl_LavaNoCollision_mesh_layer_5),
 		GEO_TRANSLATE_NODE_WITH_DL(1, -6782, -2121, -7026, bob_dl_LavaPuddle_mesh_layer_1),
 		GEO_TRANSLATE_NODE_WITH_DL(1, 1165, -2518, -3848, bob_dl_minicircuit_mesh_layer_1),
 		GEO_OPEN_NODE(),
