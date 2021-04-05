@@ -363,6 +363,8 @@ struct MarioState
              f32 hadSurfboard;
              f32 canJumpKick;
              f32 canGroundPound;
+             f32 showMoveset;
+             f32 showMovesetTimer;
 };
 
 #endif // TYPES_H

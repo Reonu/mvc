@@ -306,17 +306,53 @@ static void circling_amp_idle_loop(void) {
     // twice that of the fixed amp. In other words, circling amps will
     // oscillate twice as fast. Also, unlike all other amps, circling
     // amps oscillate 60 units around their average Y instead of 40.
-    o->oPosX = o->oHomeX + sins(o->oMoveAngleYaw) * o->oAmpRadiusOfRotation;
-    o->oPosZ = o->oHomeZ + coss(o->oMoveAngleYaw) * o->oAmpRadiusOfRotation;
-    o->oPosY = o->oHomeY + coss(o->oAmpYPhase * 0x8B0) * 30.0f;
-    o->oMoveAngleYaw += 0x400;
-    o->oFaceAngleYaw = o->oMoveAngleYaw + 0x4000;
+    switch ((o->oBehParams >> 24) & 0xFF) {
+        case 0x00: {
+            o->oPosX = o->oHomeX + sins(o->oMoveAngleYaw) * o->oAmpRadiusOfRotation;
+            o->oPosZ = o->oHomeZ + coss(o->oMoveAngleYaw) * o->oAmpRadiusOfRotation;
+            o->oPosY = o->oHomeY + coss(o->oAmpYPhase * 0x8B0) * 30.0f;
+            o->oMoveAngleYaw += 0x400;
+            o->oFaceAngleYaw = o->oMoveAngleYaw + 0x4000;
 
-    // Handle attacks
-    check_amp_attack();
+            // Handle attacks
+            check_amp_attack();
 
-    // Oscillate
-    o->oAmpYPhase++;
+            // Oscillate
+            o->oAmpYPhase++;
+            break;
+        }
+        case 0x01: {
+            if (o->oTimer < 90){
+                o->oPosX += 7;
+                o->oPosY = o->oHomeY + coss(o->oAmpYPhase * 0x8B0) * 30.0f;
+            }
+            else if (o->oTimer < 180) {
+                o->oPosX -= 7;
+                o->oPosY = o->oHomeY + coss(o->oAmpYPhase * 0x8B0) * 30.0f;
+            }
+            else{
+                o->oTimer = -1;
+            }
+            o->oAmpYPhase++;
+            break;
+        }
+        case 0x02: {
+            if (o->oTimer < 90){
+                o->oPosX -= 7;
+                
+            }
+            else if (o->oTimer < 180) {
+                o->oPosX += 7;
+            }
+            else{
+                o->oTimer = -1;
+            }
+            o->oPosY = o->oHomeY + coss(o->oAmpYPhase * 0x8B0) * 30.0f;
+            o->oAmpYPhase++;
+            break;
+        }
+    }
+
 
     //cur_obj_play_sound_1(SOUND_AIR_AMP_BUZZ);
 }

@@ -1294,6 +1294,16 @@ void update_mario_button_inputs(struct MarioState *m) {
             m->debugMode = 0;
         }
     }
+    if (m->controller->buttonPressed & U_JPAD) {
+        if (m->showMoveset == 0) {
+            m->showMovesetTimer = 90;
+            m->showMoveset = 1;
+        }
+        else {
+            m->showMovesetTimer = 90;
+            m->showMoveset = 0;
+        }
+    }   
     if (m->debugMode == 1) {
         if (m->controller->buttonPressed & R_JPAD) {
             if (m->unlockEverything == 0) {

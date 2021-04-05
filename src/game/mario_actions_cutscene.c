@@ -591,6 +591,10 @@ s32 act_debug_free_move(struct MarioState *m) {
 
 void general_star_dance_handler(struct MarioState *m, s32 isInWater) {
     s32 dialogID;
+    if (m->actionTimer > 40)
+    {
+        print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(150), 185, "SAVING");
+    }
     if (m->actionState == 0) {
         switch (++m->actionTimer) {
             case 1:

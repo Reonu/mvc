@@ -1,60 +1,24 @@
 void bhv_majora_platform_loop(void) {
-    switch ((o->oBehParams >> 24) & 0xFF){
-        case 01: {
-            if (o->oTimer <= 50) {
-                o->oPosX += 50;
-                o->oVelX = 50;
-            } else if (o->oTimer <= 100) {
-                o->oPosX -= 50;
-                o->oVelX = -50;
-            }
-            if (o->oTimer == 101) {
-                o->oTimer = -1;
-            }
-            break;
-        }
-        case 02: {
-            if (o->oTimer <= 50) {
-                //do nothing lul
-            } else if (o->oTimer <= 200) {
-                o->oPosY += 8;
-                o->oVelY = 8;
-            } else if (o->oTimer <= 250) {
-                //do nothing lul
-            } else if (o->oTimer <= 400) {
-                o->oPosY -= 8;
-                o->oVelY = -8;
-            }
-            if (o->oTimer == 401) {
-                o->oTimer = -1;
-            }
-            break;
-        }
-        case 03: {
-            if (o->oTimer > 20){
-                o->oPosX += 10;
-                o->oVelX = 0;
-            }
-        break;
+    u8 type = ((o->oBehParams >> 24) & 0xFF);
+    s16 speed = ((o->oBehParams >> 8) & 0xFF);
+    if (type % 2) speed *= -1;
+    
+    f32 *platformDirPos = (type < 2 ? &o->oPosX : &o->oPosY);
+    f32 *platformDirVel = (type < 2 ? &o->oVelX : &o->oVelY);
 
-        }
+    if (o->oTimer <= 50) {
+        *platformDirVel = 0;
+    } else if (o->oTimer <= 200) {
+        *platformDirPos += speed;
+        *platformDirVel = speed;
+    } else if (o->oTimer <= 250) {
+        *platformDirVel = 0;
+    } else if (o->oTimer <= 400) {
+        *platformDirPos -= speed;
+        *platformDirVel = -speed;
+    } else {
+        o->oTimer = -1;
     }
-    switch ((o->oBehParams >> 16) & 0xFF) {
-        case 00: {
-            cur_obj_scale(0.25f);
-            break;
-        }
-        case 01: {
-            cur_obj_scale(0.5f);
-            break;
-        }
-        case 03: {
-            cur_obj_scale(0.75f);
-            break;
-        }
-        case 04: {
-            cur_obj_scale(1.0f);
-            break;
-        }
-    }
+    
+    cur_obj_scale((((o->oBehParams >> 16) & 0xFF) + 1)/4.f);
 }

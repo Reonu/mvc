@@ -24,7 +24,11 @@ his moves! Get some\n\
 Power Stars so that\n\
 he can remember!\n\
 This story totally\n\
-makes sense!"))
+makes sense!\n\
+Press D-pad up to\n\
+check which moves\n\
+you currently have\n\
+available."))
 
 DEFINE_DIALOG(DIALOG_001, 1, 4, 95, 200, _("\
 Watch out! If you wander\n\

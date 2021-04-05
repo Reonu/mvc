@@ -277,51 +277,76 @@ void render_debug_mode(void) {
     print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 20, "%d", gMarioState->pos[0]);
     print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 40, "%d", gMarioState->pos[2]);
     print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 60, "%d", gMarioState->pos[1]);
+    if (gMarioState->unlockEverything == 1) {
+        print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(78), 180, "UE ON");
+
+    }
     //print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 80, "%d", gMarioState->surfboard);
+    render_moveset();
+}
+
+void render_moveset(void) {
+    if (gMarioState->numStars == 0) {
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(10), 180, "YOU HAVE NO MOVES YET!");
+    }
     if (gMarioState->canJump == 1) {
-        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(10), 180, "UMP");
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(10), 180, "JUMP");
     }
     if (gMarioState->canDive == 1) {
-        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(70), 180, "DIBE");
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(70), 180, "DIVE");
     }
     if (gMarioState->canSwim == 1) {
         print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(130), 180, "SWIM");
     }
     if (gMarioState->canDoubleJump == 1) {
-        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(190), 180, "DUMP");
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(190), 180, "DJUMP");
     }
     if (gMarioState->canKick == 1){
         print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(10), 200, "KICK");
     }
     if (gMarioState->canLongJump == 1){
-        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(70), 200, "LUMP");
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(70), 200, "LJUMP");
     }
     if (gMarioState->canTripleJump == 1){
-        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(140), 200, "TUMP");
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(140), 200, "TJUMP");
     }
     if (gMarioState->canWallKick == 1){
-        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(200), 200, "WK");
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(210), 200, "WKICK");
     }
-    if (gMarioState->unlockEverything == 1) {
-        print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(78), 180, "UE ON");
-
+    if (gMarioState->canSideFlip == 1){
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(10), 220, "SFLIP");
     }
+    if (gMarioState->canHoldPole == 1){
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(90), 220, "POLE");
+    }
+    if (gMarioState->canGroundPound == 1){
+        print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(150), 220, "GPOUND");
+    }
+    if (gMarioState->showMovesetTimer > 0) {
+        gMarioState->showMovesetTimer--;
+    }
+    else {
+        gMarioState->showMovesetTimer = 90;
+        gMarioState->showMoveset = 0;
+    }
+    
 }
-
 /**
  * Renders the amount of coins collected.
  */
-void render_hud_coins(void) {
-    print_text(168, HUD_TOP_Y, "+"); // 'Coin' glyph
-    print_text(184, HUD_TOP_Y, "*"); // 'X' glyph
-    print_text_fmt_int(198, HUD_TOP_Y, "%d", gHudDisplay.coins);
-}
 
 #ifdef VERSION_JP
 #define HUD_STARS_X 73
 #else
-#define HUD_STARS_X 78
+#define HUD_STARS_X 310
 #endif
+void render_hud_coins(void) {
+    print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_STARS_X), (HUD_BOTTOM_Y+20), "+"); // 'Coin' glyph
+    print_text((GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_STARS_X)+16), (HUD_BOTTOM_Y+20), "*"); // 'X' glyph
+    print_text_fmt_int((GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_STARS_X)+30), (HUD_BOTTOM_Y+20), "%d", gHudDisplay.coins);
+}
+
+
 
 /**
  * Renders the amount of stars collected.
@@ -338,12 +363,12 @@ void render_hud_stars(void) {
         showX = 1;
     }
 
-    print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_STARS_X), HUD_TOP_Y, "-"); // 'Star' glyph
+    print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_STARS_X), HUD_BOTTOM_Y, "-"); // 'Star' glyph
     if (showX == 1) {
-        print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_STARS_X) + 16, HUD_TOP_Y, "*"); // 'X' glyph
+        print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_STARS_X) + 16, HUD_BOTTOM_Y, "*"); // 'X' glyph
     }
     print_text_fmt_int((showX * 14) + GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(HUD_STARS_X - 16),
-                       HUD_TOP_Y, "%d", gHudDisplay.stars);
+                       HUD_BOTTOM_Y, "%d", gHudDisplay.stars);
 }
 
 /**
@@ -417,7 +442,7 @@ void render_hud_camera_status(void) {
     s32 y;
 
     cameraLUT = segmented_to_virtual(&main_hud_camera_lut);
-    x = GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(54);
+    x = GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(44);
     y = 205;
 
     if (sCameraHUD.status == CAM_STATUS_NONE) {
@@ -493,6 +518,9 @@ void render_hud(void) {
         }
         if (gMarioState->debugMode == 1){
             render_debug_mode();
+        }
+        if (gMarioState->showMoveset) {
+            render_moveset();
         }
 
         if (hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT) {
