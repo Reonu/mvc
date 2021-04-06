@@ -36,6 +36,7 @@ const GeoLayout bob_area_1_geo[] = {
 			GEO_DISPLAY_LIST(4, bob_dl_minicircuit_mesh_layer_4),
 		GEO_CLOSE_NODE(),
 		GEO_TRANSLATE_NODE_WITH_DL(1, -8282, -1941, -7778, bob_dl_platform_mesh_layer_1),
+		GEO_TRANSLATE_NODE_WITH_DL(1, -6653, -1941, -10254, bob_dl_platform_001_mesh_layer_1),
 		GEO_TRANSLATE_NODE_WITH_DL(4, -7310, -131, -7867, bob_dl_PlatformObstacle_001_mesh_layer_4),
 		GEO_TRANSLATE_NODE_WITH_DL(5, 0, -5186, 0, bob_dl_Water_mesh_layer_5),
 	GEO_CLOSE_NODE(),

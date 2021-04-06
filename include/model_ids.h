@@ -35,6 +35,7 @@
 #define MODEL_MAJORA_PLATFORM             0xF8
 #define MODEL_LAVA_PLATFORM               0xF7        // Lava platform
 #define MODEL_BULLY                       0xF6        // bully_geo
+#define MODEL_BULLET_BILL                 0xF5        // bullet bill
 
 /* Various static level geometry, the geo layout differs but terrain object presets treat them the same.*/
 

@@ -21,7 +21,7 @@ UNUSED static const u64 binid_2 = 2;
 #include "thwomp/collision.inc.c"
 UNUSED static const u64 binid_3 = 3;
 
-#include "bullet_bill/model.inc.c"
+
 UNUSED static const u64 binid_4 = 4;
 
 #include "heave_ho/model.inc.c"

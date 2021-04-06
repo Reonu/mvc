@@ -23,9 +23,15 @@
             "release_rate": 10,
             "envelope": "envelope",
             "sound": "23_custom_bfmount"
+        },
+        "inst1": {
+            "release_rate": 10,
+            "envelope": "envelope",
+            "sound": "24_custom_fileselectepic"
         }
     },
     "instrument_list": [
-        "inst0"
+        "inst0",
+        "inst1"
     ]
 }

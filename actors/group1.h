@@ -3,12 +3,7 @@
 
 #include "types.h"
 
-// bullet_bill
-extern const GeoLayout bullet_bill_geo[];
-extern const Gfx bullet_bill_seg5_dl_0500E5E8[];
-extern const Gfx bullet_bill_seg5_dl_0500E678[];
-extern const Gfx bullet_bill_seg5_dl_0500E730[];
-extern const Gfx bullet_bill_seg5_dl_0500E8A8[];
+
 
 // heave_ho
 extern const GeoLayout heave_ho_geo[];

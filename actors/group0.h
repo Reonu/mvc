@@ -380,6 +380,13 @@ extern const Gfx bully_seg5_dl_05003F80[];
 extern const Gfx bully_seg5_dl_05003FC8[];
 extern const struct Animation *const bully_seg5_anims_0500470C[];
 
+// bullet_bill
+extern const GeoLayout bullet_bill_geo[];
+extern const Gfx bullet_bill_seg5_dl_0500E5E8[];
+extern const Gfx bullet_bill_seg5_dl_0500E678[];
+extern const Gfx bullet_bill_seg5_dl_0500E730[];
+extern const Gfx bullet_bill_seg5_dl_0500E8A8[];
+
 
 #include "mario/geo_header.h"
 

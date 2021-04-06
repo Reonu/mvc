@@ -46,3 +46,6 @@
 #include "bully/model.inc.c"
 #include "bully/anims/data.inc.c"
 #include "bully/anims/table.inc.c"
+
+//bullet bill
+#include "bullet_bill/model.inc.c"

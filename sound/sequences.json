@@ -125,5 +125,8 @@
     },
     "23_custom_bfmount": [
         "streamed_audio"
+    ],
+    "24_custom_fileselectepic": [
+        "streamed_audio"
     ]
 }

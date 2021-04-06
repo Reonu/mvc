@@ -30,3 +30,5 @@
 #include "lava_platform/geo.inc.c"
 
 #include "bully/geo.inc.c"
+
+#include "bullet_bill/geo.inc.c"
