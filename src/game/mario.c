@@ -1349,6 +1349,9 @@ void dismount_shell(struct MarioState *m)
         }
 
     }
+    if ((gMarioState->action & ACT_FLAG_RIDING_SHELL) && (gMarioState->floor->type == SURFACE_BURNING)) {
+        dismount_shell(m);
+    }
     // Don't update for these buttons if squished.
     if (m->squishTimer == 0) {
         if (m->controller->buttonPressed & B_BUTTON) {
@@ -1832,6 +1835,9 @@ s32 execute_mario_action(UNUSED struct Object *o) {
     }
     if (gMarioState->numStars >= 7){
         gMarioState->canLongJump = 1;
+    }
+    if (gMarioState->numStars >= 9){
+        gMarioState->canBackFlip = 1;
     }
     /*
     * End of moveset system

@@ -1,0 +1,16 @@
+extern const GeoLayout custom_cannon_geo[];
+extern Lights1 custom_cannon_f3d_material_lights;
+extern Lights1 custom_cannon_cum_lights;
+extern u8 custom_cannon_SUPER_MARIO_64_E42D6AA8_0_2_all_i8[];
+extern u8 custom_cannon_SUPER_MARIO_64_13C541EA_0_2_all_ci8[];
+extern u8 custom_cannon_SUPER_MARIO_64_13C541EA_0_2_all_ci8_pal_rgba16[];
+extern Vtx custom_cannon_Cube_mesh_layer_1_vtx_cull[8];
+extern Vtx custom_cannon_Cube_mesh_layer_1_vtx_0[20];
+extern Gfx custom_cannon_Cube_mesh_layer_1_tri_0[];
+extern Vtx custom_cannon_Cube_mesh_layer_1_vtx_1[4];
+extern Gfx custom_cannon_Cube_mesh_layer_1_tri_1[];
+extern Gfx mat_custom_cannon_f3d_material[];
+extern Gfx mat_custom_cannon_cum[];
+extern Gfx mat_revert_custom_cannon_cum[];
+extern Gfx custom_cannon_Cube_mesh_layer_1[];
+extern Gfx custom_cannon_material_revert_render_settings[];
