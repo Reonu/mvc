@@ -98,6 +98,7 @@ void bhv_bitfs_sinking_cage_platform_loop(void);
 void bhv_ddd_moving_pole_loop(void);
 void bhv_platform_normals_init(void);
 void bhv_tilting_inverted_pyramid_loop(void);
+void bhv_squishable_platform_init(void);
 void bhv_squishable_platform_loop(void);
 void bhv_beta_moving_flames_spawn_loop(void);
 void bhv_beta_moving_flames_loop(void);

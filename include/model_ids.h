@@ -33,6 +33,8 @@
 #define MODEL_MR_BLIZZARD                 0xFA        // Mr Blizzard
 #define MODEL_FAN_SPRING                  0xF9        // Fan spring
 #define MODEL_MAJORA_PLATFORM             0xF8
+#define MODEL_LAVA_PLATFORM               0xF7        // Lava platform
+#define MODEL_BULLY                       0xF6        // bully_geo
 
 /* Various static level geometry, the geo layout differs but terrain object presets treat them the same.*/
 

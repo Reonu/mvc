@@ -120,6 +120,8 @@ const LevelScript level_main_scripts_entry[] = {
     LOAD_MODEL_FROM_GEO(MODEL_MR_BLIZZARD_HIDDEN,      mr_blizzard_hidden_geo),
     LOAD_MODEL_FROM_GEO(MODEL_FAN_SPRING,              fan_spring_geo),
     LOAD_MODEL_FROM_GEO(MODEL_MAJORA_PLATFORM,         majora_platform_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_LAVA_PLATFORM,           lava_platform_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_BULLY,                   bully_geo),
     FREE_LEVEL_POOL(),
     CALL(/*arg*/ 0, /*func*/ lvl_init_from_save_file),
     LOOP_BEGIN(),

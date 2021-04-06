@@ -27,3 +27,6 @@
 
 #include "fan_spring/geo.inc.c"
 #include "majora_platform/geo.inc.c"
+#include "lava_platform/geo.inc.c"
+
+#include "bully/geo.inc.c"

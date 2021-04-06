@@ -1,4 +1,9 @@
 // falling_rising_platform.c.inc
+u16 cum;
+void bhv_squishable_platform_init(void) {
+    cum = (o->oBehParams >> 24) & 0xFF;
+    bhv_bitfs_sinking_platform_loop();
+}
 
 void bhv_squishable_platform_loop(void) {
     o->header.gfx.scale[1] = (sins(o->oPlatformTimer) + 1.0) * 0.3 + 0.4;
@@ -6,9 +11,16 @@ void bhv_squishable_platform_loop(void) {
 }
 
 void bhv_bitfs_sinking_platform_loop(void) {
-    o->oPosY -=
-        sins(o->oPlatformTimer)
-        * 1.00; //! f32 double conversion error accumulates on Wii VC causing the platform to rise up
+    if (cum) {
+        o->oPosY +=
+            sins(o->oPlatformTimer)
+            * 0.75; //! f32 double conversion error accumulates on Wii VC causing the platform to rise up
+    }
+    else {
+        o->oPosY -=
+            sins(o->oPlatformTimer)
+            * 0.75; //! f32 double conversion error accumulates on Wii VC causing the platform to rise up
+    }
     o->oPlatformTimer += 0x100;
 }
 

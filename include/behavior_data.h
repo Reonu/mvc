@@ -193,7 +193,7 @@ extern const BehaviorScript bhvLllFloatingWoodBridge[];
 extern const BehaviorScript bhvVolcanoFlames[];
 extern const BehaviorScript bhvLllRotatingHexagonalRing[];
 extern const BehaviorScript bhvLllSinkingRectangularPlatform[];
-extern const BehaviorScript bhvLllSinkingMajoraPlatform[];
+extern const BehaviorScript bhvLllSinkingLavaPlatform[];
 extern const BehaviorScript bhvLllSinkingSquarePlatforms[];
 extern const BehaviorScript bhvLllTiltingInvertedPyramid[];
 extern const BehaviorScript bhvUnused1F30[];

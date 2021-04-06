@@ -277,6 +277,7 @@ void render_debug_mode(void) {
     print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 20, "%d", gMarioState->pos[0]);
     print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 40, "%d", gMarioState->pos[2]);
     print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 60, "%d", gMarioState->pos[1]);
+    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 80, "%x", (gMarioState->health));
     if (gMarioState->unlockEverything == 1) {
         print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(78), 180, "UE ON");
 

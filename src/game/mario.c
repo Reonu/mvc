@@ -1794,6 +1794,22 @@ s32 execute_mario_action(UNUSED struct Object *o) {
     if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->canSwim != 1 && gMarioState->unlockEverything != 1 )) {
         initiate_warp(LEVEL_BOB,1,0x02,0);
     }
+    if (gMarioState->action == ACT_LAVA_BOOST) {
+        if (gMarioState->actionTimer == 40) {
+            if (gMarioState->health > 0x100) {
+                initiate_warp(LEVEL_BOB,1,0x02,0);
+                gMarioState->actionTimer = 0;
+            }
+        }
+        else if (gMarioState->actionTimer == 10) {
+            play_transition(WARP_TRANSITION_FADE_INTO_CIRCLE, 0x14, 0x00, 0x00, 0x00);
+            gMarioState->actionTimer++;
+        }
+        else {
+            gMarioState->actionTimer++;
+        }
+        
+    }
     if (gMarioState->surfboard == 1) {
         if (gMarioState->action & ACT_FLAG_RIDING_SHELL){
             o->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_MARIO];
@@ -1813,6 +1829,9 @@ s32 execute_mario_action(UNUSED struct Object *o) {
     }
     if (gMarioState->numStars >= 5) {
         gMarioState->canDoubleJump = 1;
+    }
+    if (gMarioState->numStars >= 7){
+        gMarioState->canLongJump = 1;
     }
     /*
     * End of moveset system

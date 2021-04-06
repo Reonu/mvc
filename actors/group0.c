@@ -39,3 +39,10 @@
 #include "fan_spring/model.inc.c"
 #include "majora_platform/model.inc.c"
 #include "majora_platform/collision.inc.c"
+#include "lava_platform/model.inc.c"
+#include "lava_platform/collision.inc.c"
+
+//bully
+#include "bully/model.inc.c"
+#include "bully/anims/data.inc.c"
+#include "bully/anims/table.inc.c"
