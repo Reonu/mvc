@@ -30,7 +30,7 @@ const LevelScript level_intro_splash_screen[] = {
     AREA(/*index*/ 1, intro_geo_0002D0),
     END_AREA(),
     FREE_LEVEL_POOL(),
-   
+
     // Start animation
     LOAD_AREA(/*area*/ 1),
 
@@ -41,7 +41,7 @@ const LevelScript level_intro_splash_screen[] = {
     CMD2A(/*unk2*/ 1),
     CLEAR_LEVEL(),
     SLEEP(/*frames*/ 2),
-    
+    EXIT_AND_EXECUTE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_mario_head_regular),
 };
 
 const LevelScript level_intro_mario_head_regular[] = {

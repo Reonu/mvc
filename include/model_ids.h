@@ -36,6 +36,7 @@
 #define MODEL_LAVA_PLATFORM               0xF7        // Lava platform
 #define MODEL_BULLY                       0xF6        // bully_geo
 #define MODEL_BULLET_BILL                 0xF5        // bullet bill
+#define MODEL_CCM_SNOW_TREE               0xF4        // snow_tree_geo
 
 /* Various static level geometry, the geo layout differs but terrain object presets treat them the same.*/
 
@@ -66,7 +67,7 @@
 #define MODEL_WF_BUBBLY_TREE                   0x17        // bubbly_tree_geo
 #define MODEL_THI_BUBBLY_TREE                  0x17        // bubbly_tree_geo
 #define MODEL_COURTYARD_SPIKY_TREE             0x18        // spiky_tree_geo
-#define MODEL_CCM_SNOW_TREE                    0x19        // snow_tree_geo
+
 #define MODEL_SL_SNOW_TREE                     0x19        // snow_tree_geo
 #define MODEL_UNKNOWN_TREE_1A                  0x1A        // referenced in special presets, undefined
 #define MODEL_SSL_PALM_TREE                    0x1B        // palm_tree_geo

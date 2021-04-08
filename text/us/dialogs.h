@@ -1718,23 +1718,10 @@ made Mario remember\n\
 how to double jump!"))
 
 DEFINE_DIALOG(DIALOG_144, 1, 6, 150, 200, _("\
-You've recovered 30\n\
-Power Stars! Now you can\n\
-open the door with the\n\
-big Star! But before you\n\
-move on, how's it going\n\
-otherwise?\n\
-Did you pound the two\n\
-columns down? You didn't\n\
-lose your hat, did you?\n\
-If you did, you'll have to\n\
-stomp on the condor to\n\
-get it back!\n\
-They say that Bowser has\n\
-sneaked out of the sea\n\
-and into the underground.\n\
-Have you finally\n\
-cornered him?"))
+After getting 7 Power\n\
+Stars, Mario remembers\n\
+how to perform a\n\
+long jump!"))
 
 DEFINE_DIALOG(DIALOG_145, 1, 6, 150, 200, _("\
 You've recovered 50\n\

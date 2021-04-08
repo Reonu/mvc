@@ -133,7 +133,7 @@ s32 act_holding_pole(struct MarioState *m) {
         m->forwardVel = -2.0f;
         return set_mario_action(m, ACT_SOFT_BONK, 0);
     }
-    if (m->canHoldPole != 1 || m->canHoldPole != 1){
+    if (m->canHoldPole != 1 && m->unlockEverything != 1){
         m->forwardVel = -2.0f;
         return set_mario_action(m, ACT_SOFT_BONK, 0);
     }
@@ -229,7 +229,7 @@ s32 act_climbing_pole(struct MarioState *m) {
 
 s32 act_grab_pole_slow(struct MarioState *m) {
     play_sound_if_no_flag(m, SOUND_MARIO_WHOA, MARIO_MARIO_SOUND_PLAYED);
-    if (m->canHoldPole != 1 || m->canHoldPole != 1){
+    if (m->canHoldPole != 1 && m->unlockEverything != 1){
         m->forwardVel = -2.0f;
         return set_mario_action(m, ACT_SOFT_BONK, 0);
     }
@@ -248,7 +248,7 @@ s32 act_grab_pole_fast(struct MarioState *m) {
     struct Object *marioObj = m->marioObj;
 
     play_sound_if_no_flag(m, SOUND_MARIO_WHOA, MARIO_MARIO_SOUND_PLAYED);
-    if (m->canHoldPole != 1 || m->canHoldPole != 1){
+    if (m->canHoldPole != 1 && m->unlockEverything != 1){
         m->forwardVel = -2.0f;
         return set_mario_action(m, ACT_SOFT_BONK, 0);
     }

@@ -48,7 +48,7 @@ static s8 D_8032CBE4 = 0;
 static s8 D_8032CBE8 = 0;
 static s8 D_8032CBEC[7] = { 2, 3, 2, 1, 2, 3, 2 };
 
-static u8 sStarsNeededForDialog[] = { 1, 3, 5, 30, 50, 70 };
+static u8 sStarsNeededForDialog[] = { 1, 3, 5, 7, 50, 70 };
 
 /**
  * Data for the jumbo star cutscene. It specifies the flight path after triple
@@ -593,9 +593,13 @@ void general_star_dance_handler(struct MarioState *m, s32 isInWater) {
     s32 dialogID;
     if (m->actionTimer > 40)
     {
-        print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(150), 185, "SAVING");
+        print_text((70), 200, "YOU GOT A STAR!");
+        print_text((120), 40, "SAVING");
     }
     if (m->actionState == 0) {
+        if (gMarioState->controller->buttonPressed & A_BUTTON) {
+            gMarioState->actionState = 1;
+        }
         switch (++m->actionTimer) {
             case 1:
                 spawn_object(m->marioObj, MODEL_STAR, bhvCelebrationStar);

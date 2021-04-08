@@ -372,7 +372,6 @@ void set_mario_initial_action(struct MarioState *m, u32 spawnType, u32 actionArg
 
     set_mario_initial_cap_powerup(m);
 }
-extern s16 s8DirModeBaseYaw;
 void init_mario_after_warp(void) {
     struct ObjectWarpNode *spawnNode = area_get_warp_node(sWarpDest.nodeId);
     u32 marioSpawnType = get_mario_spawn_type(spawnNode->object);
@@ -402,7 +401,7 @@ void init_mario_after_warp(void) {
         gMarioState->usedObj = spawnNode->object;
     }
 
-    //reset_camera(gCurrentArea->camera);
+    reset_camera(gCurrentArea->camera);
     //s8DirModeBaseYaw = 0x8000;
     sWarpDest.type = WARP_TYPE_NOT_WARPING;
     sDelayedWarpOp = WARP_OP_NONE;
