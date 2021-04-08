@@ -124,6 +124,7 @@ const LevelScript level_main_scripts_entry[] = {
     LOAD_MODEL_FROM_GEO(MODEL_BULLY,                   bully_geo),
     LOAD_MODEL_FROM_GEO(MODEL_BULLET_BILL,             bullet_bill_geo),
     LOAD_MODEL_FROM_GEO(MODEL_CCM_SNOW_TREE,           snow_tree_geo),
+    LOAD_MODEL_FROM_GEO(MODEL_GREEN_COIN,              green_coin_geo),
     FREE_LEVEL_POOL(),
     CALL(/*arg*/ 0, /*func*/ lvl_init_from_save_file),
     LOOP_BEGIN(),
