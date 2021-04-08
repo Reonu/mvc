@@ -24,6 +24,14 @@ static const Vtx coin_seg3_vertex_03005740[] = {
     {{{   -35,     70,      0}, 0, {     0,      0}, {0xff, 0x00, 0x00, 0xff}}},
 };
 
+static const Vtx coin_seg3_vertex_green[] = {
+    {{{   -35,      0,      0}, 0, {     0,   1984}, {0x00, 0xff, 0x00, 0xff}}},
+    {{{    35,      0,      0}, 0, {  1984,   1984}, {0x00, 0xff, 0x00, 0xff}}},
+    {{{    35,     70,      0}, 0, {  1984,      0}, {0x00, 0xff, 0x00, 0xff}}},
+    {{{   -35,     70,      0}, 0, {     0,      0}, {0x00, 0xff, 0x00, 0xff}}},
+};
+
+
 // 0x03005780
 ALIGNED8 static const Texture coin_seg3_texture_03005780[] = {
 #include "actors/coin/coin_front.ia16.inc.c"
@@ -148,12 +156,28 @@ const Gfx coin_seg3_dl_03007940[] = {
     gsSPBranchList(coin_seg3_dl_030077D0),
 };
 
+const Gfx coin_seg3_dl_green[] = {
+    gsDPPipeSync(),
+    gsDPSetTextureImage(G_IM_FMT_IA, G_IM_SIZ_16b, 1, coin_seg3_texture_03005780),
+    gsSPDisplayList(coin_seg3_dl_03007780),
+    gsSPVertex(coin_seg3_vertex_green, 4, 0),
+    gsSPBranchList(coin_seg3_dl_030077D0),
+};
+
 // 0x03007968 - 0x03007990
 const Gfx coin_seg3_dl_03007968[] = {
     gsDPPipeSync(),
     gsDPSetTextureImage(G_IM_FMT_IA, G_IM_SIZ_16b, 1, coin_seg3_texture_03005F80),
     gsSPDisplayList(coin_seg3_dl_03007780),
     gsSPVertex(coin_seg3_vertex_03005740, 4, 0),
+    gsSPBranchList(coin_seg3_dl_030077D0),
+};
+
+const Gfx coin_seg3_dl_green2[] = {
+    gsDPPipeSync(),
+    gsDPSetTextureImage(G_IM_FMT_IA, G_IM_SIZ_16b, 1, coin_seg3_texture_03005F80),
+    gsSPDisplayList(coin_seg3_dl_03007780),
+    gsSPVertex(coin_seg3_vertex_green, 4, 0),
     gsSPBranchList(coin_seg3_dl_030077D0),
 };
 
@@ -166,6 +190,14 @@ const Gfx coin_seg3_dl_03007990[] = {
     gsSPBranchList(coin_seg3_dl_030077D0),
 };
 
+const Gfx coin_seg3_dl_green3[] = {
+    gsDPPipeSync(),
+    gsDPSetTextureImage(G_IM_FMT_IA, G_IM_SIZ_16b, 1, coin_seg3_texture_03006780),
+    gsSPDisplayList(coin_seg3_dl_03007780),
+    gsSPVertex(coin_seg3_vertex_green, 4, 0),
+    gsSPBranchList(coin_seg3_dl_030077D0),
+};
+
 // 0x030079B8 - 0x030079E0
 const Gfx coin_seg3_dl_030079B8[] = {
     gsDPPipeSync(),
@@ -174,3 +206,12 @@ const Gfx coin_seg3_dl_030079B8[] = {
     gsSPVertex(coin_seg3_vertex_03005740, 4, 0),
     gsSPBranchList(coin_seg3_dl_030077D0),
 };
+
+const Gfx coin_seg3_dl_green4[] = {
+    gsDPPipeSync(),
+    gsDPSetTextureImage(G_IM_FMT_IA, G_IM_SIZ_16b, 1, coin_seg3_texture_03006F80),
+    gsSPDisplayList(coin_seg3_dl_03007780),
+    gsSPVertex(coin_seg3_vertex_green, 4, 0),
+    gsSPBranchList(coin_seg3_dl_030077D0),
+};
+

@@ -37,6 +37,7 @@
 #define MODEL_BULLY                       0xF6        // bully_geo
 #define MODEL_BULLET_BILL                 0xF5        // bullet bill
 #define MODEL_CCM_SNOW_TREE               0xF4        // snow_tree_geo
+#define MODEL_GREEN_COIN                  0xF3        // green_coin_geo
 
 /* Various static level geometry, the geo layout differs but terrain object presets treat them the same.*/
 
