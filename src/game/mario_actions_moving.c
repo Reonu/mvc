@@ -149,7 +149,13 @@ s32 set_triple_jump_action(struct MarioState *m, UNUSED u32 action, UNUSED u32 a
     if (m->flags & MARIO_WING_CAP) {
         return set_mario_action(m, ACT_FLYING_TRIPLE_JUMP, 0);
     } else if (m->forwardVel > 20.0f) {
-        return set_mario_action(m, ACT_TRIPLE_JUMP, 0);
+        if (m->canTripleJump || m->unlockEverything) {
+            return set_mario_action(m, ACT_TRIPLE_JUMP, 0);
+        }
+        else {
+            return set_mario_action(m, ACT_IDLE, 0);
+        }
+            
     } else {
         return set_mario_action(m, ACT_JUMP, 0);
     }

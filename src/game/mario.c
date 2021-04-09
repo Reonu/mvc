@@ -1058,7 +1058,10 @@ s32 set_jump_from_landing(struct MarioState *m) {
                     if (m->flags & MARIO_WING_CAP) {
                         set_mario_action(m, ACT_FLYING_TRIPLE_JUMP, 0);
                     } else if (m->forwardVel > 20.0f) {
-                        set_mario_action(m, ACT_TRIPLE_JUMP, 0);
+                        if ((gMarioState->canTripleJump) || (gMarioState->unlockEverything)) {
+                            set_mario_action(m, ACT_TRIPLE_JUMP, 0);
+                        }
+                        
                     } else {
                         set_mario_action(m, ACT_JUMP, 0);
                     }

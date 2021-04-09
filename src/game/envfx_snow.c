@@ -11,6 +11,7 @@
 #include "engine/behavior_script.h"
 #include "audio/external.h"
 #include "obj_behaviors.h"
+#include "level_update.h"
 
 /**
  * This file contains the function that handles 'environment effects',
@@ -101,12 +102,28 @@ void envfx_update_snowflake_count(s32 mode, Vec3s marioPos) {
     f32 waterLevel;
     switch (mode) {
         case ENVFX_SNOW_NORMAL:
-            if (gSnowParticleMaxCount > gSnowParticleCount) {
+        if (gMarioState->floor != NULL) {
+            if (gMarioState->floor->type == SURFACE_ICE) {
+                if (gSnowParticleMaxCount > gSnowParticleCount) {
                 if ((timer & 0x3F) == 0) {
                     gSnowParticleCount += 5;
                 }
             }
-            break;
+            
+            }
+            else{
+                if (gSnowParticleCount > 5) {
+                    gSnowParticleCount -= 5;
+                }
+                else if (gSnowParticleCount > 0) {
+                    gSnowParticleCount -= 1;
+                }
+                
+                
+            }
+        }
+        break;
+
 
         case ENVFX_SNOW_WATER:
             waterLevel = find_water_level(marioPos[0], marioPos[2]);

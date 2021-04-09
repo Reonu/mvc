@@ -274,10 +274,14 @@ void render_hud_mario_lives(void) {
 }
 void render_debug_mode(void) {
     print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(120), HUD_BOTTOM_Y, "DEBUG MODE");
-    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 20, "%d", gMarioState->pos[0]);
-    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 40, "%d", gMarioState->pos[2]);
-    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 60, "%d", gMarioState->pos[1]);
-    print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), 80, "%x", (gMarioState->health));
+    print_text_fmt_int(54, 20, "%d", gMarioState->pos[0]);
+    print_text_fmt_int(54, 40, "%d", gMarioState->pos[2]);
+    print_text_fmt_int(54, 60, "%d", gMarioState->pos[1]);
+    print_text_fmt_int(54, 80, "%d", IO_READ(DPC_PIPEBUSY_REG));
+    print_text_fmt_int(54, 100, "%d", IO_READ(DPC_TMEM_REG));
+    print_text_fmt_int(54, 120, "%d", IO_READ(DPC_BUFBUSY_REG));
+    
+    IO_WRITE(DPC_STATUS_REG, DPC_CLR_CLOCK_CTR | DPC_CLR_CMD_CTR | DPC_CLR_PIPE_CTR | DPC_CLR_TMEM_CTR);
     if (gMarioState->unlockEverything == 1) {
         print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(78), 180, "UE ON");
 
