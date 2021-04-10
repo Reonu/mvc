@@ -144,6 +144,8 @@
 #define TEXT_FILE_MARIO_B _("MARIO B")
 #define TEXT_FILE_MARIO_C _("MARIO C")
 #define TEXT_FILE_MARIO_D _("MARIO D")
+#define TEXT_AUTO_CONSOLE _("CONSOLE DETECTED")
+#define TEXT_AUTO_EMU     _("EMULATOR DETECTED")
 
 // Menu Options
 #define TEXT_SCORE _("SCORE")

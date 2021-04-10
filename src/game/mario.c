@@ -1289,6 +1289,7 @@ void update_mario_button_inputs(struct MarioState *m) {
     if (m->controller->buttonDown & A_BUTTON) {
         m->input |= INPUT_A_DOWN;
     }
+    
     if (m->controller->buttonPressed & R_JPAD) {
         if (m->debugMode == 0) {
             m->debugMode = 1;
@@ -1304,6 +1305,7 @@ void update_mario_button_inputs(struct MarioState *m) {
             m->noclip = 1;
         }
     }
+    
     if (m->controller->buttonPressed & U_JPAD && (m->noclip == 0)) {
         if (m->showMoveset == 0) {
             m->showMovesetTimer = 90;

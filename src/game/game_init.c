@@ -317,8 +317,13 @@ void draw_reset_bars(void) {
     osRecvMesg(&gGameVblankQueue, &D_80339BEC, OS_MESG_BLOCK);
     osRecvMesg(&gGameVblankQueue, &D_80339BEC, OS_MESG_BLOCK);
 }
-
+u8 useLOD;
 void rendering_init(void) {
+    if (IO_READ(DPC_PIPEBUSY_REG) == 0) {
+        useLOD = 0;
+    } else {
+        useLOD = 1;
+    }
     gGfxPool = &gGfxPools[0];
     set_segment_base_addr(1, gGfxPool->buffer);
     gGfxSPTask = &gGfxPool->spTask;

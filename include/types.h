@@ -345,27 +345,28 @@ struct MarioState
     /*0xBC*/ f32 peakHeight;
     /*0xC0*/ f32 quicksandDepth;
     /*0xC4*/ f32 unkC4;
-             u8 canJump;
-             u8 debugMode;
-             u8 canDive;
-             u8 canKick;
-             u8 canDoubleJump;
-             u8 canTripleJump;
-             u8 canWallKick;
-             u8 canLongJump;
-             u8 canBLJ;
-             u8 surfboard;
-             u8 canSwim;
-             u8 unlockEverything;
-             u8 canSideFlip;
-             u8 canHoldPole;
-             u8 canBackFlip;
-             u8 hadSurfboard;
-             u8 canJumpKick;
-             u8 canGroundPound;
-             u8 showMoveset;
+             u8 canJump : 1;
+             u8 debugMode: 1;
+             u8 canDive: 1;
+             u8 canKick: 1;
+             u8 canDoubleJump: 1;
+             u8 canTripleJump: 1;
+             u8 canWallKick: 1;
+             u8 canLongJump: 1;
+             u8 canBLJ: 1;
+             u8 surfboard: 1;
+             u8 canSwim: 1;
+             u8 unlockEverything: 1;
+             u8 canSideFlip: 1;
+             u8 canHoldPole: 1;
+             u8 canBackFlip: 1;
+             u8 hadSurfboard: 1;
+             u8 canJumpKick: 1;
+             u8 canGroundPound: 1;
+             u8 showMoveset: 1;
+             u8 noclip: 1;
              u8 showMovesetTimer;
-             u8 noclip;
+
              
 };
 
