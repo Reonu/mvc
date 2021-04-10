@@ -103,7 +103,7 @@ void envfx_update_snowflake_count(s32 mode, Vec3s marioPos) {
     switch (mode) {
         case ENVFX_SNOW_NORMAL:
         if (gMarioState->floor != NULL) {
-            if (gMarioState->floor->type == SURFACE_ICE) {
+            if (gMarioState->floor->type == SURFACE_VANISH_CAP_WALLS) {
                 if (gSnowParticleMaxCount > gSnowParticleCount) {
                 if ((timer & 0x3F) == 0) {
                     gSnowParticleCount += 5;

@@ -175,3 +175,41 @@ void bhv_hidden_red_coin_star_loop(void) {
             break;
     }
 }
+
+void bhv_hidden_green_coin_star_init(void) {
+    s16 sp36;
+    struct Object *sp30;
+
+    if (gCurrCourseNum != COURSE_JRB)
+        spawn_object(o, MODEL_TRANSPARENT_STAR, bhvRedCoinStarMarker);
+
+    sp36 = count_objects_with_behavior(bhvGreenCoin);
+    if (sp36 == 0) {
+        sp30 =
+            spawn_object_abs_with_rot(o, 0, MODEL_STAR, bhvStar, o->oPosX, o->oPosY, o->oPosZ, 0, 0, 0);
+        sp30->oBehParams = o->oBehParams;
+        o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
+    }
+
+    o->oHiddenStarTriggerCounter = 8 - sp36;
+}
+
+void bhv_hidden_green_coin_star_loop(void) {
+    //gRedCoinsCollected = o->oHiddenStarTriggerCounter;
+    switch (o->oAction) {
+        case 0:
+            if (o->oHiddenStarTriggerCounter == 8)
+                o->oAction = 1;
+            break;
+
+        case 1:
+            if (o->oTimer > 2) {
+                spawn_red_coin_cutscene_star(o->oPosX, o->oPosY, o->oPosZ);
+                spawn_mist_particles();
+                o->activeFlags = ACTIVE_FLAG_DEACTIVATED;
+            }
+            break;
+    }
+}
+
+

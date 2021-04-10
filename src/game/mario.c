@@ -1289,7 +1289,7 @@ void update_mario_button_inputs(struct MarioState *m) {
     if (m->controller->buttonDown & A_BUTTON) {
         m->input |= INPUT_A_DOWN;
     }
-    if (m->controller->buttonPressed & L_JPAD) {
+    if (m->controller->buttonPressed & R_JPAD) {
         if (m->debugMode == 0) {
             m->debugMode = 1;
         }
@@ -1297,7 +1297,14 @@ void update_mario_button_inputs(struct MarioState *m) {
             m->debugMode = 0;
         }
     }
-    if (m->controller->buttonPressed & U_JPAD) {
+    if (m->controller->buttonPressed & L_JPAD) {
+        if (m->noclip) {
+            m->noclip = 0;
+        } else {
+            m->noclip = 1;
+        }
+    }
+    if (m->controller->buttonPressed & U_JPAD && (m->noclip == 0)) {
         if (m->showMoveset == 0) {
             m->showMovesetTimer = 90;
             m->showMoveset = 1;
@@ -1824,6 +1831,17 @@ s32 execute_mario_action(UNUSED struct Object *o) {
             o->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_MARIO_SWIM_BOARD];
         }
     }
+    if (gMarioState->noclip == 0) {
+        if (gMarioState->action == ACT_DEBUG_FREE_MOVE) {
+            set_mario_action(gMarioState, ACT_IDLE, 0);
+        }
+    } else {
+        if (gMarioState->action != ACT_DEBUG_FREE_MOVE) {
+            set_mario_action(gMarioState, ACT_DEBUG_FREE_MOVE, 0);
+        }
+    }
+
+
     /*
     * Moveset system
     */

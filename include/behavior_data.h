@@ -545,5 +545,6 @@ extern const BehaviorScript bhvIntroScene[];
 extern const BehaviorScript bhvUnusedFakeStar[];
 extern const BehaviorScript bhvGreenSpring[];
 extern const BehaviorScript bhvMajoraPlatform[];
+extern const BehaviorScript bhvGreenCoin[];
 
 #endif // BEHAVIOR_DATA_H

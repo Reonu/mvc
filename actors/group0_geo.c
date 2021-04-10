@@ -32,3 +32,5 @@
 #include "bully/geo.inc.c"
 
 #include "bullet_bill/geo.inc.c"
+
+#include "chillychief/geo.inc.c"

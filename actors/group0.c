@@ -49,3 +49,8 @@
 
 //bullet bill
 #include "bullet_bill/model.inc.c"
+
+//chilly bully
+#include "chillychief/model.inc.c"
+#include "chillychief/anims/data.inc.c"
+#include "chillychief/anims/table.inc.c"

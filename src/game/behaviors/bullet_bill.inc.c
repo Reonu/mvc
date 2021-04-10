@@ -38,9 +38,9 @@ void bullet_bill_act_2(void) {
         if (o->oTimer > 60)
             cur_obj_update_floor_and_walls();
         spawn_object(o, MODEL_SMOKE, bhvWhitePuffSmoke);
-        o->oForwardVel = 40.0f;
+        o->oForwardVel = 30.0f;
         //if (o->oDistanceToMario > 100.0f)
-            cur_obj_rotate_yaw_toward(o->oAngleToMario, 0x200);
+            cur_obj_rotate_yaw_toward(o->oAngleToMario, 0x150);
         if (o->oTimer == 50) {
             cur_obj_play_sound_2(SOUND_OBJ_POUNDING_CANNON);
             cur_obj_shake_screen(SHAKE_POS_SMALL);

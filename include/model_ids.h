@@ -38,6 +38,7 @@
 #define MODEL_BULLET_BILL                 0xF5        // bullet bill
 #define MODEL_CCM_SNOW_TREE               0xF4        // snow_tree_geo
 #define MODEL_GREEN_COIN                  0xF3        // green_coin_geo
+#define MODEL_CHILL_BULLY                 0xF2        // chilly_chief_geo
 
 /* Various static level geometry, the geo layout differs but terrain object presets treat them the same.*/
 
@@ -451,7 +452,7 @@
 #define MODEL_LAKITU                      0x66        // lakitu_geo
 
 // group 16
-#define MODEL_CHILL_BULLY                 0x64        // chilly_chief_geo
+
 #define MODEL_BIG_CHILL_BULLY             0x65        // chilly_chief_big_geo
 #define MODEL_MONEYBAG                    0x66        // moneybag_geo
 

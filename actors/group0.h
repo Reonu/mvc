@@ -387,6 +387,23 @@ extern const Gfx bullet_bill_seg5_dl_0500E678[];
 extern const Gfx bullet_bill_seg5_dl_0500E730[];
 extern const Gfx bullet_bill_seg5_dl_0500E8A8[];
 
+// chillychief
+extern const Gfx chilly_chief_seg6_dl_06002B30[];
+extern const Gfx chilly_chief_seg6_dl_06002BC8[];
+extern const Gfx chilly_chief_seg6_dl_06002C60[];
+extern const Gfx chilly_chief_seg6_dl_06002D18[];
+extern const Gfx chilly_chief_seg6_dl_06002D50[];
+extern const Gfx chilly_chief_seg6_dl_06002D88[];
+extern const Gfx chilly_chief_seg6_dl_06002E80[];
+extern const Gfx chilly_chief_seg6_dl_06002EB8[];
+extern const Gfx chilly_chief_seg6_dl_06002EF0[];
+extern const Gfx chilly_chief_seg6_dl_06002FC8[];
+extern const Gfx chilly_chief_seg6_dl_06003010[];
+extern const GeoLayout chilly_chief_geo[];
+extern const GeoLayout chilly_chief_big_geo[];
+extern const struct Animation *const chilly_chief_seg6_anims_06003994[];
+
+
 
 #include "mario/geo_header.h"
 
