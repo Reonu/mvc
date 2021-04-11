@@ -272,14 +272,15 @@ void render_hud_mario_lives(void) {
     print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(38), HUD_TOP_Y, "*"); // 'X' glyph
     print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(54), HUD_TOP_Y, "%d", gMarioState->pos[1]);*/
 }
+extern gObjectCounter;
 void render_debug_mode(void) {
     print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(120), HUD_BOTTOM_Y, "DEBUG MODE");
-    print_text_fmt_int(54, 20, "%d", gMarioState->pos[0]);
-    print_text_fmt_int(54, 40, "%d", gMarioState->pos[2]);
-    print_text_fmt_int(54, 60, "%d", gMarioState->pos[1]);
-    print_text_fmt_int(54, 80, "%d", IO_READ(DPC_PIPEBUSY_REG));
-    print_text_fmt_int(54, 100, "%d", IO_READ(DPC_TMEM_REG));
-    print_text_fmt_int(54, 120, "%d", IO_READ(DPC_BUFBUSY_REG));
+    print_text_fmt_int(10, 60, "%d", gMarioState->pos[0]);
+    print_text_fmt_int(10, 80, "%d", gMarioState->pos[1]);
+    print_text_fmt_int(10, 100, "%d", gMarioState->pos[2]);
+    print_text_fmt_int(10, 120, "%d", gObjectCounter);
+    //print_text_fmt_int(54, 100, "%d", IO_READ(DPC_TMEM_REG));
+    //print_text_fmt_int(54, 120, "%d", IO_READ(DPC_BUFBUSY_REG));
     
     IO_WRITE(DPC_STATUS_REG, DPC_CLR_CLOCK_CTR | DPC_CLR_CMD_CTR | DPC_CLR_PIPE_CTR | DPC_CLR_TMEM_CTR);
     if (gMarioState->unlockEverything == 1) {

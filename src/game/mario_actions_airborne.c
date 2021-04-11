@@ -105,7 +105,7 @@ s32 check_kick_or_dive_in_air(struct MarioState *m) {
     if (m->input & INPUT_B_PRESSED && (m->canDive == 1 || m->unlockEverything == 1) && m->forwardVel > 28.0f) {
         return set_mario_action(m, ACT_DIVE, 0);
     }
-    else if (m->input & INPUT_B_PRESSED && (m->canJumpKick == 1 || m->unlockEverything == 1) && m->forwardVel <= 28.0f) {
+    else if (m->input & INPUT_B_PRESSED && (m->canKick == 1 || m->unlockEverything == 1) && m->forwardVel <= 28.0f) {
         return set_mario_action(m, ACT_JUMP_KICK, 0);
     }
     else{
@@ -258,7 +258,7 @@ void update_lava_boost_or_twirling(struct MarioState *m) {
 
     if (m->input & INPUT_NONZERO_ANALOG) {
         intendedDYaw = m->intendedYaw - m->faceAngle[1];
-        intendedMag = m->intendedMag / 32.0f;
+        intendedMag = m->intendedMag / 24.0f;
 
         m->forwardVel += coss(intendedDYaw) * intendedMag;
         m->faceAngle[1] += sins(intendedDYaw) * intendedMag * 1024.0f;
@@ -269,7 +269,7 @@ void update_lava_boost_or_twirling(struct MarioState *m) {
         }
 
         if (m->forwardVel > 32.0f) {
-            m->forwardVel -= 2.0f;
+            m->forwardVel -= 4.0f;
         }
     }
 

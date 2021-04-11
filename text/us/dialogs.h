@@ -28,7 +28,13 @@ makes sense!\n\
 Press D-pad up to\n\
 check which moves\n\
 you currently have\n\
-available."))
+available.\n\
+If you get softlocked,\n\
+use Exit Course to\n\
+activate the Anti-GBJ\n\
+Technology.\n\
+Have fun!\n\
+-Reonu"))
 
 DEFINE_DIALOG(DIALOG_001, 1, 4, 95, 200, _("\
 Watch out! If you wander\n\
@@ -1695,10 +1701,15 @@ pre-set course.\n\
 It disappears\n\
 automatically, too."))
 
-DEFINE_DIALOG(DIALOG_140, 1, 3, 30, 200, _("\
+DEFINE_DIALOG(DIALOG_140, 1, 4, 30, 200, _("\
 You got a surfboard!\n\
 It's a single-use item.\n\
-Use it with L."))
+Use it with L.\n\
+\n\
+You can take it with\n\
+you, but it doesn't\n\
+work on lava, so\n\
+don't even try!"))
 
 DEFINE_DIALOG(DIALOG_141, 1, 4, 150, 200, _("\
 Mario obtained the\n\
@@ -1710,34 +1721,29 @@ DEFINE_DIALOG(DIALOG_142, 1, 4, 150, 200, _("\
 After getting the third\n\
 Power Star, Mario\n\
 remembered how to\n\
-perform a single jump!"))
+perform a single jump!\n\
+Oh, just so you know,\n\
+you can skip the star\n\
+dance cutscenes by\n\
+pressing A.\n\
+Don't worry, the game\n\
+will still save!"))
 
 DEFINE_DIALOG(DIALOG_143, 1, 3, 150, 200, _("\
 The fifth Power Star\n\
 made Mario remember\n\
 how to double jump!"))
 
-DEFINE_DIALOG(DIALOG_144, 1, 6, 150, 200, _("\
+DEFINE_DIALOG(DIALOG_144, 1, 4, 150, 200, _("\
 After getting 7 Power\n\
 Stars, Mario remembers\n\
 how to perform a\n\
 long jump!"))
 
-DEFINE_DIALOG(DIALOG_145, 1, 6, 150, 200, _("\
-You've recovered 50\n\
-Power Stars! Now you can\n\
-open the Star Door on the\n\
-third floor. Bowser's\n\
-there, you know.\n\
-\n\
-Oh! You've found all of\n\
-the Cap Switches, haven't\n\
-you? Red, green and blue?\n\
-The Caps you get from the\n\
-colored blocks are really\n\
-helpful.\n\
-Hurry along, now. The\n\
-third floor is just ahead."))
+DEFINE_DIALOG(DIALOG_145, 1, 4, 150, 200, _("\
+Mario has 9 stars and\n\
+remembers how to punch\n\
+and kick!"))
 
 DEFINE_DIALOG(DIALOG_146, 1, 6, 150, 200, _("\
 You've found 70 Power\n\

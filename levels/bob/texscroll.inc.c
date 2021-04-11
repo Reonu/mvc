@@ -42,7 +42,7 @@ void scroll_bob_dl_LavaPuddle_mesh_layer_1_vtx_3() {
 	currentY += deltaY;
 
 }
-void scroll_bob_dl_Water_mesh_layer_1_vtx_0() {
+void scroll_bob_dl_Water_mesh_layer_5_vtx_0() {
 	int i = 0;
 	int count = 39;
 	int width = 32 * 0x20;
@@ -50,7 +50,7 @@ void scroll_bob_dl_Water_mesh_layer_1_vtx_0() {
 
 	static int currentX = 0;
 	int deltaX;
-	Vtx *vertices = segmented_to_virtual(bob_dl_Water_mesh_layer_1_vtx_0);
+	Vtx *vertices = segmented_to_virtual(bob_dl_Water_mesh_layer_5_vtx_0);
 
 	deltaX = (int)(0.10000002384185791 * 0x20) % width;
 
@@ -67,5 +67,5 @@ void scroll_bob_dl_Water_mesh_layer_1_vtx_0() {
 void scroll_bob() {
 	scroll_bob_dl_LavaPuddle_mesh_layer_1_vtx_0();
 	scroll_bob_dl_LavaPuddle_mesh_layer_1_vtx_3();
-	scroll_bob_dl_Water_mesh_layer_1_vtx_0();
+	scroll_bob_dl_Water_mesh_layer_5_vtx_0();
 }

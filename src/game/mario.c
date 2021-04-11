@@ -33,6 +33,8 @@
 #include "sound_init.h"
 #include "rumble_init.h"
 
+#define DEBUG
+
 u32 unused80339F10;
 s8 filler80339F1C[20];
 extern widescreen;
@@ -1289,7 +1291,7 @@ void update_mario_button_inputs(struct MarioState *m) {
     if (m->controller->buttonDown & A_BUTTON) {
         m->input |= INPUT_A_DOWN;
     }
-    
+    #ifdef DEBUG
     if (m->controller->buttonPressed & R_JPAD) {
         if (m->debugMode == 0) {
             m->debugMode = 1;
@@ -1305,7 +1307,7 @@ void update_mario_button_inputs(struct MarioState *m) {
             m->noclip = 1;
         }
     }
-    
+    #endif
     if (m->controller->buttonPressed & U_JPAD && (m->noclip == 0)) {
         if (m->showMoveset == 0) {
             m->showMovesetTimer = 90;
@@ -1810,7 +1812,9 @@ s32 execute_mario_action(UNUSED struct Object *o) {
         initiate_warp(LEVEL_BOB,1,0x02,0);
     }
     if (gMarioState->action == ACT_LAVA_BOOST) {
-        if (gMarioState->actionTimer == 40) {
+        play_transition(WARP_TRANSITION_FADE_INTO_CIRCLE, 0x14, 0x00, 0x00, 0x00);
+        initiate_warp(LEVEL_BOB,1,0x02,0);
+        /*if (gMarioState->actionTimer == 40) {
             if (gMarioState->health > 0x100) {
                 initiate_warp(LEVEL_BOB,1,0x02,0);
                 gMarioState->actionTimer = 0;
@@ -1822,7 +1826,7 @@ s32 execute_mario_action(UNUSED struct Object *o) {
         }
         else {
             gMarioState->actionTimer++;
-        }
+        }*/
         
     }
     if (gMarioState->surfboard == 1) {
@@ -1860,6 +1864,9 @@ s32 execute_mario_action(UNUSED struct Object *o) {
         gMarioState->canLongJump = 1;
     }
     if (gMarioState->numStars >= 9){
+        gMarioState->canKick = 1;
+    }
+    if (gMarioState->numStars >= 12){
         gMarioState->canBackFlip = 1;
     }
     /*

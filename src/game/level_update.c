@@ -1032,9 +1032,9 @@ s32 play_mode_paused(void) {
         if (gDebugLevelSelect) {
             fade_into_special_warp(-9, 1);
         } else {
-            initiate_warp(LEVEL_CASTLE, 1, 0x1F, 0);
+            initiate_warp(LEVEL_BOB, 1, 0x03, 0);
             fade_into_special_warp(0, 0);
-            gSavedCourseNum = COURSE_NONE;
+            set_play_mode(PLAY_MODE_NORMAL);
         }
 
         gCameraMovementFlags &= ~CAM_MOVE_PAUSE_SCREEN;

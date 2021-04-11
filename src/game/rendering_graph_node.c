@@ -12,6 +12,7 @@
 #include "sm64.h"
 #include "level_update.h"
 #define WIDESCREEN
+#define FORCE_CONSOLE
 
 /**
  * This file contains the code that processes the scene graph for rendering.
@@ -288,11 +289,15 @@ static void geo_process_level_of_detail(struct GraphNodeLevelOfDetail *node) {
     // shorts for the integer parts followed by 16 shorts for the fraction parts
     Mtx *mtx = gMatStackFixed[gMatStackIndex];
     s16 distanceFromCam;
+    #ifdef FORCE_CONSOLE
+    distanceFromCam = -GET_HIGH_S16_OF_32(mtx->m[1][3]); // z-component of the translation column
+    #else
     if (useLOD) {
         distanceFromCam = -GET_HIGH_S16_OF_32(mtx->m[1][3]); // z-component of the translation column
     } else {
         distanceFromCam = 50;
-}
+    }
+    #endif
 #endif
 
     if (node->minDistance <= distanceFromCam && distanceFromCam < node->maxDistance) {

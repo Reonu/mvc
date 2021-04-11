@@ -92,8 +92,14 @@ void hidden_unbreakable_box_actions(void) {
 }
 
 void bhv_hidden_object_loop(void) {
-    if (o->oBehParams2ndByte == 0)
+    
+    if (o->oBehParams2ndByte == 0) {
         hidden_breakable_box_actions(); // Confused, that function has code depending on the action
-    else
-        hidden_unbreakable_box_actions();
+    } else if (o->oBehParams2ndByte == 0x01) {
+        cur_obj_scale(2.0f);
+        hidden_breakable_box_actions();
+    } else {
+        cur_obj_scale(1.5f);
+        hidden_breakable_box_actions();
+    }
 }

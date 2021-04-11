@@ -39,6 +39,8 @@
 #define MODEL_CCM_SNOW_TREE               0xF4        // snow_tree_geo
 #define MODEL_GREEN_COIN                  0xF3        // green_coin_geo
 #define MODEL_CHILL_BULLY                 0xF2        // chilly_chief_geo
+#define MODEL_SPINDRIFT                   0xF1
+#define MODEL_BIG_CHILL_BULLY             0xF0
 
 /* Various static level geometry, the geo layout differs but terrain object presets treat them the same.*/
 
@@ -387,7 +389,7 @@
 #define MODEL_FWOOSH                      0x57        // fwoosh_geo
 
 // group 7
-#define MODEL_SPINDRIFT                   0x54        // spindrift_geo
+//#define MODEL_SPINDRIFT                   0x54        // spindrift_geo
 #define MODEL_PENGUIN                     0x57        // penguin_geo
 
 // group 8

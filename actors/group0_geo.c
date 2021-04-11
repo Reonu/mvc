@@ -34,3 +34,6 @@
 #include "bullet_bill/geo.inc.c"
 
 #include "chillychief/geo.inc.c"
+
+#include "spindrift/geo.inc.c"
+#include "penguin/geo.inc.c"

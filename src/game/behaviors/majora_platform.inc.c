@@ -14,9 +14,9 @@ void bhv_majora_platform_loop(void) {
 
 if ((o->oTimer > 35) && (o->oTimer <= 110)) {
     *platformDirPos += speed;
-} else if ((o->oTimer > 135) && (o->oTimer <= 210)) {
+} else if ((o->oTimer > 155) && (o->oTimer <= 230)) {
     *platformDirPos -= speed;
-} else if (o->oTimer > 210) {
+} else if (o->oTimer > 230) {
     o->oTimer = -1;
 }
     

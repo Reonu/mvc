@@ -7,5 +7,3 @@
 #include "common1.h"
 #include "group7.h"
 
-#include "spindrift/geo.inc.c"
-#include "penguin/geo.inc.c"
