@@ -564,11 +564,11 @@ void mtxf_mul_vec3s(Mat4 mtx, Vec3s b) {
  * and no crashes occur.
  */
 void mtxf_to_mtx(Mtx *dest, Mat4 src) {
-//#ifdef AVOID_UB
+#ifdef AVOID_UB
     // Avoid type-casting which is technically UB by calling the equivalent
     // guMtxF2L function. This helps little-endian systems, as well.
-    //guMtxF2L(src, dest);
-//#else
+    guMtxF2L(src, dest);
+#else
     s32 asFixedPoint;
     register s32 i;
     register s16 *a3 = (s16 *) dest;      // all integer parts stored in first 16 bytes
@@ -576,12 +576,12 @@ void mtxf_to_mtx(Mtx *dest, Mat4 src) {
     register f32 *t1 = (f32 *) src;
 
     for (i = 0; i < 16; i++) {
-        //asFixedPoint = *t1++ * (1 << 16); //! float-to-integer conversion responsible for PU crashes
-        asFixedPoint = *t1++ * 24576.0;
+        asFixedPoint = *t1++ * (1 << 16); //! float-to-integer conversion responsible for PU crashes
+        //asFixedPoint = *t1++ * 24576.0;
         *a3++ = GET_HIGH_S16_OF_32(asFixedPoint); // integer part
         *t0++ = GET_LOW_S16_OF_32(asFixedPoint);  // fraction part
     }
-//#endif
+#endif
 }
 
 /**

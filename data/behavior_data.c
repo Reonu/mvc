@@ -1735,7 +1735,7 @@ const BehaviorScript bhvHiddenObject[] = {
     BEGIN(OBJ_LIST_SURFACE),
     OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
     LOAD_COLLISION_DATA(breakable_box_seg8_collision_08012D70),
-    SET_FLOAT(oCollisionDistance, 800),
+    SET_FLOAT(oCollisionDistance, 900),
     BEGIN_LOOP(),
         CALL_NATIVE(bhv_hidden_object_loop),
     END_LOOP(),
@@ -4791,9 +4791,10 @@ const BehaviorScript bhv1upSliding[] = {
 
 const BehaviorScript bhv1Up[] = {
     BEGIN(OBJ_LIST_LEVEL),
-    OR_INT(oFlags, OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE),
-    SET_HITBOX_WITH_OFFSET(/*Radius*/ 30, /*Height*/ 30, /*Downwards offset*/ 0),
+    OR_INT(oFlags, (OBJ_FLAG_UPDATE_GFX_POS_AND_ANGLE | OBJ_FLAG_COMPUTE_DIST_TO_MARIO)),
+    SET_HITBOX_WITH_OFFSET(/*Radius*/ 60, /*Height*/ 60, /*Downwards offset*/ 0),
     SET_FLOAT(oGraphYOffset, 30),
+    SET_FLOAT(oDrawingDistance, 3000.0f),
     CALL_NATIVE(bhv_1up_init),
     BEGIN_LOOP(),
         SET_INT(oIntangibleTimer, 0),

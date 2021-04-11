@@ -1865,9 +1865,17 @@ s32 execute_mario_action(UNUSED struct Object *o) {
     }
     if (gMarioState->numStars >= 9){
         gMarioState->canKick = 1;
+        gMarioState->canGroundPound = 1;
     }
     if (gMarioState->numStars >= 12){
+        gMarioState->canHoldPole = 1;
+    }
+    if (gMarioState->numStars >= 15){
         gMarioState->canBackFlip = 1;
+        gMarioState->canTripleJump = 1;
+    }
+    if (gMarioState->numStars >= 20){
+        gMarioState->canJumpKick = 1;
     }
     /*
     * End of moveset system

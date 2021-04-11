@@ -91,16 +91,19 @@ waiting for you. Be sure\n\
 to talk to them--they'll\n\
 set up cannons for you."))
 
-DEFINE_DIALOG(DIALOG_004, 1, 3, 95, 200, _("\
-We're peace-loving\n\
-Bob-ombs, so we don't use\n\
-cannons.\n\
-But if you'd like\n\
-to blast off, we don't\n\
-mind. Help yourself.\n\
-We'll prepare all of the\n\
-cannons in this course for\n\
-you to use. Bon Voyage!"))
+DEFINE_DIALOG(DIALOG_004, 1, 4, 95, 200, _("\
+Ahhhh... this hot water\n\
+feels so nice...\n\
+................\n\
+................\n\
+................\n\
+................\n\
+................\n\
+................\n\
+...what? You\n\
+want me to open\n\
+the cannon?\n\
+Ugh, fine"))
 
 DEFINE_DIALOG(DIALOG_005, 1, 3, 30, 200, _("\
 Hey, Mario! Is it true\n\
@@ -137,19 +140,12 @@ fast! A human blur!\n\
 Here you go--you've won\n\
 it, fair and square!"))
 
-DEFINE_DIALOG(DIALOG_008, 1, 4, 30, 200, _("\
-BEWARE OF CHAIN CHOMP\n\
-Extreme Danger!\n\
-Get close and press [C]^\n\
-for a better look.\n\
-Scary, huh?\n\
-See the Red Coin on top\n\
-of the stake?\n\
-\n\
-When you collect eight of\n\
-them, a Power Star will\n\
-appear in the meadow\n\
-across the bridge."))
+DEFINE_DIALOG(DIALOG_008, 1, 5, 30, 200, _("\
+I'm relaxing at the hot\n\
+water below the lava\n\
+puddle.\n\
+Don't search for me!\n\
+- The Cannon Owner"))
 
 DEFINE_DIALOG(DIALOG_009, 1, 5, 30, 200, _("\
 Long time, no see! Wow,\n\
@@ -1280,19 +1276,9 @@ Marker.』 When you collect\n\
 all 8 Red Coins, the Star\n\
 will appear here."))
 
-DEFINE_DIALOG(DIALOG_105, 1, 3, 95, 200, _("\
-Ready for blastoff! Come\n\
-on, hop into the cannon!\n\
-\n\
-You can reach the Star on\n\
-the floating island by\n\
-using the four cannons.\n\
-Use the Control Stick to\n\
-aim, then press [A] to fire.\n\
-\n\
-If you're handy, you can\n\
-grab on to trees or poles\n\
-to land."))
+DEFINE_DIALOG(DIALOG_105, 1, 2, 95, 200, _("\
+There you go.\n\
+Now let me relax!"))
 
 DEFINE_DIALOG(DIALOG_106, 1, 2, 95, 200, _("\
 Ready for blastoff! Come\n\
@@ -1742,52 +1728,24 @@ long jump!"))
 
 DEFINE_DIALOG(DIALOG_145, 1, 4, 150, 200, _("\
 Mario has 9 stars and\n\
-remembers how to punch\n\
-and kick!"))
+remembers how to punch,\n\
+kick and ground pound!"))
 
-DEFINE_DIALOG(DIALOG_146, 1, 6, 150, 200, _("\
-You've found 70 Power\n\
-Stars! The mystery of the\n\
-endless stairs is solved,\n\
-thanks to you--and is\n\
-Bowser ever upset! Now,\n\
-on to the final bout!"))
+DEFINE_DIALOG(DIALOG_146, 1, 2, 150, 200, _("\
+Wow, 12 stars already!\n\
+You can now grab poles!"))
 
 DEFINE_DIALOG(DIALOG_147, 1, 5, 30, 200, _("\
-Are you using the Cap\n\
-Blocks? You really should,\n\
-you know.\n\
-\n\
-\n\
-To make them solid so you\n\
-can break them, you have\n\
-to press the colored Cap\n\
-Switches in the castle's\n\
-hidden courses.\n\
-You'll find the hidden\n\
-courses only after\n\
-regaining some of the\n\
-Power Stars.\n\
-\n\
-The Cap Blocks are a big\n\
-help! Red for the Wing\n\
-Cap, green for the Metal\n\
-Cap, blue for the Vanish\n\
-Cap."))
+The fifteenth star\n\
+helps Mario remember\n\
+how to triple jump and\n\
+backflip!"))
 
-DEFINE_DIALOG(DIALOG_148, 1, 6, 30, 200, _("\
-Snowman Mountain ahead.\n\
-Keep out! And don't try\n\
-the Triple Jump over the\n\
-ice block shooter.\n\
-\n\
-\n\
-If you fall into the\n\
-freezing pond, your power\n\
-decreases quickly, and\n\
-you won't recover\n\
-automatically.\n\
-//--The Snowman"))
+DEFINE_DIALOG(DIALOG_148, 1, 4, 30, 200, _("\
+After getting 20 stars\n\
+Mario remembers the last\n\
+move he forgot:\n\
+The jump kick!"))
 
 DEFINE_DIALOG(DIALOG_149, 1, 3, 30, 200, _("\
 Welcome to\n\

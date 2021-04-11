@@ -48,7 +48,7 @@ static s8 D_8032CBE4 = 0;
 static s8 D_8032CBE8 = 0;
 static s8 D_8032CBEC[7] = { 2, 3, 2, 1, 2, 3, 2 };
 
-static u8 sStarsNeededForDialog[] = { 1, 3, 5, 7, 9, 70 };
+static u8 sStarsNeededForDialog[] = { 1, 3, 5, 7, 9, 12, 15, 20 };
 
 /**
  * Data for the jumbo star cutscene. It specifies the flight path after triple

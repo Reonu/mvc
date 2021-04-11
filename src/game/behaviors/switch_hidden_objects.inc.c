@@ -28,6 +28,9 @@ void breakable_box_init(void) {
         case 3:
             cur_obj_scale(1.5f);
             break;
+        case 4:
+            cur_obj_scale(2.3f);
+            break;
     }
 }
 

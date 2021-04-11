@@ -6563,7 +6563,7 @@ s16 camera_course_processing(struct Camera *c) {
 
     // Area-specific camera processing
     if (!(sStatusFlags & CAM_FLAG_BLOCK_AREA_PROCESSING)) {
-        switch (gCurrLevelArea) {
+        /*switch (gCurrLevelArea) {
             case AREA_WF:
                 if (sMarioCamState->action == ACT_RIDING_HOOT) {
                     transition_to_camera_mode(c, CAMERA_MODE_SLIDE_HOOT, 60);
@@ -6629,7 +6629,7 @@ s16 camera_course_processing(struct Camera *c) {
                     }
                 }
                 break;
-*/
+*//*
             case AREA_WDW_MAIN:
                 switch (sMarioGeometry.currFloorType) {
                     case SURFACE_INSTANT_WARP_1B:
@@ -6667,7 +6667,7 @@ s16 camera_course_processing(struct Camera *c) {
                 //! @bug this does nothing
                 gLakituState.defMode = CAMERA_MODE_FREE_ROAM;
                 break;
-        }
+        }*/
     }
 
     sStatusFlags &= ~CAM_FLAG_BLOCK_AREA_PROCESSING;

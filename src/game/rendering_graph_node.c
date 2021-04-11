@@ -13,6 +13,7 @@
 #include "level_update.h"
 #define WIDESCREEN
 #define FORCE_CONSOLE
+#define static
 
 /**
  * This file contains the code that processes the scene graph for rendering.

@@ -195,12 +195,16 @@ void bhv_1up_sliding_loop(void) {
 void bhv_1up_loop(void) {
     bhv_1up_interact();
     set_object_visibility(o, 3000);
-    if ((gMarioState->surfboard == 1)) {
-            o->oPosY = (10000);
+    if ((gMarioState->surfboard == 1) || (gMarioState->action & ACT_FLAG_RIDING_SHELL)) {
+            //o->oPosY = (10000);
+            cur_obj_become_intangible();
+            o->header.gfx.node.flags |= GRAPH_RENDER_INVISIBLE;
     }
-    if (gMarioState->surfboard == 0) {
-            o->oPosY = height;
-    }
+    /*if ((gMarioState->surfboard == 0) && (gMarioState->action &! ACT_FLAG_RIDING_SHELL)) {
+            //o->oPosY = height;
+            cur_obj_become_tangible();
+            o->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
+    }*/
 }
 
 void bhv_1up_jump_on_approach_loop(void) {
