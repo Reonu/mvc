@@ -128,5 +128,11 @@
     ],
     "24_custom_fileselectepic": [
         "streamed_audio"
+    ],
+    "25_custom_bfice": [
+        "streamed_audio"
+    ],
+    "26_custom_bflake": [
+        "streamed_audio"
     ]
 }

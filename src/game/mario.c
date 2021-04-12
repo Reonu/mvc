@@ -32,13 +32,14 @@
 #include "save_file.h"
 #include "sound_init.h"
 #include "rumble_init.h"
+#include "include/seq_ids.h"
 
 #define DEBUG
 
 u32 unused80339F10;
 s8 filler80339F1C[20];
 extern widescreen;
-
+extern u8 sCurrentBackgroundMusicSeqId;
 /**************************************************
  *                    ANIMATIONS                  *
  **************************************************/
@@ -1283,6 +1284,7 @@ void debug_print_speed_action_normal(struct MarioState *m) {
 /**
  * Update the button inputs for Mario.
  */
+
 void update_mario_button_inputs(struct MarioState *m) {
     if (m->controller->buttonPressed & A_BUTTON) {
         m->input |= INPUT_A_PRESSED;
@@ -1345,6 +1347,12 @@ void dismount_shell(struct MarioState *m)
     set_mario_action(m, ACT_FREEFALL, 0);
 }
 
+   /* if (m->controller->buttonPressed & L_TRIG) {
+        if (sCurrentBackgroundMusicSeqId != SEQ_STREAMED_BFICE) {
+            play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_STREAMED_BFICE), 30);
+        }
+        
+    }*/
     if (m->controller->buttonPressed & L_TRIG && m->surfboard == 1 ){
         if (m->action & ACT_FLAG_RIDING_SHELL)
             {
@@ -1810,6 +1818,23 @@ s32 execute_mario_action(UNUSED struct Object *o) {
     }
     if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->canSwim != 1 && gMarioState->unlockEverything != 1 )) {
         initiate_warp(LEVEL_BOB,1,0x02,0);
+    }
+    if ((gMarioState->pos[0] > -1000) && (gMarioState->pos[2] > 7700)) {
+        if (sCurrentBackgroundMusicSeqId != SEQ_STREAMED_BFICE) {
+            stop_background_music(sCurrentBackgroundMusicSeqId);
+            play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_STREAMED_BFICE), 30);
+        }
+    } else if ((gMarioState->pos[0] < -2100) && (gMarioState->pos[2] < 7000)) {
+        if (sCurrentBackgroundMusicSeqId != SEQ_STREAMED_BFMOUNT) {
+            stop_background_music(sCurrentBackgroundMusicSeqId);
+            play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_STREAMED_BFMOUNT), 30);           
+        }
+    }
+        else {
+            if (sCurrentBackgroundMusicSeqId != SEQ_STREAMED_BFLAKE) {
+                stop_background_music(sCurrentBackgroundMusicSeqId);
+                play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_STREAMED_BFLAKE), 30);
+            }
     }
     if (gMarioState->action == ACT_LAVA_BOOST) {
         play_transition(WARP_TRANSITION_FADE_INTO_CIRCLE, 0x14, 0x00, 0x00, 0x00);

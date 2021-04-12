@@ -28,10 +28,22 @@
             "release_rate": 10,
             "envelope": "envelope",
             "sound": "24_custom_fileselectepic"
+        },
+        "inst2": {
+            "release_rate": 10,
+            "envelope": "envelope",
+            "sound": "25_custom_bfice"
+        },
+        "inst3": {
+            "release_rate": 10,
+            "envelope": "envelope",
+            "sound": "26_custom_bflake"
         }
     },
     "instrument_list": [
         "inst0",
-        "inst1"
+        "inst1",
+        "inst2",
+        "inst3"
     ]
 }

@@ -25,9 +25,6 @@ void bhv_warp_stalker_loop() {
     if (gMarioState->floor != NULL) {
             if (gMarioState->floor->type == SURFACE_HANGABLE) {
                 if((gMarioState->action & ACT_GROUP_MASK) == ACT_GROUP_MOVING) {
-                    //averageX = (gMarioState->floor->vertex1[0] + gMarioState->floor->vertex2[0] + gMarioState->floor->vertex3[0]) / 3;
-                    //averageY = ((gMarioState->floor->vertex1[1] + gMarioState->floor->vertex2[1] + gMarioState->floor->vertex3[1]) / 3) + 50;
-                    //averageZ = (gMarioState->floor->vertex1[2] + gMarioState->floor->vertex2[2] + gMarioState->floor->vertex3[2]) / 3;
                     o->oPosX = (gMarioState->floor->vertex1[0] + gMarioState->floor->vertex2[0] + gMarioState->floor->vertex3[0]) / 3;
                     o->oPosY = ((gMarioState->floor->vertex1[1] + gMarioState->floor->vertex2[1] + gMarioState->floor->vertex3[1]) / 3) + 50;
                     o->oPosZ = (gMarioState->floor->vertex1[2] + gMarioState->floor->vertex2[2] + gMarioState->floor->vertex3[2]) / 3;

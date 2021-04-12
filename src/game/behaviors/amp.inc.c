@@ -351,6 +351,24 @@ static void circling_amp_idle_loop(void) {
             o->oAmpYPhase++;
             break;
         }
+        case 0x03: {
+            if (o->oTimer < 90){
+                o->oPosX += 7 * coss(o->oFaceAngleYaw);
+                o->oPosZ += 7 * sins(o->oFaceAngleYaw);
+
+                
+            }
+            else if (o->oTimer < 180) {
+                o->oPosX += 7 * coss(o->oFaceAngleYaw);
+                o->oPosZ -= 7 * sins(o->oFaceAngleYaw);
+            }   
+            else{
+                o->oTimer = -1;
+            }
+            o->oPosY = o->oHomeY + coss(o->oAmpYPhase * 0x8B0) * 30.0f;
+            o->oAmpYPhase++;
+            break;
+        }
     }
 
 
