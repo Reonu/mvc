@@ -359,7 +359,7 @@
 
 // group 2
 #define MODEL_BLARGG                      0x54        // blargg_geo
-#define MODEL_BULLY                       0x56        // bully_geo
+//#define MODEL_BULLY                       0x56        // bully_geo
 #define MODEL_BULLY_BOSS                  0x57        // bully_boss_geo
 
 // group 3
@@ -455,7 +455,7 @@
 
 // group 16
 
-#define MODEL_BIG_CHILL_BULLY             0x65        // chilly_chief_big_geo
+//#define MODEL_BIG_CHILL_BULLY             0x65        // chilly_chief_big_geo
 #define MODEL_MONEYBAG                    0x66        // moneybag_geo
 
 // group 17

@@ -1830,7 +1830,13 @@ s32 execute_mario_action(UNUSED struct Object *o) {
             play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_STREAMED_BFMOUNT), 30);           
         }
     }
-        else {
+    else if ((gMarioState->pos[0] < 2000) && (gMarioState->pos[2] < 6000)) {
+            if (sCurrentBackgroundMusicSeqId != SEQ_STREAMED_BFSHORES) {
+                stop_background_music(sCurrentBackgroundMusicSeqId);
+                play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_STREAMED_BFSHORES), 30);
+            }
+    }
+    else if ((gMarioState->pos[0] < -3000) && (gMarioState->pos[2] > 3000)){
             if (sCurrentBackgroundMusicSeqId != SEQ_STREAMED_BFLAKE) {
                 stop_background_music(sCurrentBackgroundMusicSeqId);
                 play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_STREAMED_BFLAKE), 30);

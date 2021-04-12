@@ -745,10 +745,13 @@ u32 interact_coin(struct MarioState *m, UNUSED u32 interactType, struct Object *
     m->healCounter += 4 * o->oDamageOrCoinValue;
 
     o->oInteractStatus = INT_STATUS_INTERACTED;
-
+    if (COURSE_IS_MAIN_COURSE(gCurrCourseNum) && m->numCoins - o->oDamageOrCoinValue < 50
+        && m->numCoins >= 50) {
+        bhv_spawn_star_no_level_exit(0);
+    }
     if (COURSE_IS_MAIN_COURSE(gCurrCourseNum) && m->numCoins - o->oDamageOrCoinValue < 100
         && m->numCoins >= 100) {
-        bhv_spawn_star_no_level_exit(6);
+        bhv_spawn_star_no_level_exit(1);
     }
 #if ENABLE_RUMBLE
     if (o->oDamageOrCoinValue >= 2) {

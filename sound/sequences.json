@@ -134,5 +134,8 @@
     ],
     "26_custom_bflake": [
         "streamed_audio"
+    ],
+    "27_custom_bfshores": [
+        "streamed_audio"
     ]
 }
