@@ -4,6 +4,7 @@
 #include "engine/math_util.h"
 #include "src/engine/behavior_script.h"
 #include "texscroll.h"
+#include "game/tile_scroll.h"
 
 #ifdef TARGET_N64
 #define SCROLL_CONDITION(condition) condition
@@ -19,3 +20,4 @@ void scroll_textures() {
 	}
 
 }
+

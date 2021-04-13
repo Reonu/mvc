@@ -42,7 +42,7 @@ void scroll_bob_dl_LavaPuddle_mesh_layer_1_vtx_3() {
 	currentY += deltaY;
 
 }
-void scroll_bob_dl_Water_mesh_layer_1_vtx_0() {
+void scroll_bob_dl_Water_mesh_layer_5_vtx_0() {
 	int i = 0;
 	int count = 25;
 	int width = 64 * 0x20;
@@ -56,7 +56,7 @@ void scroll_bob_dl_Water_mesh_layer_1_vtx_0() {
 	float offsetX = 0.30000001192092896;
 	static int currentY = 0;
 	int deltaY;
-	Vtx *vertices = segmented_to_virtual(bob_dl_Water_mesh_layer_1_vtx_0);
+	Vtx *vertices = segmented_to_virtual(bob_dl_Water_mesh_layer_5_vtx_0);
 
 	deltaX = (int)(amplitudeX * frequencyX * coss((frequencyX * timeX + offsetX) * (1024 * 16 - 1) / 6.28318530718) * 0x20);
 	deltaY = (int)(0.20000000298023224 * 0x20) % height;
@@ -77,8 +77,17 @@ void scroll_bob_dl_Water_mesh_layer_1_vtx_0() {
 	currentY += deltaY;
 
 }
+void epicscroll() {
+    Gfx *mat = segmented_to_virtual(mat_bob_dl_epicWater_layer5);
+    shift_s_down(mat, 13, PACK_TILESIZE(0, 1));
+    shift_s(mat, 21, PACK_TILESIZE(0, 1));
+    shift_t(mat, 21, PACK_TILESIZE(0, 1));
+};
+
+
 void scroll_bob() {
-	scroll_bob_dl_LavaPuddle_mesh_layer_1_vtx_0();
-	scroll_bob_dl_LavaPuddle_mesh_layer_1_vtx_3();
-	scroll_bob_dl_Water_mesh_layer_1_vtx_0();
+  scroll_bob_dl_LavaPuddle_mesh_layer_1_vtx_0();
+  scroll_bob_dl_LavaPuddle_mesh_layer_1_vtx_3();
+  //scroll_bob_dl_Water_mesh_layer_5_vtx_0();
+  epicscroll();
 }

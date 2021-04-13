@@ -192,7 +192,7 @@ const GeoLayout bob_area_1_geo[] = {
 		GEO_CLOSE_NODE(),
 		GEO_TRANSLATE_NODE_WITH_DL(1, -3393, 1584, 1153, bob_dl_Poles_mesh_layer_1),
 		GEO_TRANSLATE_NODE_WITH_DL(1, 2380, -2480, 9767, bob_dl_Snow_mesh_layer_1),
-		GEO_TRANSLATE_NODE_WITH_DL(1, 9, -2463, 0, bob_dl_Water_mesh_layer_1),
+		GEO_TRANSLATE_NODE_WITH_DL(5, 9, -2463, 0, bob_dl_Water_mesh_layer_5),
 	GEO_CLOSE_NODE(),
 	GEO_RETURN(),
 };
