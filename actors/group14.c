@@ -20,9 +20,7 @@ UNUSED static const u64 binid_1 = 1;
 #include "koopa/anims/table.inc.c"
 UNUSED static const u64 binid_2 = 2;
 
-#include "piranha_plant/model.inc.c"
-#include "piranha_plant/anims/data.inc.c"
-#include "piranha_plant/anims/table.inc.c"
+
 UNUSED static const u64 binid_3 = 3;
 
 #include "whomp/model.inc.c"

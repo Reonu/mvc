@@ -442,6 +442,35 @@ extern const Gfx spindrift_seg5_dl_05002C98[];
 extern const Gfx spindrift_seg5_dl_05002D08[];
 extern const struct Animation *const spindrift_seg5_anims_05002D68[];
 
+// piranha_plant
+extern const GeoLayout piranha_plant_geo[];
+extern const Gfx piranha_plant_seg6_dl_06015438[];
+extern const Gfx piranha_plant_seg6_dl_06015480[];
+extern const Gfx piranha_plant_seg6_dl_06015530[];
+extern const Gfx piranha_plant_seg6_dl_06015578[];
+extern const Gfx piranha_plant_seg6_dl_06015798[];
+extern const Gfx piranha_plant_seg6_dl_06015850[];
+extern const Gfx piranha_plant_seg6_dl_06015E40[];
+extern const Gfx piranha_plant_seg6_dl_06015EA8[];
+extern const Gfx piranha_plant_seg6_dl_06015F68[];
+extern const Gfx piranha_plant_seg6_dl_06016060[];
+extern const Gfx piranha_plant_seg6_dl_060160B0[];
+extern const Gfx piranha_plant_seg6_dl_06016120[];
+extern const Gfx piranha_plant_seg6_dl_06016750[];
+extern const Gfx piranha_plant_seg6_dl_060167B8[];
+extern const Gfx piranha_plant_seg6_dl_06016890[];
+extern const Gfx piranha_plant_seg6_dl_06016960[];
+extern const Gfx piranha_plant_seg6_dl_060169A8[];
+extern const Gfx piranha_plant_seg6_dl_060169E8[];
+extern const Gfx piranha_plant_seg6_dl_06016A78[];
+extern const Gfx piranha_plant_seg6_dl_06016BA8[];
+extern const Gfx piranha_plant_seg6_dl_06016C10[];
+extern const Gfx piranha_plant_seg6_dl_06016D30[];
+extern const Gfx piranha_plant_seg6_dl_06016D98[];
+extern const Gfx piranha_plant_seg6_dl_06016EB8[];
+extern const Gfx piranha_plant_seg6_dl_06016F20[];
+extern const struct Animation *const piranha_plant_seg6_anims_0601C31C[];
+
 
 #include "mario/geo_header.h"
 
@@ -465,4 +494,8 @@ extern const struct Animation *const spindrift_seg5_anims_05002D68[];
 
 #include "lava_platform/collision_header.h"
 
+#include "luiginpc/geo_header.h"
+
+
+#include "luiginpc/anim_header.h"
 #endif

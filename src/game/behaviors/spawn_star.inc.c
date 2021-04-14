@@ -127,6 +127,12 @@ void spawn_default_star(f32 sp20, f32 sp24, f32 sp28) {
     sp1C->oBehParams = 0x0B000000;
 }
 
+void spawn_custom_star(f32 sp20, f32 sp24, f32 sp28, u32 IdStar) {
+    struct Object *starSpawned;
+    starSpawned = spawn_star(starSpawned, sp20, sp24, sp28);
+    starSpawned->oBehParams = IdStar;
+}
+
 void spawn_red_coin_cutscene_star(f32 sp20, f32 sp24, f32 sp28) {
     struct Object *sp1C;
     sp1C = spawn_star(sp1C, sp20, sp24, sp28);

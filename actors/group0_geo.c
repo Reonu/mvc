@@ -37,3 +37,6 @@
 
 #include "spindrift/geo.inc.c"
 #include "penguin/geo.inc.c"
+#include "luiginpc/geo.inc.c"
+
+#include "piranha_plant/geo.inc.c"

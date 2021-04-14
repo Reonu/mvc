@@ -1701,7 +1701,7 @@ DEFINE_DIALOG(DIALOG_141, 1, 4, 150, 200, _("\
 Mario obtained the\n\
 first Power Star and\n\
 remembered how to\n\
-dive!"))
+dive and rollout!"))
 
 DEFINE_DIALOG(DIALOG_142, 1, 4, 150, 200, _("\
 After getting the third\n\
@@ -1741,11 +1741,12 @@ helps Mario remember\n\
 how to triple jump and\n\
 backflip!"))
 
-DEFINE_DIALOG(DIALOG_148, 1, 4, 30, 200, _("\
+DEFINE_DIALOG(DIALOG_148, 1, 5, 30, 200, _("\
 After getting 20 stars\n\
 Mario remembers the last\n\
-move he forgot:\n\
-The jump kick!"))
+moves he forgot:\n\
+The wallkick and\n\
+the sideflip!"))
 
 DEFINE_DIALOG(DIALOG_149, 1, 3, 30, 200, _("\
 Welcome to\n\
@@ -1825,23 +1826,11 @@ are secret worlds in the\n\
 walls as well as in the\n\
 paintings, right?"))
 
-DEFINE_DIALOG(DIALOG_155, 1, 6, 30, 200, _("\
-Thanks to the power of\n\
-the Stars, life is\n\
-returning to the castle.\n\
-Please, Mario, you have\n\
-to give Bowser the boot!\n\
-\n\
-Here, let me tell you a\n\
-little something about the\n\
-castle. In the room with\n\
-the mirrors, look carefully\n\
-for anything that's not\n\
-reflected in the mirror.\n\
-And when you go to the\n\
-water town, you can flood\n\
-it with a high jump into\n\
-the painting."))
+DEFINE_DIALOG(DIALOG_155, 1, 4, 30, 200, _("\
+Ah, Mario, I-a fucked up\n\
+the cobblestone\n\
+generator again, please\n\
+forgive-a me!"))
 
 DEFINE_DIALOG(DIALOG_156, 1, 5, 30, 200, _("\
 The world inside the\n\

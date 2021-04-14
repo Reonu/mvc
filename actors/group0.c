@@ -65,3 +65,10 @@
 #include "spindrift/model.inc.c"
 #include "spindrift/anims/data.inc.c"
 #include "spindrift/anims/table.inc.c"
+#include "luiginpc/model.inc.c"
+#include "luiginpc/anims/data.inc.c"
+#include "luiginpc/anims/table.inc.c"
+
+#include "piranha_plant/model.inc.c"
+#include "piranha_plant/anims/data.inc.c"
+#include "piranha_plant/anims/table.inc.c"

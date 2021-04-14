@@ -1906,7 +1906,8 @@ s32 execute_mario_action(UNUSED struct Object *o) {
         gMarioState->canTripleJump = 1;
     }
     if (gMarioState->numStars >= 20){
-        gMarioState->canJumpKick = 1;
+        gMarioState->canWallKick = 1;
+        gMarioState->canSideFlip = 1;
     }
     /*
     * End of moveset system
@@ -2008,7 +2009,6 @@ void init_mario(void) {
 
     gMarioState->invincTimer = 0;
     //temporary force widescreen because i want to debug in widescreen
-    widescreen = 1;
     if (save_file_get_flags()
         & (SAVE_FLAG_CAP_ON_GROUND | SAVE_FLAG_CAP_ON_KLEPTO | SAVE_FLAG_CAP_ON_UKIKI
            | SAVE_FLAG_CAP_ON_MR_BLIZZARD)) {

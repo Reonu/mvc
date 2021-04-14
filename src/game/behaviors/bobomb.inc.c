@@ -426,4 +426,7 @@ void bhv_bobomb_buddy_loop(void) {
     curr_obj_random_blink(&o->oBobombBuddyBlinkTimer);
 
     o->oInteractStatus = 0;
+    if (o->header.gfx.sharedChild == gLoadedGraphNodes[MODEL_LUIGINPC]) {
+        o->oGraphYOffset = 140;
+    }
 }

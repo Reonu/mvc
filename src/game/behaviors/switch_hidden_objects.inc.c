@@ -7,7 +7,7 @@ struct ObjectHitbox sBreakableBoxHitbox = {
     /* health: */ 1,
     /* numLootCoins: */ 0,
     /* radius: */ 150,
-    /* height: */ 200,
+    /* height: */ 180,
     /* hurtboxRadius: */ 150,
     /* hurtboxHeight: */ 200,
 };

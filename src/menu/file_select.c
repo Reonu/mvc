@@ -1829,7 +1829,7 @@ void print_main_menu_strings(void) {
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
 #ifndef VERSION_EU
     if (useLOD) {
-        print_hud_lut_string(HUD_LUT_DIFF, 30, 35, textConsole);
+        print_hud_lut_string(HUD_LUT_DIFF, 60, 35, textConsole);
     }
     else {
         print_hud_lut_string(HUD_LUT_DIFF, 60, 35, textEmu);

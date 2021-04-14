@@ -41,6 +41,7 @@
 #define MODEL_CHILL_BULLY                 0xF2        // chilly_chief_geo
 #define MODEL_SPINDRIFT                   0xF1
 #define MODEL_BIG_CHILL_BULLY             0xF0
+#define MODEL_LUIGINPC                    0xEF        //luigiNPC
 
 /* Various static level geometry, the geo layout differs but terrain object presets treat them the same.*/
 

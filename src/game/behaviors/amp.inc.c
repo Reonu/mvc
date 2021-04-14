@@ -191,6 +191,9 @@ static void amp_attack_cooldown_loop(void) {
         o->oAnimState = 1;
         cur_obj_become_tangible();
         o->oAction = HOMING_AMP_ACT_CHASE;
+        o->oPosX = o->oHomeX;
+        o->oPosY = o->oHomeY;
+        o->oPosZ = o->oHomeZ;
     }
 }
 
@@ -333,6 +336,7 @@ static void circling_amp_idle_loop(void) {
             else{
                 o->oTimer = -1;
             }
+             check_amp_attack();
             o->oAmpYPhase++;
             break;
         }
@@ -348,17 +352,18 @@ static void circling_amp_idle_loop(void) {
                 o->oTimer = -1;
             }
             o->oPosY = o->oHomeY + coss(o->oAmpYPhase * 0x8B0) * 30.0f;
+             check_amp_attack();
             o->oAmpYPhase++;
             break;
         }
         case 0x03: {
-            if (o->oTimer < 90){
+            if (o->oTimer < 70){
                 o->oPosX += 7 * coss(o->oFaceAngleYaw);
                 o->oPosZ += 7 * sins(o->oFaceAngleYaw);
 
                 
             }
-            else if (o->oTimer < 180) {
+            else if (o->oTimer < 140) {
                 o->oPosX += 7 * coss(o->oFaceAngleYaw);
                 o->oPosZ -= 7 * sins(o->oFaceAngleYaw);
             }   
@@ -367,6 +372,7 @@ static void circling_amp_idle_loop(void) {
             }
             o->oPosY = o->oHomeY + coss(o->oAmpYPhase * 0x8B0) * 30.0f;
             o->oAmpYPhase++;
+            check_amp_attack();
             break;
         }
     }

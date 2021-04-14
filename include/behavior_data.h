@@ -546,5 +546,6 @@ extern const BehaviorScript bhvUnusedFakeStar[];
 extern const BehaviorScript bhvGreenSpring[];
 extern const BehaviorScript bhvMajoraPlatform[];
 extern const BehaviorScript bhvGreenCoin[];
+extern const BehaviorScript bhvLuigiNpc[];
 
 #endif // BEHAVIOR_DATA_H

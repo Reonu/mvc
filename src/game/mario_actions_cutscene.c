@@ -597,6 +597,9 @@ void general_star_dance_handler(struct MarioState *m, s32 isInWater) {
         print_text((120), 40, "SAVING");
     }
     if (m->actionState == 0) {
+        if (m->numStars == 30) {
+            initiate_warp(LEVEL_ENDING, 0x00, 0, 0);
+        }
         if (gMarioState->controller->buttonPressed & A_BUTTON) {
             gMarioState->actionState = 1;
         }

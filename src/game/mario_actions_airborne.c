@@ -62,7 +62,7 @@ s32 check_fall_damage(struct MarioState *m, u32 hardFallAction) {
     f32 fallHeight;
     f32 damageHeight;
 
-    fallHeight = m->peakHeight - m->pos[1];
+   /* fallHeight = m->peakHeight - m->pos[1];
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wtype-limits"
@@ -97,7 +97,7 @@ s32 check_fall_damage(struct MarioState *m, u32 hardFallAction) {
             }
         }
     }
-
+*/
     return FALSE;
 }
 
