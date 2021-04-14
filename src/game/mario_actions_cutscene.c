@@ -49,7 +49,7 @@ static s8 D_8032CBE8 = 0;
 static s8 D_8032CBEC[7] = { 2, 3, 2, 1, 2, 3, 2 };
 
 static u8 sStarsNeededForDialog[] = { 1, 3, 5, 7, 9, 12, 15, 20 };
-
+extern u8 sCurrentBackgroundMusicSeqId;
 /**
  * Data for the jumbo star cutscene. It specifies the flight path after triple
  * jumping. Each entry is one keyframe.
@@ -588,7 +588,6 @@ s32 act_debug_free_move(struct MarioState *m) {
 
     return FALSE;
 }
-
 void general_star_dance_handler(struct MarioState *m, s32 isInWater) {
     s32 dialogID;
     if (m->actionTimer > 40)
@@ -598,6 +597,7 @@ void general_star_dance_handler(struct MarioState *m, s32 isInWater) {
     }
     if (m->actionState == 0) {
         if (m->numStars == 30) {
+            stop_background_music(sCurrentBackgroundMusicSeqId);
             initiate_warp(LEVEL_ENDING, 0x00, 0, 0);
         }
         if (gMarioState->controller->buttonPressed & A_BUTTON) {

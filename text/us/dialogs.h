@@ -1839,32 +1839,14 @@ When you jump inside,\n\
 watch the position of\n\
 the big hand!"))
 
-DEFINE_DIALOG(DIALOG_157, 1, 5, 30, 200, _("\
-Watch out! Don't let\n\
-yourself be swallowed by\n\
-quicksand.\n\
-\n\
-\n\
-If you sink into the sand,\n\
-you won't be able to\n\
-jump, and if your head\n\
-goes under, you'll be\n\
-smothered.\n\
-The dark areas are\n\
-bottomless pits."))
+DEFINE_DIALOG(DIALOG_157, 1, 2, 30, 200, _("\
+Remember to always check\n\
+your surroundings!"))
 
-DEFINE_DIALOG(DIALOG_158, 1, 6, 30, 200, _("\
-1. If you jump repeatedly\n\
-and time it right, you'll\n\
-jump higher and higher.\n\
-If you run really fast and\n\
-time three jumps right,\n\
-you can do a Triple Jump.\n\
-2. Jump into a solid wall,\n\
-then jump again when you\n\
-hit the wall. You can\n\
-bounce to a higher level\n\
-using this Wall Kick."))
+DEFINE_DIALOG(DIALOG_158, 1, 3, 30, 200, _("\
+Don't worry. Mario has\n\
+also forgotten how to\n\
+take fall damage."))
 
 DEFINE_DIALOG(DIALOG_159, 1, 6, 30, 200, _("\
 3. If you stop, press [Z]\n\

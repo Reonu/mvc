@@ -12,7 +12,7 @@
 #include "sm64.h"
 #include "level_update.h"
 #define WIDESCREEN
-#define FORCE_CONSOLE
+//#define FORCE_CONSOLE
 #define static
 
 /**

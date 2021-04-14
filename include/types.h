@@ -366,6 +366,7 @@ struct MarioState
              u8 showMoveset: 1;
              u8 noclip: 1;
              u8 showMovesetTimer;
+             u16 creditsTimer;
 
              
 };

@@ -1319,6 +1319,7 @@ void update_mario_button_inputs(struct MarioState *m) {
             m->showMovesetTimer = 90;
             m->showMoveset = 0;
         }
+        m->creditsTimer = 750;
     }   
     if (m->debugMode == 1) {
         if (m->controller->buttonPressed & R_JPAD) {
@@ -1812,7 +1813,10 @@ void func_sh_8025574C(void) {
  */
 s32 execute_mario_action(UNUSED struct Object *o) {
     s32 inLoop = TRUE;
-
+    
+    if ((gMarioState->numStars == 0) && (gMarioState->creditsTimer < 810)) {
+        render_credits();
+    }
     if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->pos[1] < -2700)) {
         gMarioState->pos[1] = gMarioState->pos[1] + 50;
     }

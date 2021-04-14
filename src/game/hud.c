@@ -293,6 +293,48 @@ void render_debug_mode(void) {
     render_moveset();
 }
 
+void render_credits(void) {
+    if (gMarioState->creditsTimer > 0 && gMarioState->creditsTimer < 90 ) {
+        print_text(10, 220, "HACK BY REONU");
+    }
+    if (gMarioState->creditsTimer >= 90 && gMarioState->creditsTimer < 750 ) {
+        print_text(10, 220, "SPECIAL THANKS TO:");
+    }
+    if (gMarioState->creditsTimer >= 90 && gMarioState->creditsTimer < 180 ) {
+        print_text(10, 200, "WISEGUY");
+        print_text(10, 180, "CODING HELP & TESTING");
+    }
+    if (gMarioState->creditsTimer >= 180 && gMarioState->creditsTimer < 270 ) {
+        print_text(10, 200, "ANONYMOUS MOOSE");
+        print_text(10, 180, "BLENDER & CODING HELP");
+        print_text(10, 160, "TESTING");
+    }
+    if (gMarioState->creditsTimer >= 270 && gMarioState->creditsTimer < 360 ) {
+        print_text(10, 200, "XINUS22");
+        print_text(10, 180, "CAKE SCREEN RENDER HELP");
+        print_text(10, 160, "TESTING");
+    }
+    if (gMarioState->creditsTimer >= 360 && gMarioState->creditsTimer < 450 ) {
+        print_text(10, 200, "MRCOMIT");
+        print_text(10, 180, "CODING HELP & PLAYTESTING");
+    }
+    if (gMarioState->creditsTimer >= 450 && gMarioState->creditsTimer < 540 ) {
+        print_text(10, 200, "KAZE");
+        print_text(10, 180, "SHARING TEXTURES");
+        print_text(10, 160, "BLENDER HELP");
+    }
+    if (gMarioState->creditsTimer >= 540 && gMarioState->creditsTimer < 630 ) {
+        print_text(10, 200, "MATT & GTM");
+        print_text(10, 180, "CONSOLE TESTING");
+    }
+    if (gMarioState->creditsTimer >= 630 && gMarioState->creditsTimer < 750 ) {
+        print_text(10, 200, "COWQUACK ROVERT");
+        print_text(10, 180, "AXOLLYON");
+        print_text(10, 160, "PLAYTESTING");
+    }
+    gMarioState->creditsTimer++;
+}
+
 void render_moveset(void) {
     if (gMarioState->numStars == 0) {
         print_text(GFX_DIMENSIONS_RECT_FROM_LEFT_EDGE(10), 180, "YOU HAVE NO MOVES YET!");
