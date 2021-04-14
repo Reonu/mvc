@@ -3,7 +3,7 @@
 
 static struct ObjectHitbox sBobombHitbox = {
     /* interactType:      */ INTERACT_GRABBABLE,
-    /* downOffset:        */ 0,
+    /* downOffset:        */ 200,
     /* damageOrCoinValue: */ 0,
     /* health:            */ 0,
     /* numLootCoins:      */ 0,
@@ -301,12 +301,12 @@ void bobomb_buddy_act_idle(void) {
          func_80321080(50);
     }
     
-    collisionFlags = object_step();
+    //collisionFlags = object_step();
 
     if ((sp1a == 5) || (sp1a == 16))
         cur_obj_play_sound_2(SOUND_OBJ_BOBOMB_WALK);
 
-    if (o->oDistanceToMario < 1000.0f)
+    if ((o->oDistanceToMario < 1000.0f) && (o->header.gfx.sharedChild != gLoadedGraphNodes[MODEL_LUIGINPC]))
         o->oMoveAngleYaw = approach_s16_symmetric(o->oMoveAngleYaw, o->oAngleToMario, 0x140);
 
     if (o->oInteractStatus == INT_STATUS_INTERACTED)
@@ -393,13 +393,17 @@ void bobomb_buddy_act_talk(void) {
 void bobomb_buddy_act_turn_to_talk(void) {
     s16 sp1e = o->header.gfx.animInfo.animFrame;
     if ((sp1e == 5) || (sp1e == 16))
-        cur_obj_play_sound_2(SOUND_OBJ_BOBOMB_WALK);
-
-    o->oMoveAngleYaw = approach_s16_symmetric(o->oMoveAngleYaw, o->oAngleToMario, 0x1000);
-    if ((s16) o->oMoveAngleYaw == (s16) o->oAngleToMario)
+        //cur_obj_play_sound_2(SOUND_OBJ_BOBOMB_WALK);
+    if (o->header.gfx.sharedChild == gLoadedGraphNodes[MODEL_LUIGINPC]) {
         o->oAction = BOBOMB_BUDDY_ACT_TALK;
+    } else {
+        o->oMoveAngleYaw = approach_s16_symmetric(o->oMoveAngleYaw, o->oAngleToMario, 0x1000);
+        if ((s16) o->oMoveAngleYaw == (s16) o->oAngleToMario)
+            o->oAction = BOBOMB_BUDDY_ACT_TALK;
+    }
 
-    cur_obj_play_sound_2(SOUND_ACTION_READ_SIGN);
+
+    //cur_obj_play_sound_2(SOUND_ACTION_READ_SIGN);
 }
 
 void bobomb_buddy_actions(void) {
@@ -427,6 +431,6 @@ void bhv_bobomb_buddy_loop(void) {
 
     o->oInteractStatus = 0;
     if (o->header.gfx.sharedChild == gLoadedGraphNodes[MODEL_LUIGINPC]) {
-        o->oGraphYOffset = 140;
+        o->oGraphYOffset = -50;
     }
 }

@@ -6168,7 +6168,7 @@ const BehaviorScript bhvLuigiNpc[] = {
     LOAD_ANIMATIONS(oAnimations, luiginpc_anims),
     SET_INTERACT_TYPE(INTERACT_TEXT),
     DROP_TO_FLOOR(),
-    SET_HITBOX(/*Radius*/ 100, /*Height*/ 60),
+    SET_HITBOX_WITH_OFFSET(100, 400, 300),
     ANIMATE(0),
     SET_INT(oBobombBuddyRole, 0),
     SET_HOME(),
