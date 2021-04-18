@@ -1,3 +1,9 @@
+# Mario's Vacation Course
+
+- Source code for Mario's Vacation Course
+
+In order to compile, you need BOTH AN US ROM AND A JAPANESE ROM, named baserom.us.z64 and baserom.jp.z64. You also need to run ``python3 extract_assets.py jp`` before trying to compile.
+
 # UltraSM64
 
 - This repo contains a full decompilation of Super Mario 64 (J), (U), (E), and (SH).
