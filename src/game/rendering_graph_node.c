@@ -69,8 +69,8 @@ f32 gCurAnimTranslationMultiplier;
 u16 *gCurrAnimAttribute;
 s16 *gCurAnimData;
 
-extern sPoolEnd;
-extern sPoolStart;
+extern u8 sPoolEnd;
+extern u8 sPoolStart;
 
 struct AllocOnlyPool *gDisplayListHeap;
 
