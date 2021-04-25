@@ -297,7 +297,7 @@ void render_credits(void) {
     if (gMarioState->creditsTimer > 0 && gMarioState->creditsTimer < 90 ) {
         print_text(10, 220, "HACK BY REONU");
     }
-    if (gMarioState->creditsTimer >= 90 && gMarioState->creditsTimer < 750 ) {
+    if (gMarioState->creditsTimer >= 90 && gMarioState->creditsTimer < 840 ) {
         print_text(10, 220, "SPECIAL THANKS TO:");
     }
     if (gMarioState->creditsTimer >= 90 && gMarioState->creditsTimer < 180 ) {
@@ -331,6 +331,10 @@ void render_credits(void) {
         print_text(10, 200, "COWQUACK ROVERT");
         print_text(10, 180, "AXOLLYON");
         print_text(10, 160, "PLAYTESTING");
+    }
+    if (gMarioState->creditsTimer >= 750 && gMarioState->creditsTimer < 840 ) {
+        print_text(10, 200, "THECOZIES");
+        print_text(10, 180, "EPIC WATER EFFECT");
     }
     gMarioState->creditsTimer++;
 }

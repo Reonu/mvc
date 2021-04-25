@@ -34,7 +34,7 @@
 #include "rumble_init.h"
 #include "include/seq_ids.h"
 
-//#define DEBUG
+#define DEBUG
 
 u32 unused80339F10;
 s8 filler80339F1C[20];
@@ -1319,7 +1319,7 @@ void update_mario_button_inputs(struct MarioState *m) {
             m->showMovesetTimer = 90;
             m->showMoveset = 0;
         }
-        m->creditsTimer = 750;
+        m->creditsTimer = 840;
     }   
     if (m->debugMode == 1) {
         if (m->controller->buttonPressed & R_JPAD) {
@@ -1814,7 +1814,7 @@ void func_sh_8025574C(void) {
 s32 execute_mario_action(UNUSED struct Object *o) {
     s32 inLoop = TRUE;
     
-    if ((gMarioState->numStars == 0) && (gMarioState->creditsTimer < 810)) {
+    if ((gMarioState->numStars == 0) && (gMarioState->creditsTimer < 840)) {
         render_credits();
     }
     if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->pos[1] < -2700)) {

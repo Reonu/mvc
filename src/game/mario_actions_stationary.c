@@ -856,7 +856,9 @@ s32 check_common_landing_cancels(struct MarioState *m, u32 action) {
 
     if (m->input & INPUT_A_PRESSED) {
         if (!action) {
-            return set_jump_from_landing(m);
+            if (m->canJump || m->unlockEverything) {
+                return set_jump_from_landing(m);
+            }
         } else {
             return set_jumping_action(m, action, 0);
         }
