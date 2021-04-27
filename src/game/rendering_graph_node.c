@@ -280,7 +280,6 @@ static void geo_process_perspective(struct GraphNodePerspective *node) {
  * of this node are only processed if that distance is within the render
  * range of this node.
  */
-extern useLOD;
 static void geo_process_level_of_detail(struct GraphNodeLevelOfDetail *node) {
 #ifdef GBI_FLOATS
     Mtx *mtx = gMatStackFixed[gMatStackIndex];

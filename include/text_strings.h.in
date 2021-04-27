@@ -146,6 +146,7 @@
 #define TEXT_FILE_MARIO_D _("MARIO D")
 #define TEXT_AUTO_CONSOLE _("CONSOLE DETECTED")
 #define TEXT_AUTO_EMU     _("EMULATOR DETECTED")
+#define TEXT_SPEEDRUN     _("SPEEDRUN MODE")
 
 // Menu Options
 #define TEXT_SCORE _("SCORE")

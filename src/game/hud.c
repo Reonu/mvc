@@ -296,6 +296,9 @@ void render_debug_mode(void) {
 void render_credits(void) {
     if (gMarioState->creditsTimer > 0 && gMarioState->creditsTimer < 90 ) {
         print_text(10, 220, "HACK BY REONU");
+        if (gSpeedrunMode) {
+            print_text(10, 200, "SPEEDRUN MODE ENABLED");
+        }
     }
     if (gMarioState->creditsTimer >= 90 && gMarioState->creditsTimer < 840 ) {
         print_text(10, 220, "SPECIAL THANKS TO:");

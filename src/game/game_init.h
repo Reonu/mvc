@@ -67,6 +67,9 @@ extern u8 gDemoInputs[];
 extern u16 frameBufferIndex;
 extern u32 gGlobalTimer;
 
+extern u8 gSpeedrunMode;
+extern u8 useLOD;
+
 void setup_game_memory(void);
 void thread5_game_loop(UNUSED void *arg);
 void clear_frame_buffer(s32 color);

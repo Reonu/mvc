@@ -16,23 +16,33 @@
 #define GIVE_UP "give"
 #endif
 
-DEFINE_DIALOG(DIALOG_000, 1, 6, 30, 200, _("\
+DEFINE_DIALOG(DIALOG_000, 1, 7, 30, 200, _("\
 Mario has spent too much\n\
 time on vacation and\n\
 has forgotten all of\n\
 his moves! Get some\n\
 Power Stars so that\n\
 he can remember!\n\
+\n\
 This story totally\n\
 makes sense!\n\
-Press D-pad up to\n\
+Press DPAD^ to\n\
 check which moves\n\
 you currently have\n\
 available.\n\
+\n\
 If you get softlocked,\n\
 use Exit Course to\n\
 activate the Anti-GBJ\n\
 Technology.\n\
+\n\
+\n\
+\n\
+You can move the camera\n\
+with more precision by\n\
+using DPAD> and < \n\
+DPAD| locks it to\n\
+8 directions again.\n\
 Have fun!\n\
 -Reonu"))
 

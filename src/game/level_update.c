@@ -1327,3 +1327,16 @@ s32 lvl_play_the_end_screen_sound(UNUSED s16 arg0, UNUSED s32 arg1) {
     play_sound(SOUND_MENU_THANK_YOU_PLAYING_MY_GAME, gGlobalSoundSource);
     return 1;
 }
+s32 lvl_print_ending_text(UNUSED s16 arg0, UNUSED s32 arg1) {
+        if (!gSpeedrunMode) {
+            print_text(10, 80, "DID YOU KNOW YOU CAN");
+            print_text(10, 60, "ENABLE A SPEEDRUN MODE BY");
+            print_text(10, 40, "PRESSING L ON THE");
+            print_text(10, 20, "FILE SELECT?");
+        } else {
+            print_text(10, 40, "HI MR SPEEDRUNNER");
+            print_text(10, 20, "HOW ARE RUNS?");
+        }
+
+}
+

@@ -65,6 +65,9 @@ u32 gGlobalTimer = 0;
 
 u16 sCurrFBNum = 0;
 u16 frameBufferIndex = 0;
+
+u8 gSpeedrunMode;
+
 void (*gGoddardVblankCallback)(void) = NULL;
 struct Controller *gPlayer1Controller = &gControllers[0];
 struct Controller *gPlayer2Controller = &gControllers[1];

@@ -287,6 +287,7 @@ static unsigned char xIcon[] = { GLYPH_MULTIPLY, GLYPH_SPACE };
 
 static unsigned char textConsole[] = { TEXT_AUTO_CONSOLE };
 static unsigned char textEmu[] = { TEXT_AUTO_EMU };
+static unsigned char textSpeedrun[] = { TEXT_SPEEDRUN };
 
 /**
  * Yellow Background Menu Initial Action
@@ -1620,6 +1621,9 @@ void bhv_menu_button_manager_loop(void) {
  */
 void handle_cursor_button_input(void) {
     // If scoring a file, pressing A just changes the coin score mode.
+    if (gPlayer1Controller->buttonPressed & L_TRIG) {
+        gSpeedrunMode = 1;
+    }
     if (sSelectedButtonID == MENU_BUTTON_SCORE_FILE_A || sSelectedButtonID == MENU_BUTTON_SCORE_FILE_B
         || sSelectedButtonID == MENU_BUTTON_SCORE_FILE_C
         || sSelectedButtonID == MENU_BUTTON_SCORE_FILE_D) {
@@ -1819,7 +1823,6 @@ void print_save_file_star_count(s8 fileIndex, s16 x, s16 y) {
  * Same rule applies for score, copy and erase strings.
  */
 void print_main_menu_strings(void) {
-    extern useLOD;
 #ifdef VERSION_SH
     // The current sound mode is automatically centered on US and Shindou.
     static s16 sSoundTextX; // TODO: There should be a way to make this match on both US and Shindou.
@@ -1828,7 +1831,10 @@ void print_main_menu_strings(void) {
     gSPDisplayList(gDisplayListHead++, dl_rgba16_text_begin);
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
 #ifndef VERSION_EU
-    if (useLOD) {
+    if (gSpeedrunMode) {
+        print_hud_lut_string(HUD_LUT_DIFF, 70, 35, textSpeedrun);
+    }
+    else if (useLOD) {
         print_hud_lut_string(HUD_LUT_DIFF, 60, 35, textConsole);
     }
     else {
