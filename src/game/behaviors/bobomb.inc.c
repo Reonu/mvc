@@ -294,12 +294,13 @@ void bobomb_buddy_act_idle(void) {
     o->oBobombBuddyPosXCopy = o->oPosX;
     o->oBobombBuddyPosYCopy = o->oPosY;
     o->oBobombBuddyPosZCopy = o->oPosZ;
-    if (o->oDistanceToMario < 400.0f) {
+    /*if (o->oDistanceToMario < 400.0f) {
         play_secondary_music(SEQ_EVENT_PIRANHA_PLANT, 0, 255, 1000);
         musicPlaying = 1;
     } else if (musicPlaying == 1) {
-         func_80321080(50);
-    }
+         stop_secondary_music
+         musicPlaying = 0;
+    }*/
     
     //collisionFlags = object_step();
 

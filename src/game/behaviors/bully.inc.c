@@ -173,7 +173,7 @@ void bully_step(void) {
     bully_play_stomping_sound();
     obj_check_floor_death(collisionFlags, sObjFloor);
 
-    if (o->oBullySubtype & BULLY_STYPE_CHILL) {
+    if ((o->oBullySubtype & BULLY_STYPE_CHILL) || (o->header.gfx.sharedChild == gLoadedGraphNodes[MODEL_CHILL_BULLY])) {
         if (o->oPosY < -2330.0f)
             o->oAction = BULLY_ACT_LAVA_DEATH;
     }

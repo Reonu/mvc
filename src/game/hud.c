@@ -298,9 +298,10 @@ void render_credits(void) {
         print_text(10, 220, "HACK BY REONU");
         if (gSpeedrunMode) {
             print_text(10, 200, "SPEEDRUN MODE ENABLED");
+            print_text(10, 180, "SAVING IS DISABLED!");
         }
     }
-    if (gMarioState->creditsTimer >= 90 && gMarioState->creditsTimer < 840 ) {
+    if (gMarioState->creditsTimer >= 90 && gMarioState->creditsTimer < 930 ) {
         print_text(10, 220, "SPECIAL THANKS TO:");
     }
     if (gMarioState->creditsTimer >= 90 && gMarioState->creditsTimer < 180 ) {
@@ -331,13 +332,16 @@ void render_credits(void) {
         print_text(10, 180, "CONSOLE TESTING");
     }
     if (gMarioState->creditsTimer >= 630 && gMarioState->creditsTimer < 750 ) {
-        print_text(10, 200, "COWQUACK ROVERT");
-        print_text(10, 180, "AXOLLYON");
-        print_text(10, 160, "PLAYTESTING");
+        print_text(10, 200, "COWQUACK & ROVERT");
+        print_text(10, 180, "PLAYTESTING");
     }
     if (gMarioState->creditsTimer >= 750 && gMarioState->creditsTimer < 840 ) {
         print_text(10, 200, "THECOZIES");
         print_text(10, 180, "EPIC WATER EFFECT");
+    }
+    if (gMarioState->creditsTimer >= 840 && gMarioState->creditsTimer < 930 ) {
+        print_text(10, 200, "AXOLLYON");
+        print_text(10, 180, "DECAL HELP & TESTING");
     }
     gMarioState->creditsTimer++;
 }
