@@ -318,11 +318,11 @@ void thread3_main(UNUSED void *arg) {
     crash_screen_init();
 
 #ifdef UNF
-    debug_printf("Super Mario 64\n");
-    debug_printf("Built by: %s\n", __username__);
-    debug_printf("Date    : %s\n", __datetime__);
-    debug_printf("Compiler: %s\n", __compiler__);
-    debug_printf("Linker  : %s\n", __linker__);
+    //debug_printf("Super Mario 64\n");
+    //debug_printf("Built by: %s\n", __username__);
+    //debug_printf("Date    : %s\n", __datetime__);
+    //debug_printf("Compiler: %s\n", __compiler__);
+    //debug_printf("Linker  : %s\n", __linker__);
 #endif
 
     create_thread(&gSoundThread, 4, thread4_sound, NULL, gThread4Stack + 0x2000, 20);

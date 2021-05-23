@@ -34,7 +34,7 @@
 #include "rumble_init.h"
 #include "include/seq_ids.h"
 
-//#define DEBUG
+#define DEBUG
 
 u32 unused80339F10;
 s8 filler80339F1C[20];
