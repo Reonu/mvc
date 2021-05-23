@@ -586,7 +586,7 @@ s32 act_hold_freefall(struct MarioState *m) {
         return set_mario_action(m, ACT_AIR_THROW, 0);
     }
 
-    if (m->input & INPUT_Z_PRESSED) {
+    if (m->input & INPUT_Z_PRESSED && (m->canGroundPound || m->unlockEverything)) {
         return drop_and_set_mario_action(m, ACT_GROUND_POUND, 0);
     }
 

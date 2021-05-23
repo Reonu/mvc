@@ -799,6 +799,6 @@ void render_hud(void) {
         }
        
         
-        print_fps(20,20);
+        //print_fps(20,20);
     }
 }
