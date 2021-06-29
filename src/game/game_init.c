@@ -62,6 +62,10 @@ UNUSED u8 filler80339D30[0x90];
 
 s32 unused8032C690 = 0;
 u32 gGlobalTimer = 0;
+u8 gIsConsole;
+#ifdef WIDE
+u8 gWidescreen;
+#endif
 
 u16 sCurrFBNum = 0;
 u16 frameBufferIndex = 0;
@@ -245,6 +249,9 @@ void create_task_structure(void) {
 #ifdef  F3DZEX_GBI_2
     gGfxSPTask->task.t.ucode = gspF3DZEX2_PosLight_fifoTextStart;
     gGfxSPTask->task.t.ucode_data = gspF3DZEX2_PosLight_fifoDataStart;
+#elif   F3DEX2PL_GBI
+    gGfxSPTask->task.t.ucode = gspF3DEX2_PosLight_fifoTextStart;
+    gGfxSPTask->task.t.ucode_data = gspF3DEX2_PosLight_fifoDataStart;
 #elif   F3DEX_GBI_2
     gGfxSPTask->task.t.ucode = gspF3DEX2_fifoTextStart;
     gGfxSPTask->task.t.ucode_data = gspF3DEX2_fifoDataStart;
@@ -323,9 +330,9 @@ void draw_reset_bars(void) {
 u8 useLOD;
 void rendering_init(void) {
     if (IO_READ(DPC_PIPEBUSY_REG) == 0) {
-        useLOD = 0;
+        gIsConsole = 0;
     } else {
-        useLOD = 1;
+        gIsConsole = 1;
     }
     gGfxPool = &gGfxPools[0];
     set_segment_base_addr(1, gGfxPool->buffer);

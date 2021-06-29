@@ -28,8 +28,6 @@ u8 curFrameTimeIndex = 0;
 
 #include "PR/os_convert.h"
 
-u32 get_clockspeed(void);
-
 // Call once per frame
 f32 calculate_and_update_fps()
 {
@@ -43,8 +41,6 @@ f32 calculate_and_update_fps()
 
 
     return ((f32)FRAMETIME_COUNT * 1000000.0f) / (s32)OS_CYCLES_TO_USEC(newTime - oldTime);
-
-    // return ((f32)FRAMETIME_COUNT * 1000000.0f) / (s32)OS_CYCLES_TO_USEC(newTime - oldTime);
 }
 
 void print_fps(s32 x, s32 y)
@@ -757,16 +753,18 @@ void render_hud(void) {
         if (gCurrentArea != NULL && gCurrentArea->camera->mode == CAMERA_MODE_INSIDE_CANNON) {
             render_hud_cannon_reticle();
         }
-
+    #ifndef DISABLE_LIVES
         if (hudDisplayFlags & HUD_DISPLAY_FLAG_LIVES) {
             render_hud_mario_lives();
         }
+    #endif
         if (gMarioState->debugMode == 1){
             render_debug_mode();
         }
         if (gMarioState->showMoveset) {
             render_moveset();
         }
+
 
         if (hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT) {
             render_hud_coins();

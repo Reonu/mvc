@@ -4,6 +4,46 @@
 
 In order to compile, you need BOTH AN US ROM AND A JAPANESE ROM, named baserom.us.z64 and baserom.jp.z64. You also need to run ``python3 extract_assets.py jp`` before trying to compile. You also need gcc, which you can install with the following command: `sudo apt install gcc-mips-linux-gnu`
 
+# UltraSM64-extbounds
+**AFTER CLONING THE REPO, CHECK OUT THE `include/config.h` FILE BEFORE ANYTHING ELSE! IT THERE'S A LOT OF STUFF IN THIS REPO THAT CAN BE TOGGLED THERE.**
+
+This repo needs gcc in order to be able to build it. To install it, run `sudo apt install gcc-mips-linux-gnu`
+
+This is a fork of the ultrasm64 repo by CrashOveride which includes the following commonly used patches (patches marked with `*` are toggleable in `config.h`): 
+- slope fix
+- exposed ceilings fix
+- No false ledgegrabs fix * 
+- Jump kick fix * 
+- 46 degree wallkicks * 
+- Instant Input patch by Wiseguy (Removes all input lag caused by good emulators and plugins)
+- pole fix
+- Mario head skip *
+- Peach letter cutscene skip *
+- Toggle to disable fall damage and the fall damage sound *
+- Ability to configure whether there's a 100 coin star at all and how many coins are required to spawn it *
+- Non-stop stars *
+- better extended boundaries by anonymous_moose
+- water surface type patch by thecozies
+- platform displacement 2 by arthur *
+- FPS counter (use the function `print_fps(x,y)` anywhere that runs code every frame)
+- Automatic console/emulator detection. If emulator is detected, LODs are disabled. *
+- Rounded corners by Frame, merged by Cheezepin
+- Widescreen (16:9) support toggleable by pressing `L` in the pause menu. *
+- Removed course-specific camera processing *
+- Increased maximum pole lenght (The game will read bparam1 and bparam2 together as a single value, so you can have a very long pole) *
+- bparam4 fix (the game no longer uses bparam4 to check if an object is mario and therefore you can safely use it)
+- Instant warp offset fix (makes the instant warp offset work even when warping to a different area) *
+- Global star IDs (disabled by default, toggleable in config.h). This allows you to create an open world (MVC-style) hack. *
+- Included `actors/group0.c` in `behavior_data.c`
+- 16 bit model IDs by someone2639. This means you can have up to 65536 models (lol)
+- s2dex engine by someone2639! To use it, compile with `make TEXT_ENGINE=s2dex_text_engine` or just set `TEXT_ENGINE` to `s2dex_text_engine` in the makefile.
+- haveyourcake, also known as cake screen fix. Made by Wiseguy and ported/PR'd by Cheezepin
+- Tree particle fix (Whether a tree uses snow particles or not is decided via the model IDs instead of the course number)
+- Removed the ifdef hell in `file_select.c` and `ingame_menu.c`
+- Added blake's custom function for object model stuff: `obj_set_model` and `obj_has_model`
+- Coordinate overflow fix by falcobuster. Your levels will render correctly on console and LLE emulators even when using 2x or 4x bounds, while not hurting anything on HLE plugins. **This is automatic now, you don't have to set WORLD_SCALE manually.**
+
+It also uncringes the way that apply_patch.sh works, and removes the black border.
 # UltraSM64
 
 - This repo contains a full decompilation of Super Mario 64 (J), (U), (E), and (SH).
@@ -12,10 +52,18 @@ In order to compile, you need BOTH AN US ROM AND A JAPANESE ROM, named baserom.u
 - Shindou Rumble Pak code is on for all regions.
 - Targeting the iQue Player is supported.
 - Saving to 32kbyte/256kbit SRAM is supported.
-- Using gzip DEFLATE compression is supported.
+- Newer compression options are supported.
+- UNFLoader (flashcart USB library) is supported, allowing for debugging on EverDrive/64Drive.
 - It has been patched with someone2639's shiftable segments patch
-- Getting HVQM FMV support to work with the game is in progress.
-- Getting UNFLoader (flashcart USB library) to work with the game is in progress.
+- Getting HVQM FMV support to work with the game is WIP.
+
+## UNFLoader support
+
+The repository supports UNFLoader for debugging.
+
+To build with UNF, run make with ``UNF=1``.
+
+Further instructions can be found at the [official repository](https://github.com/buu342/N64-UNFLoader)
 
 ## Multi-Save support
 
@@ -53,6 +101,12 @@ Both methods are fast. Method 1 has better compression than 2, so I suggest usin
 
 To switch to RNC, run make with either ``COMPRESS=rnc1`` or ``COMPRESS=rnc2``, depending on preferred method.
 
+The repo also supports building a ROM with no compression.
+
+This is not recommended as it increases ROM size significantly, with little point other than load times decreased to almost nothing.
+
+To switch to no compression, run make with the ``COMPRESS=uncomp`` argument.
+
 
 ## FAQ
 
@@ -71,6 +125,5 @@ Q: Will this allow me to use FlashRAM/Transfer Pak/microcode swapping/Other Cool
 A: Theoretically, all yes.
 
 ## Installation help
-
 
 Go read the original repo README.md

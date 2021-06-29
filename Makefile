@@ -9,6 +9,7 @@ default: all
 DEFINES :=
 
 SRC_DIRS :=
+USE_DEBUG := 0
 
 #==============================================================================#
 # Build Options                                                                #
@@ -58,7 +59,7 @@ endif
 DEFINES += NO_ERRNO_H=1 NO_GZIP=1
 
 COMPRESS ?= yay0
-$(eval $(call validate-option,COMPRESS,yay0 gzip rnc1 rnc2))
+$(eval $(call validate-option,COMPRESS,mio0 yay0 gzip rnc1 rnc2 uncomp))
 ifeq ($(COMPRESS),gzip)
   DEFINES += GZIP=1
 else ifeq ($(COMPRESS),rnc1)
@@ -67,6 +68,10 @@ else ifeq ($(COMPRESS),rnc2)
   DEFINES += RNC2=1
 else ifeq ($(COMPRESS),yay0)
   DEFINES += YAY0=1
+else ifeq ($(COMPRESS),mio0)
+  DEFINES += MIO0=1
+else ifeq ($(COMPRESS),uncomp)
+  DEFINES += UNCOMPRESSED=1
 endif
 
 GZIPVER ?= std
@@ -82,24 +87,16 @@ $(eval $(call validate-option,VERSION,jp us eu sh))
 
 ifeq      ($(VERSION),jp)
   DEFINES   += VERSION_JP=1
-  OPT_FLAGS := -g
   GRUCODE   ?= f3dzex
-  VERSION_JP_US  ?= true
 else ifeq ($(VERSION),us)
   DEFINES   += VERSION_US=1
-  OPT_FLAGS := -g
   GRUCODE   ?= f3dzex
-  VERSION_JP_US  ?= true
 else ifeq ($(VERSION),eu)
   DEFINES   += VERSION_EU=1
-  OPT_FLAGS := -O2
   GRUCODE   ?= f3dzex
-  VERSION_JP_US  ?= false
 else ifeq ($(VERSION),sh)
   DEFINES   += VERSION_SH=1
-  OPT_FLAGS := -O2
   GRUCODE   ?= f3dzex
-  VERSION_JP_US  ?= false
 endif
 
 TARGET := mvc.$(VERSION)
@@ -112,7 +109,7 @@ TARGET := mvc.$(VERSION)
 #   f3dex2  -
 #   f3dzex  - newer, experimental microcode used in Animal Crossing
 #   super3d - extremely experimental version of Fast3D lacking many features for speed
-$(eval $(call validate-option,GRUCODE,f3d_old f3dex f3dex2 f3d_new f3dzex super3d))
+$(eval $(call validate-option,GRUCODE,f3d_old f3dex f3dex2 f3dex2pl f3d_new f3dzex super3d))
 
 ifeq      ($(GRUCODE),f3d_old)
   DEFINES += F3D_OLD=1
@@ -122,6 +119,8 @@ else ifeq ($(GRUCODE),f3dex) # Fast3DEX
   DEFINES += F3DEX_GBI=1 F3DEX_GBI_SHARED=1
 else ifeq ($(GRUCODE),f3dex2) # Fast3DEX2
   DEFINES += F3DEX_GBI_2=1 F3DEX_GBI_SHARED=1
+else ifeq ($(GRUCODE),f3dex2pl) # Fast3DEX2_PosLight
+  DEFINES += F3DEX2PL_GBI=1 F3DEX_GBI_2=1 F3DEX_GBI_SHARED=1
 else ifeq ($(GRUCODE),f3dzex) # Fast3DZEX (2.08J / Animal Forest - Dōbutsu no Mori)
   DEFINES += F3DZEX_GBI_2=1 F3DEX_GBI_2=1 F3DEX_GBI_SHARED=1
 else ifeq ($(GRUCODE),super3d) # Super3D
@@ -129,10 +128,24 @@ else ifeq ($(GRUCODE),super3d) # Super3D
   DEFINES += SUPER3D_GBI=1 F3D_NEW=1
 endif
 
+LIBRARIES := gcc nustd hvqm2 z goddard
+
+# TEXT ENGINES
+#   s2dex_text_engine - Text Engine by someone2639
+TEXT_ENGINE := none
+ifeq ($(TEXT_ENGINE), s2dex_text_engine)
+  DEFINES += S2DEX_GBI_2=1 S2DEX_TEXT_ENGINE=1
+  LIBRARIES += s2d_engine
+  DUMMY != make -C src/s2d_engine COPY_DIR=$(shell pwd)/lib/
+endif
+# add more text engines here
+
+LINK_LIBRARIES = $(foreach i,$(LIBRARIES),-l$(i))
+
 ifeq ($(COMPILER),gcc)
   NON_MATCHING := 1
   MIPSISET     := -mips3
-  OPT_FLAGS    := -O2
+  OPT_FLAGS    := -O2 -g
 endif
 
 
@@ -164,16 +177,34 @@ ifeq ($(filter $(TARGET_STRING), sm64.jp.f3d_old sm64.us.f3d_old sm64.eu.f3d_new
   COMPARE := 0
 endif
 
-
 # UNF - whether to use UNFLoader flashcart library
 #   1 - includes code in ROM
 #   0 - does not 
 UNF ?= 0
 $(eval $(call validate-option,UNF,0 1))
-
 ifeq ($(UNF),1)
   DEFINES += UNF=1
   SRC_DIRS += src/usb
+  USE_DEBUG := 1
+endif
+
+# ISVPRINT - whether to fake IS-Viewer presence,
+# allowing for usage of CEN64 (and possibly Project64) to print messages to terminal.
+#   1 - includes code in ROM
+#   0 - does not 
+ISVPRINT ?= 0
+$(eval $(call validate-option,ISVPRINT,0 1))
+ifeq ($(ISVPRINT),1)
+  DEFINES += ISVPRINT=1
+  USE_DEBUG := 1
+endif
+
+ifeq ($(USE_DEBUG),1)
+  ULTRALIB := ultra_d
+  DEFINES += DEBUG=1
+else
+  ULTRALIB := ultra_rom
+  DEFINES += _FINALROM=1 NDEBUG=1
 endif
 
 # HVQM - whether to use HVQM fmv library
@@ -184,6 +215,15 @@ $(eval $(call validate-option,HVQM,0 1))
 ifeq ($(HVQM),1)
   DEFINES += HVQM=1
   SRC_DIRS += src/hvqm
+endif
+
+# GODDARD - whether to use libgoddard (Mario Head)
+#   1 - includes code in ROM
+#   0 - does not 
+GODDARD ?= 0
+$(eval $(call validate-option,GODDARD,0 1))
+ifeq ($(GODDARD),1)
+  DEFINES += GODDARD=1
 endif
 
 # Whether to hide commands or not
@@ -269,8 +309,9 @@ ACTOR_DIR      := actors
 LEVEL_DIRS     := $(patsubst levels/%,%,$(dir $(wildcard levels/*/header.h)))
 
 # Directories containing source files
-SRC_DIRS += src src/engine src/game src/audio src/menu src/buffers actors levels bin data assets asm lib sound
+SRC_DIRS += src src/game src/engine src/audio src/menu src/buffers actors levels bin data assets asm lib sound
 LIBZ_SRC_DIRS := src/libz
+GODDARD_SRC_DIRS := src/goddard src/goddard/dynlists
 BIN_DIRS := bin bin/$(VERSION)
 
 # File dependencies and variables for specific files
@@ -280,6 +321,7 @@ include Makefile.split
 LEVEL_C_FILES     := $(wildcard levels/*/leveldata.c) $(wildcard levels/*/script.c) $(wildcard levels/*/geo.c)
 C_FILES           := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.c)) $(LEVEL_C_FILES)
 LIBZ_C_FILES     := $(foreach dir,$(LIBZ_SRC_DIRS),$(wildcard $(dir)/*.c))
+GODDARD_C_FILES   := $(foreach dir,$(GODDARD_SRC_DIRS),$(wildcard $(dir)/*.c))
 S_FILES           := $(foreach dir,$(SRC_DIRS),$(wildcard $(dir)/*.s))
 GENERATED_C_FILES := $(BUILD_DIR)/assets/mario_anim_data.c $(BUILD_DIR)/assets/demo_data.c
 
@@ -304,9 +346,10 @@ O_FILES := $(foreach file,$(C_FILES),$(BUILD_DIR)/$(file:.c=.o)) \
            lib/PR/hvqm/hvqm2sp1.o lib/PR/hvqm/hvqm2sp2.o
 
 LIBZ_O_FILES := $(foreach file,$(LIBZ_C_FILES),$(BUILD_DIR)/$(file:.c=.o))
+GODDARD_O_FILES := $(foreach file,$(GODDARD_C_FILES),$(BUILD_DIR)/$(file:.c=.o))
 
 # Automatic dependency files
-DEP_FILES := $(O_FILES:.o=.d) $(LIBZ_O_FILES:.o=.d) $(BUILD_DIR)/$(LD_SCRIPT).d
+DEP_FILES := $(O_FILES:.o=.d) $(LIBZ_O_FILES:.o=.d) $(GODDARD_O_FILES:.o=.d) $(BUILD_DIR)/$(LD_SCRIPT).d
 
 #==============================================================================#
 # Compiler Options                                                             #
@@ -317,10 +360,14 @@ ifneq ($(call find-command,mips64-elf-ld),)
   CROSS := mips64-elf-
 else ifneq ($(call find-command,mips-n64-ld),)
   CROSS := mips-n64-
+else ifneq ($(call find-command,mips64-ld),)
+  CROSS := mips64-
 else ifneq ($(call find-command,mips-linux-gnu-ld),)
   CROSS := mips-linux-gnu-
 else ifneq ($(call find-command,mips64-linux-gnu-ld),)
   CROSS := mips64-linux-gnu-
+else ifneq ($(call find-command,mips-ld),)
+  CROSS := mips-
 else
   $(error Unable to detect a suitable MIPS toolchain installed)
 endif
@@ -379,6 +426,7 @@ CPPFLAGS := -P -Wno-trigraphs $(DEF_INC_CFLAGS)
 
 # N64 tools
 YAY0TOOL              := $(TOOLS_DIR)/slienc
+MIO0TOOL              := $(TOOLS_DIR)/mio0
 RNCPACK               := $(TOOLS_DIR)/rncpack
 ROMALIGN              := $(TOOLS_DIR)/romalign
 FILESIZER             := $(TOOLS_DIR)/filesizer
@@ -402,8 +450,8 @@ else
   RSPASM              := $(TOOLS_DIR)/armips
 endif
 ENDIAN_BITWIDTH       := $(BUILD_DIR)/endian-and-bitwidth
-EMULATOR = mupen64plus
-EMU_FLAGS = --noosd
+EMULATOR = ~/Downloads/mupen64plus/mupen64plus-gui
+EMU_FLAGS = 
 LOADER = loader64
 LOADER_FLAGS = -vwf
 SHA1SUM = sha1sum
@@ -440,6 +488,7 @@ endif
 
 clean:
 	$(RM) -r $(BUILD_DIR_BASE)
+	make -C src/s2d_engine clean
 
 distclean: clean
 	$(PYTHON) extract_assets.py --clean
@@ -551,11 +600,11 @@ $(BUILD_DIR)/levels/%/leveldata.elf: $(BUILD_DIR)/levels/%/leveldata.o $(BUILD_D
 	$(V)$(LD) -e 0 -Ttext=$(SEGMENT_ADDRESS) -Map $@.map --just-symbols=$(BUILD_DIR)/bin/$(TEXTURE_BIN).elf -o $@ $<
 
 $(BUILD_DIR)/%.bin: $(BUILD_DIR)/%.elf
-	$(call print,Extracting compressionable data from:,$<,$@)
+	$(call print,Extracting compressible data from:,$<,$@)
 	$(V)$(EXTRACT_DATA_FOR_MIO) $< $@
 
 $(BUILD_DIR)/levels/%/leveldata.bin: $(BUILD_DIR)/levels/%/leveldata.elf
-	$(call print,Extracting compressionable data from:,$<,$@)
+	$(call print,Extracting compressible data from:,$<,$@)
 	$(V)$(EXTRACT_DATA_FOR_MIO) $< $@
 
 ifeq ($(COMPRESS),gzip)
@@ -566,6 +615,10 @@ else ifeq ($(COMPRESS),rnc2)
 include rnc2rules.mk
 else ifeq ($(COMPRESS),yay0)
 include yay0rules.mk
+else ifeq ($(COMPRESS),mio0)
+include mio0rules.mk
+else ifeq ($(COMPRESS),uncomp)
+include uncomprules.mk
 endif
 
 #==============================================================================#
@@ -691,15 +744,20 @@ $(BUILD_DIR)/$(LD_SCRIPT): $(LD_SCRIPT)
 	$(call print,Preprocessing linker script:,$<,$@)
 	$(V)$(CPP) $(CPPFLAGS) -DBUILD_DIR=$(BUILD_DIR) -MMD -MP -MT $@ -MF $@.d -o $@ $<
 
+# Link libgoddard
+$(BUILD_DIR)/libgoddard.a: $(GODDARD_O_FILES)
+	@$(PRINT) "$(GREEN)Linking libgoddard:  $(BLUE)$@ $(NO_COL)\n"
+	$(V)$(AR) rcs -o $@ $(GODDARD_O_FILES)
+
 # Link libz
 $(BUILD_DIR)/libz.a: $(LIBZ_O_FILES)
 	@$(PRINT) "$(GREEN)Linking libz:  $(BLUE)$@ $(NO_COL)\n"
 	$(V)$(AR) rcs -o $@ $(LIBZ_O_FILES)
 
 # Link SM64 ELF file
-$(ELF): $(O_FILES) $(YAY0_OBJ_FILES) $(SEG_FILES) $(BUILD_DIR)/$(LD_SCRIPT) undefined_syms.txt $(BUILD_DIR)/libz.a
+$(ELF): $(O_FILES) $(YAY0_OBJ_FILES) $(SEG_FILES) $(BUILD_DIR)/$(LD_SCRIPT) undefined_syms.txt $(BUILD_DIR)/libz.a $(BUILD_DIR)/libgoddard.a
 	@$(PRINT) "$(GREEN)Linking ELF file:  $(BLUE)$@ $(NO_COL)\n"
-	$(V)$(LD) -L $(BUILD_DIR) -T undefined_syms.txt -T $(BUILD_DIR)/$(LD_SCRIPT) -Map $(BUILD_DIR)/sm64.$(VERSION).map --no-check-sections $(addprefix -R ,$(SEG_FILES)) -o $@ $(O_FILES) -L$(LIBS_DIR) -lultra_rom -Llib -lgcc -lnustd -lhvqm2 -lz
+	$(V)$(LD) --gc-sections -L $(BUILD_DIR) -T undefined_syms.txt -T $(BUILD_DIR)/$(LD_SCRIPT) -Map $(BUILD_DIR)/sm64.$(VERSION).map --no-check-sections $(addprefix -R ,$(SEG_FILES)) -o $@ $(O_FILES) -L$(LIBS_DIR) -l$(ULTRALIB) -Llib $(LINK_LIBRARIES) -u sprintf -u osMapTLB
 
 # Build ROM
 $(ROM): $(ELF)

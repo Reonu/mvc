@@ -551,7 +551,7 @@ struct Surface *resolve_and_return_wall_collisions(Vec3f pos, f32 offset, f32 ra
 f32 vec3f_find_ceil(Vec3f pos, f32 height, struct Surface **ceil) {
     UNUSED f32 unused;
 
-    return find_ceil(pos[0], height + 80.0f, pos[2], ceil);
+    return find_ceil(pos[0], height + 3.0f, pos[2], ceil);
 }
 
 /**
@@ -642,6 +642,11 @@ s32 mario_floor_is_slope(struct MarioState *m) {
 s32 mario_floor_is_steep(struct MarioState *m) {
     f32 normY;
     s32 result = FALSE;
+
+#ifdef JUMP_KICK_FIX
+    if (m->floor->type == SURFACE_NOT_SLIPPERY)
+        return FALSE;
+#endif
 
     // Interestingly, this function does not check for the
     // slide terrain type. This means that steep behavior persists for
@@ -1445,7 +1450,7 @@ void update_mario_geometry_inputs(struct MarioState *m) {
         m->floorHeight = find_floor(m->pos[0], m->pos[1], m->pos[2], &m->floor);
     }
 
-    m->ceilHeight = vec3f_find_ceil(&m->pos[0], m->floorHeight, &m->ceil);
+    m->ceilHeight = vec3f_find_ceil(m->pos, m->pos[1], &m->ceil);
     gasLevel = find_poison_gas_level(m->pos[0], m->pos[2]);
     m->waterLevel = find_water_level(m->pos[0], m->pos[2]);
 

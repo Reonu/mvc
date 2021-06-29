@@ -30,6 +30,8 @@
 #include "course_table.h"
 #include "rumble_init.h"
 
+#include "config.h"
+
 #define PLAY_MODE_NORMAL 0
 #define PLAY_MODE_PAUSED 2
 #define PLAY_MODE_CHANGE_AREA 3
@@ -558,7 +560,11 @@ void check_instant_warp(void) {
                 gMarioState->marioObj->oPosX = gMarioState->pos[0];
                 gMarioState->marioObj->oPosY = gMarioState->pos[1];
                 gMarioState->marioObj->oPosZ = gMarioState->pos[2];
-
+            #ifdef INSTANT_WARP_OFFSET_FIX
+                gMarioObject->header.gfx.pos[0] = gMarioState->pos[0];
+                gMarioObject->header.gfx.pos[1] = gMarioState->pos[1];
+                gMarioObject->header.gfx.pos[2] = gMarioState->pos[2];               
+            #endif
                 cameraAngle = gMarioState->area->camera->yaw;
 
                 change_area(warp->area);
@@ -737,9 +743,11 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
                 break;
 
             case WARP_OP_DEATH:
+            #ifndef DISABLE_LIVES
                 if (m->numLives == 0) {
                     sDelayedWarpOp = WARP_OP_GAME_OVER;
                 }
+            #endif
                 sDelayedWarpTimer = 48;
                 sSourceWarpNodeId = WARP_NODE_DEATH;
                 if (gMarioState->action != ACT_LAVA_BOOST) {
@@ -752,12 +760,17 @@ s16 level_trigger_warp(struct MarioState *m, s32 warpOp) {
             case WARP_OP_WARP_FLOOR:
                 sSourceWarpNodeId = WARP_NODE_WARP_FLOOR;
                 if (area_get_warp_node(sSourceWarpNodeId) == NULL) {
+                #ifndef DISABLE_LIVES
                     if (m->numLives == 0) {
                         sDelayedWarpOp = WARP_OP_GAME_OVER;
                     } else {
                         sSourceWarpNodeId = WARP_NODE_DEATH;
                     }
+                #else
+                        sSourceWarpNodeId = WARP_NODE_DEATH;
+                #endif
                 }
+
                 sDelayedWarpTimer = 20;
                 play_transition(WARP_TRANSITION_FADE_INTO_CIRCLE, 0x14, 0x00, 0x00, 0x00);
                 break;
@@ -1196,16 +1209,30 @@ s32 init_level(void) {
 
         if (gCurrentArea != NULL) {
             reset_camera(gCurrentArea->camera);
-
-if (gCurrDemoInput != NULL) {
-    set_mario_action(gMarioState, ACT_IDLE, 0);
-} else if (gDebugLevelSelect == 0) {
-    if (gMarioState->action != ACT_UNINITIALIZED) {
+#ifdef PEACH_SKIP
+        if (gCurrDemoInput != NULL) {
             set_mario_action(gMarioState, ACT_IDLE, 0);
-    }
-}
+        } else if (gDebugLevelSelect == 0) {
+            if (gMarioState->action != ACT_UNINITIALIZED) {
+                    set_mario_action(gMarioState, ACT_IDLE, 0);
+            }
         }
-
+    }
+#else
+        if (gCurrDemoInput != NULL) {
+            set_mario_action(gMarioState, ACT_IDLE, 0);
+        } else if (gDebugLevelSelect == 0) {
+            if (gMarioState->action != ACT_UNINITIALIZED) {
+                if (save_file_exists(gCurrSaveFileNum - 1)) {
+                    set_mario_action(gMarioState, ACT_IDLE, 0);
+                } else {
+                    set_mario_action(gMarioState, ACT_INTRO_CUTSCENE, 0);
+                    val4 = 1;
+                }
+            }
+        }
+    }
+#endif
         if (val4 != 0) {
             play_transition(WARP_TRANSITION_FADE_FROM_COLOR, 0x5A, 0xFF, 0xFF, 0xFF);
         } else {

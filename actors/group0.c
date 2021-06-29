@@ -72,3 +72,7 @@
 #include "piranha_plant/model.inc.c"
 #include "piranha_plant/anims/data.inc.c"
 #include "piranha_plant/anims/table.inc.c"
+#ifdef S2DEX_TEXT_ENGINE
+#include "src/s2d_engine/config.h"
+#include FONT_C_FILE
+#endif

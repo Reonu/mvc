@@ -59,10 +59,11 @@ s32 lava_boost_on_wall(struct MarioState *m) {
 }
 
 s32 check_fall_damage(struct MarioState *m, u32 hardFallAction) {
+#ifndef NO_FALL_DAMAGE
     f32 fallHeight;
     f32 damageHeight;
 
-   /* fallHeight = m->peakHeight - m->pos[1];
+   fallHeight = m->peakHeight - m->pos[1];
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wtype-limits"
@@ -97,7 +98,7 @@ s32 check_fall_damage(struct MarioState *m, u32 hardFallAction) {
             }
         }
     }
-*/
+#endif
     return FALSE;
 }
 
@@ -2068,8 +2069,9 @@ s32 mario_execute_airborne_action(struct MarioState *m) {
     if (check_common_airborne_cancels(m)) {
         return TRUE;
     }
-
+#ifndef NO_FALL_DAMAGE_SOUND
     play_far_fall_sound(m);
+#endif
 
     /* clang-format off */
     switch (m->action) {

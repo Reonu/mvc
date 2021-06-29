@@ -18,9 +18,13 @@
 #include "make_const_nonconst.h"
 #include "levels/intro/header.h"
 
+#include "config.h"
+
 const LevelScript level_intro_splash_screen[] = {
     INIT_LEVEL(),
-    EXIT_AND_EXECUTE(/*seg*/ 0x14, _menuSegmentRomStart, _menuSegmentRomEnd, level_main_menu_entry_1),
+#ifdef SKIP_TITLE_SCREEN
+    EXIT_AND_EXECUTE(/*seg*/ 0x14, _introSegmentRomStart, _introSegmentRomEnd, level_intro_mario_head_regular),
+#endif
     FIXED_LOAD(/*loadAddr*/ _goddardSegmentStart, /*romStart*/ _goddardSegmentRomStart, /*romEnd*/ _goddardSegmentRomEnd),
     LOAD_RAW(/*seg*/ 0x13, _behaviorSegmentRomStart, _behaviorSegmentRomEnd),
     LOAD_YAY0(/*seg*/ 0x07, _intro_segment_7SegmentRomStart, _intro_segment_7SegmentRomEnd),
@@ -46,8 +50,14 @@ const LevelScript level_intro_splash_screen[] = {
 
 const LevelScript level_intro_mario_head_regular[] = {
     INIT_LEVEL(),
+#ifndef KEEP_MARIO_HEAD
+    EXIT_AND_EXECUTE(/*seg*/ 0x14, _menuSegmentRomStart, _menuSegmentRomEnd, level_main_menu_entry_1),
+#endif
     BLACKOUT(/*active*/ TRUE),
     FIXED_LOAD(/*loadAddr*/ _goddardSegmentStart, /*romStart*/ _goddardSegmentRomStart, /*romEnd*/ _goddardSegmentRomEnd),
+#ifdef KEEP_MARIO_HEAD
+    LOAD_MARIO_HEAD(/*loadHeadID*/ REGULAR_FACE),
+#endif
     LOAD_RAW(/*seg*/ 0x13, _behaviorSegmentRomStart, _behaviorSegmentRomEnd),
     LOAD_YAY0_TEXTURE(/*seg*/ 0x0A, _title_screen_bg_yay0SegmentRomStart, _title_screen_bg_yay0SegmentRomEnd),
 
@@ -72,6 +82,9 @@ const LevelScript level_intro_mario_head_dizzy[] = {
     INIT_LEVEL(),
     BLACKOUT(/*active*/ TRUE),
     FIXED_LOAD(/*loadAddr*/ _goddardSegmentStart, /*romStart*/ _goddardSegmentRomStart, /*romEnd*/ _goddardSegmentRomEnd),
+#ifdef KEEP_MARIO_HEAD
+    LOAD_MARIO_HEAD(/*loadHeadID*/ DIZZY_FACE),
+#endif
     LOAD_RAW(/*seg*/ 0x13, _behaviorSegmentRomStart, _behaviorSegmentRomEnd),
     LOAD_YAY0_TEXTURE(/*seg*/ 0x0A, _title_screen_bg_yay0SegmentRomStart, _title_screen_bg_yay0SegmentRomEnd),
     ALLOC_LEVEL_POOL(),

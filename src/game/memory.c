@@ -17,6 +17,10 @@
 #if defined(RNC1) || defined(RNC2)
 #include <rnc.h>
 #endif
+#ifdef UNF
+#include "usb/usb.h"
+#include "usb/debug.h"
+#endif
 
 
 // round up to the next multiple
@@ -341,13 +345,19 @@ void *load_segment_decompress(s32 segment, u8 *srcStart, u8 *srcEnd) {
     // Decompressed size from end of gzip
     u32 *size = (u32 *) (compressed + compSize);
 #else
-    // Decompressed size from mio0 header
+    // Decompressed size from header (This works for non-mio0 because they also have the size in same place)
     u32 *size = (u32 *) (compressed + 4);
 #endif
     if (compressed != NULL) {
+#ifdef UNCOMPRESSED
+        dest = main_pool_alloc(compSize, MEMORY_POOL_LEFT);
+        dma_read(dest, srcStart, srcEnd);
+#else
         dma_read(compressed, srcStart, srcEnd);
         dest = main_pool_alloc(*size, MEMORY_POOL_LEFT);
+#endif
         if (dest != NULL) {
+			osSyncPrintf("start decompress\n");
 #ifdef GZIP
             expand_gzip(compressed, dest, compSize, (u32)size);
 #elif RNC1
@@ -356,8 +366,11 @@ void *load_segment_decompress(s32 segment, u8 *srcStart, u8 *srcEnd) {
             Propack_UnpackM2(compressed, dest);
 #elif YAY0
             slidstart(compressed, dest);
+#elif MIO0
+            decompress(compressed, dest);
 #endif
-            set_segment_base_addr(segment, dest); sSegmentROMTable[segment] = (uintptr_t) srcStart;
+			osSyncPrintf("end decompress\n");
+            set_segment_base_addr(segment, dest);
             main_pool_free(compressed);
         } else {
         }
@@ -380,7 +393,11 @@ void *load_segment_decompress_heap(u32 segment, u8 *srcStart, u8 *srcEnd) {
     u32 *size = (u32 *) (compressed + compSize);
 #endif
     if (compressed != NULL) {
+#ifdef UNCOMPRESSED
+        dma_read(gDecompressionHeap, srcStart, srcEnd);
+#else
         dma_read(compressed, srcStart, srcEnd);
+#endif
 #ifdef GZIP
         expand_gzip(compressed, gDecompressionHeap, compSize, (u32)size);
 #elif RNC1
@@ -389,6 +406,8 @@ void *load_segment_decompress_heap(u32 segment, u8 *srcStart, u8 *srcEnd) {
         Propack_UnpackM2(compressed, gDecompressionHeap);
 #elif YAY0
         slidstart(compressed, gDecompressionHeap);
+#elif MIO0
+        decompress(compressed, gDecompressionHeap);
 #endif
         set_segment_base_addr(segment, gDecompressionHeap); sSegmentROMTable[segment] = (uintptr_t) srcStart;
         main_pool_free(compressed);

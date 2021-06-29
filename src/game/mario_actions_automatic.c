@@ -318,7 +318,7 @@ s32 perform_hanging_step(struct MarioState *m, Vec3f nextPos) {
 
     m->wall = resolve_and_return_wall_collisions(nextPos, 50.0f, 50.0f);
     floorHeight = find_floor(nextPos[0], nextPos[1], nextPos[2], &floor);
-    ceilHeight = vec3f_find_ceil(nextPos, floorHeight, &ceil);
+    ceilHeight = vec3f_find_ceil(nextPos, nextPos[1], &ceil);
 
     if (floor == NULL) {
         return HANG_HIT_CEIL_OR_OOB;
@@ -560,11 +560,11 @@ s32 act_ledge_grab(struct MarioState *m) {
     if (m->actionTimer < 10) {
         m->actionTimer++;
     }
-
+#ifndef NO_FALSE_LEDGEGRABS
     if (m->floor->normal.y < 0.9063078f) {
         return let_go_of_ledge(m);
     }
-
+#endif
     if (m->input & (INPUT_Z_PRESSED | INPUT_OFF_FLOOR)) {
         return let_go_of_ledge(m);
     }
