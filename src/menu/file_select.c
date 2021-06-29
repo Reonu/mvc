@@ -1593,7 +1593,7 @@ void print_main_menu_strings(void) {
     if (gSpeedrunMode) {
         print_hud_lut_string(HUD_LUT_DIFF, 70, 35, textSpeedrun);
     }
-    else if (useLOD) {
+    else if (gIsConsole) {
         print_hud_lut_string(HUD_LUT_DIFF, 60, 35, textConsole);
     }
     else {

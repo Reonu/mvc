@@ -370,7 +370,7 @@ void *load_segment_decompress(s32 segment, u8 *srcStart, u8 *srcEnd) {
             decompress(compressed, dest);
 #endif
 			osSyncPrintf("end decompress\n");
-            set_segment_base_addr(segment, dest);
+            set_segment_base_addr(segment, dest); sSegmentROMTable[segment] = (uintptr_t) srcStart;
             main_pool_free(compressed);
         } else {
         }

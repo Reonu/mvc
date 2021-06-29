@@ -724,7 +724,7 @@ void render_hud(void) {
 #ifdef VERSION_EU
     Mtx *mtx;
 #endif
-    if (!useLOD) {
+    if (!gIsConsole) {
         block_plugins();
     }
     hudDisplayFlags = gHudDisplay.flags;
@@ -797,6 +797,6 @@ void render_hud(void) {
         }
        
         
-        //print_fps(20,20);
+        print_fps(20,20);
     }
 }
