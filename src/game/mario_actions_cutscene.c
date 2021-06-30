@@ -640,6 +640,7 @@ void general_star_dance_handler(struct MarioState *m, s32 isInWater) {
     } else if (m->actionState == 2 && is_anim_at_end(m)) {
         disable_time_stop();
         enable_background_sound();
+        gMarioState->health = 0x800;
         dialogID = get_star_collection_dialog(m);
         if (dialogID != 0) {
             // look up for dialog

@@ -780,6 +780,8 @@ u32 interact_star_or_key(struct MarioState *m, UNUSED u32 interactType, struct O
     if (m->health >= 0x100) {
         if (!gSpeedrunMode) {
             mario_stop_riding_and_holding(m);
+        } else {
+            gMarioState->health = 0x800;
         }
         
 #if ENABLE_RUMBLE
