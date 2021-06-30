@@ -72,6 +72,9 @@ extern u8 gDemoInputs[];
 extern u16 frameBufferIndex;
 extern u32 gGlobalTimer;
 
+extern u16 gCUpCounter;
+extern u16 gCDownCounter;
+
 extern u8 gSpeedrunMode;
 
 void setup_game_memory(void);
