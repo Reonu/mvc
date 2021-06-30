@@ -351,7 +351,7 @@
 
 // first set of actor bins (0x54-0x63)
 // group 1
-#define MODEL_BULLET_BILL                 0x54        // bullet_bill_geo
+//#define MODEL_BULLET_BILL                 0x54        // bullet_bill_geo
 #define MODEL_YELLOW_SPHERE               0x55        // yellow_sphere_geo
 #define MODEL_HOOT                        0x56        // hoot_geo
 #define MODEL_YOSHI_EGG                   0x57        // yoshi_egg_geo
