@@ -339,7 +339,7 @@ extern Vtx bob_dl_Sign_002_mesh_layer_2_vtx_cull[8];
 extern Vtx bob_dl_Sign_002_mesh_layer_2_vtx_0[4];
 extern Gfx bob_dl_Sign_002_mesh_layer_2_tri_0[];
 extern Vtx bob_dl_Water_mesh_layer_5_vtx_cull[8];
-extern Vtx bob_dl_Water_mesh_layer_5_vtx_0[174];
+extern Vtx bob_dl_Water_mesh_layer_5_vtx_0[184];
 extern Gfx bob_dl_Water_mesh_layer_5_tri_0[];
 extern Vtx bob_dl_Z_BigTowerLowPoly_mesh_layer_1_vtx_cull[8];
 extern Vtx bob_dl_Z_BigTowerLowPoly_mesh_layer_1_vtx_0[64];

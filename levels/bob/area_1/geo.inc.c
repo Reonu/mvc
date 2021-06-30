@@ -12,7 +12,7 @@ const GeoLayout bob_area_1_geo[] = {
 		GEO_CLOSE_NODE(),
 		GEO_TRANSLATE_NODE(LAYER_OPAQUE, 6275, -812, -5010),
 		GEO_OPEN_NODE(),
-			GEO_RENDER_RANGE(0, 4000),
+			GEO_RENDER_RANGE(-2800, 4000),
 			GEO_OPEN_NODE(),
 				GEO_DISPLAY_LIST(1, bob_dl_AAACastle_high_poly_mesh_layer_1),
 			GEO_CLOSE_NODE(),
