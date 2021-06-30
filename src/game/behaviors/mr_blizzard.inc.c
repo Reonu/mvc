@@ -1,4 +1,6 @@
 // Mr. Blizzard hitbox
+#include "src/game/game_init.h"
+
 struct ObjectHitbox sMrBlizzardHitbox = {
     /* interactType:      */ INTERACT_MR_BLIZZARD,
     /* downOffset:        */ 24,
@@ -99,8 +101,9 @@ static void mr_blizzard_act_hide_unhide(void) {
         o->oAction = MR_BLIZZARD_ACT_RISE_FROM_GROUND;
         o->oMoveAngleYaw = o->oAngleToMario;
         o->oMrBlizzardGraphYVel = 42.0f;
-
-        mr_blizzard_spawn_white_particles(8, -10, 15, 20, 10);
+        if (!gIsConsole) {
+            mr_blizzard_spawn_white_particles(8, -10, 15, 20, 10);
+        }
         cur_obj_unhide();
         cur_obj_become_tangible();
     } else {
@@ -126,8 +129,10 @@ static void mr_blizzard_act_rise_from_ground(void) {
         // set to 24, VelY is set to GraphYVel and action is moved to rotate.
         o->oPosY += o->oMrBlizzardGraphYOffset - 24.0f;
         o->oMrBlizzardGraphYOffset = 24.0f;
+        if (!gIsConsole) {
+            mr_blizzard_spawn_white_particles(8, -20, 20, 15, 10);
+        }
 
-        mr_blizzard_spawn_white_particles(8, -20, 20, 15, 10);
 
         o->oAction = MR_BLIZZARD_ACT_ROTATE;
         o->oVelY = o->oMrBlizzardGraphYVel;
@@ -455,7 +460,10 @@ static void mr_blizzard_snowball_act_2(void) {
 
     // If snowball collides with the ground, delete snowball.
     if (o->oAction == -1 || o->oMoveFlags & (OBJ_MOVE_MASK_ON_GROUND | OBJ_MOVE_ENTERED_WATER)) {
-        mr_blizzard_spawn_white_particles(6, 0, 5, 10, 3);
+        if (!gIsConsole) {
+            mr_blizzard_spawn_white_particles(6, 0, 5, 10, 3);
+        }
+
         create_sound_spawner(SOUND_GENERAL_MOVING_IN_SAND);
         obj_mark_for_deletion(o);
     }
