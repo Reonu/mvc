@@ -934,7 +934,7 @@ s32 update_8_directions_camera(struct Camera *c, Vec3f focus, Vec3f pos) {
     f32 baseDist = 1000.f;
 
     if (gMarioState->floor != NULL){
-        if ((gMarioState->floor->type == SURFACE_CAMERA_MIDDLE) && (gMarioState->numStars == 0)) {
+        if ((gMarioState->floor->type == SURFACE_CAMERA_MIDDLE) && (gMarioState->numStars == 0) && (!gSpeedrunMode)) {
             s8DirModeBaseYaw = DEGREES(0); // Rotate left
             gCustomCameraMode = 1;
             s8DirModeYawOffset = 0;
