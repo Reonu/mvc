@@ -7,7 +7,7 @@ void bhv_1up_interact(void) {
         play_sound(SOUND_GENERAL_COLLECT_1UP, gGlobalSoundSource);
         if ((o->oBehParams >> 24) & 0x01){
             gMarioState->surfboard=1;
-            if (gMarioState->hadSurfboard == 0) {
+            if ((gMarioState->hadSurfboard == 0) && (!gSpeedrunMode)) {
                 set_mario_action(gMarioState, ACT_READING_AUTOMATIC_DIALOG, 140);
                 gMarioState->hadSurfboard = 1;
             }
