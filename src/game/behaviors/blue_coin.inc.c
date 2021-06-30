@@ -96,7 +96,7 @@ void bhv_blue_coin_switch_loop(void) {
                 // Set to BLUE_COIN_SWITCH_ACT_TICKING
                 o->oAction++;
                 // ???
-                o->oPosY += 120.0;
+                //o->oPosY += 120.0;
 
                 // Spawn particles. There's a function that calls this same function
                 // with the same arguments, spawn_mist_particles, why didn't they just call that?
@@ -105,7 +105,7 @@ void bhv_blue_coin_switch_loop(void) {
                 // Have collision while receding
                 load_object_collision_model();
                 // Recede
-                cur_obj_move_using_fvel_and_gravity();
+                //cur_obj_move_using_fvel_and_gravity();
             }
 
             break;
@@ -116,10 +116,15 @@ void bhv_blue_coin_switch_loop(void) {
             } else {
                 play_sound(SOUND_GENERAL2_SWITCH_TICK_SLOW, gGlobalSoundSource);
             }
+            if (o->oTimer == 0) {
+                o->oPosY -= 70;
+            }
+            
 
             // Delete the switch (which stops the sound) after the last coin is collected,
             // or after the coins unload after the 240-frame timer expires.
             if (cur_obj_nearest_object_with_behavior(bhvHiddenBlueCoin) == NULL || o->oTimer > 240) {
+               o->oPosY += 70;
                o->oAction = 0;
             }
 
