@@ -1841,7 +1841,7 @@ walls as well as in the\n\
 paintings, right?"))
 
 DEFINE_DIALOG(DIALOG_155, 1, 4, 30, 200, _("\
-Ah, Mario, I-a fucked up\n\
+Ah, Mario, I-a screwed up\n\
 the cobblestone\n\
 generator again, please\n\
 forgive-a me!"))
