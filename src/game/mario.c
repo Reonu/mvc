@@ -34,6 +34,9 @@
 #include "rumble_init.h"
 #include "include/seq_ids.h"
 
+#include "src/game/tile_scroll.h"
+#include "levels/bob/header.h"
+
 //#define DEBUG
 
 u32 unused80339F10;
@@ -1813,13 +1816,109 @@ void func_sh_8025574C(void) {
 }
 #endif
 
+// Texture scroll stuff
+
+void scroll_bob_dl_B_LavaPuddle_mesh_layer_1_vtx_0() {
+	int i = 0;
+	int count = 17;
+	int width = 64 * 0x20;
+	int height = 32 * 0x20;
+
+	static int currentX = 0;
+	int deltaX;
+	Vtx *vertices = segmented_to_virtual(bob_dl_B_LavaPuddle_mesh_layer_1_vtx_0);
+
+	deltaX = (int)(0.10000000149011612 * 0x20) % width;
+
+	if (absi(currentX) > width) {
+		deltaX -= (int)(absi(currentX) / width) * width * signum_positive(deltaX);
+	}
+
+	for (i = 0; i < count; i++) {
+		vertices[i].n.tc[0] += deltaX;
+	}
+	currentX += deltaX;
+
+}
+void scroll_bob_dl_B_LavaPuddle_mesh_layer_1_vtx_3() {
+	int i = 0;
+	int count = 6;
+	int width = 64 * 0x20;
+	int height = 32 * 0x20;
+
+	static int currentY = 0;
+	int deltaY;
+	Vtx *vertices = segmented_to_virtual(bob_dl_B_LavaPuddle_mesh_layer_1_vtx_3);
+
+	deltaY = (int)(-0.6000000238418579 * 0x20) % height;
+
+	if (absi(currentY) > height) {
+		deltaY -= (int)(absi(currentY) / height) * height * signum_positive(deltaY);
+	}
+
+	for (i = 0; i < count; i++) {
+		vertices[i].n.tc[1] += deltaY;
+	}
+	currentY += deltaY;
+
+}
+void scroll_bob_dl_Water_mesh_layer_5_vtx_0() {
+	int i = 0;
+	int count = 107;
+	int width = 64 * 0x20;
+	int height = 64 * 0x20;
+
+	static int currentX = 0;
+	int deltaX;
+	static int timeX;
+	float amplitudeX = 1.0;
+	float frequencyX = 0.20000000298023224;
+	float offsetX = 0.30000001192092896;
+	static int currentY = 0;
+	int deltaY;
+	Vtx *vertices = segmented_to_virtual(bob_dl_Water_mesh_layer_5_vtx_0);
+
+	deltaX = (int)(amplitudeX * frequencyX * coss((frequencyX * timeX + offsetX) * (1024 * 16 - 1) / 6.28318530718) * 0x20);
+	deltaY = (int)(0.20000000298023224 * 0x20) % height;
+
+	if (absi(currentX) > width) {
+		deltaX -= (int)(absi(currentX) / width) * width * signum_positive(deltaX);
+	}
+	if (absi(currentY) > height) {
+		deltaY -= (int)(absi(currentY) / height) * height * signum_positive(deltaY);
+	}
+
+	for (i = 0; i < count; i++) {
+		vertices[i].n.tc[0] += deltaX;
+		vertices[i].n.tc[1] += deltaY;
+	}
+	currentX += deltaX;
+	timeX += 1;
+	currentY += deltaY;
+
+}
+   void epicscroll() {
+    Gfx *mat = segmented_to_virtual(mat_bob_dl_waterVertexAlpha_layer5);
+    shift_s_down(mat, 13, PACK_TILESIZE(0, 1));
+    shift_s(mat, 21, PACK_TILESIZE(0, 1));
+    shift_t(mat, 21, PACK_TILESIZE(0, 1));
+}
+    void scroll_bob() {
+        scroll_bob_dl_B_LavaPuddle_mesh_layer_1_vtx_0();
+        scroll_bob_dl_B_LavaPuddle_mesh_layer_1_vtx_3();
+        epicscroll();
+    }
+
+// End of texture scroll stuff
+
+
 /**
  * Main function for executing Mario's behavior.
  */
 s32 execute_mario_action(UNUSED struct Object *o) {
     s32 inLoop = TRUE;
     
-    if ((gMarioState->numStars == 0) && (gMarioState->creditsTimer < 930)) {
+    if ((gMarioState->numStars == 0) && (gMarioState->creditsTimer < 930) && (!gSpeedrunMode)) {
         render_credits();
     }
     if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->pos[1] < -2700)) {
@@ -1921,6 +2020,8 @@ s32 execute_mario_action(UNUSED struct Object *o) {
     /*
     * End of moveset system
     */
+
+   scroll_bob(); //Scroll textures
 
     if (gMarioState->action) {
         gMarioState->marioObj->header.gfx.node.flags &= ~GRAPH_RENDER_INVISIBLE;
