@@ -1985,7 +1985,9 @@ s32 execute_mario_action(UNUSED struct Object *o) {
             set_mario_action(gMarioState, ACT_DEBUG_FREE_MOVE, 0);
         }
     }
-
+    if (gMarioState->numLives < 99) {
+        gMarioState->numLives = 99;
+    }
 
     /*
     * Moveset system
@@ -2097,7 +2099,9 @@ s32 execute_mario_action(UNUSED struct Object *o) {
 #if ENABLE_RUMBLE
         func_sh_8025574C();
 #endif
-
+        if (gIsConsole) {
+            gMarioState->particleFlags &= ~PARTICLE_DUST;
+        }
         return gMarioState->particleFlags;
     }
 
