@@ -933,6 +933,23 @@ s32 update_8_directions_camera(struct Camera *c, Vec3f focus, Vec3f pos) {
     f32 yOff = 125.f;
     f32 baseDist = 1000.f;
 
+    if (gMarioState->floor != NULL){
+        if ((gMarioState->floor->type == SURFACE_CAMERA_MIDDLE) && (gMarioState->numStars == 0)) {
+            s8DirModeBaseYaw = DEGREES(0); // Rotate left
+            gCustomCameraMode = 1;
+            s8DirModeYawOffset = 0;
+            baseDist = 2000.f;
+        } else if (gMarioState->floor->type == SURFACE_CAMERA_ROTATE_LEFT) {
+            gCustomCameraMode = 1;
+            baseDist = 400.f;
+            //s8DirModeBaseYaw = DEGREES(180);
+            //s8DirModeYawOffset = 0;
+        } else if (gCustomCameraMode) {
+            //s8DirModeYawOffset = 0;
+            baseDist = 1000.f;
+            gCustomCameraMode = 0;
+        }
+    }
     sAreaYaw = camYaw;
     calc_y_to_curr_floor(&posY, 1.f, 200.f, &focusY, 0.9f, 200.f);
     focus_on_mario(focus, pos, posY + yOff, focusY + yOff, sLakituDist + baseDist, pitch, camYaw);
@@ -940,6 +957,8 @@ s32 update_8_directions_camera(struct Camera *c, Vec3f focus, Vec3f pos) {
     if (gCurrLevelArea == AREA_DDD_SUB) {
         camYaw = clamp_positions_and_find_yaw(pos, focus, 6839.f, 995.f, 5994.f, -3945.f);
     }
+
+
 
     return camYaw;
 }

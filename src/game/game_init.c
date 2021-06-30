@@ -66,6 +66,7 @@ u8 gIsConsole;
 #ifdef WIDE
 u8 gWidescreen;
 #endif
+u8 gCustomCameraMode;
 
 u16 sCurrFBNum = 0;
 u16 frameBufferIndex = 0;
@@ -327,7 +328,6 @@ void draw_reset_bars(void) {
     osRecvMesg(&gGameVblankQueue, &D_80339BEC, OS_MESG_BLOCK);
     osRecvMesg(&gGameVblankQueue, &D_80339BEC, OS_MESG_BLOCK);
 }
-u8 useLOD;
 void rendering_init(void) {
     if (IO_READ(DPC_PIPEBUSY_REG) == 0) {
         gIsConsole = 0;

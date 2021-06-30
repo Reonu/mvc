@@ -45,6 +45,7 @@ extern u8 gIsConsole;
 #ifdef WIDE
 extern u8 gWidescreen;
 #endif
+extern u8 gCustomCameraMode;
 #ifdef EEP
 extern s8 gEepromProbe;
 #endif
@@ -72,7 +73,6 @@ extern u16 frameBufferIndex;
 extern u32 gGlobalTimer;
 
 extern u8 gSpeedrunMode;
-extern u8 useLOD;
 
 void setup_game_memory(void);
 void thread5_game_loop(UNUSED void *arg);
