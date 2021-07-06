@@ -46,6 +46,7 @@ extern u8 gIsConsole;
 extern u8 gWidescreen;
 #endif
 extern u8 gCustomCameraMode;
+extern u64 gSpeedrunTimer;
 #ifdef EEP
 extern s8 gEepromProbe;
 #endif
@@ -72,8 +73,6 @@ extern u8 gDemoInputs[];
 extern u16 frameBufferIndex;
 extern u32 gGlobalTimer;
 
-extern u16 gCUpCounter;
-extern u16 gCDownCounter;
 
 extern u8 gSpeedrunMode;
 

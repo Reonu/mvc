@@ -67,9 +67,7 @@ u8 gIsConsole;
 u8 gWidescreen;
 #endif
 u8 gCustomCameraMode;
-u16 gCUpCounter;
-u16 gCDownCounter;
-
+u64 gSpeedrunTimer;
 u16 sCurrFBNum = 0;
 u16 frameBufferIndex = 0;
 

@@ -168,7 +168,6 @@ extern struct CutsceneVariable sCutsceneVars[10];
 extern s32 gObjCutsceneDone;
 extern u32 gCutsceneObjSpawn;
 extern struct Camera *gCamera;
-f32 baseDist2 = 1000.f;
 
 /**
  * Lakitu's position and focus.
@@ -932,55 +931,28 @@ s32 update_8_directions_camera(struct Camera *c, Vec3f focus, Vec3f pos) {
     UNUSED f32 unused2;
     UNUSED f32 unused3;
     f32 yOff = 125.f;
+    f32 baseDist = 1000.f;
 
     if (gMarioState->floor != NULL){
-        if ((gPlayer1Controller->buttonPressed & U_CBUTTONS) && (gCUpCounter < 6)) {
-            if (baseDist2 > 1200) {
-                baseDist2 = 1200;
-            } else {
-                baseDist2 = 800;
-            }
-        }
-        if ((gPlayer1Controller->buttonPressed & D_CBUTTONS) && (gCDownCounter < 6)) {
-            if (baseDist2 < 1200) {
-                baseDist2 = 1200;
-            } else {
-                baseDist2 = 2200;
-            }
-        }
         if ((gMarioState->floor->type == SURFACE_CAMERA_MIDDLE) && (gMarioState->numStars == 0) && (!gSpeedrunMode)) {
             s8DirModeBaseYaw = DEGREES(0); // Rotate left
             gCustomCameraMode = 1;
             s8DirModeYawOffset = 0;
-            baseDist2 = 2000.f;
+            baseDist = 2000.f;
         } else if (gMarioState->floor->type == SURFACE_CAMERA_ROTATE_LEFT) {
             gCustomCameraMode = 1;
-            baseDist2 = 400.f;
+            baseDist = 400.f;
             //s8DirModeBaseYaw = DEGREES(180);
             //s8DirModeYawOffset = 0;
         } else if (gCustomCameraMode) {
             //s8DirModeYawOffset = 0;
-            baseDist2 = 1000.f;
+            baseDist = 1000.f;
             gCustomCameraMode = 0;
-        } else if ((gPlayer1Controller->buttonDown & U_CBUTTONS) && (baseDist2 > 700.f)) {
-            gCUpCounter = 0;
-            baseDist2 -= 35;
-        } else if (gPlayer1Controller->buttonDown & D_CBUTTONS && (baseDist2 < 2200.f)) {
-            gCDownCounter = 0;
-            baseDist2 += 35;
         }
-        if (baseDist2 > 1100) {
-            gCameraMovementFlags |= CAM_MOVE_ZOOMED_OUT;
-        }
-        if (baseDist2 < 999) {
-            gCameraMovementFlags &= ~CAM_MOVE_ZOOMED_OUT;
-        }
-        gCUpCounter++;
-        gCDownCounter++;
     }
     sAreaYaw = camYaw;
     calc_y_to_curr_floor(&posY, 1.f, 200.f, &focusY, 0.9f, 200.f);
-    focus_on_mario(focus, pos, posY + yOff, focusY + yOff, sLakituDist + baseDist2, pitch, camYaw);
+    focus_on_mario(focus, pos, posY + yOff, focusY + yOff, sLakituDist + baseDist, pitch, camYaw);
     pan_ahead_of_player(c);
     if (gCurrLevelArea == AREA_DDD_SUB) {
         camYaw = clamp_positions_and_find_yaw(pos, focus, 6839.f, 995.f, 5994.f, -3945.f);
@@ -4993,12 +4965,17 @@ s32 radial_camera_input(struct Camera *c, UNUSED f32 unused) {
     }
 
     // Zoom in / enter C-Up
-    if ((gPlayer1Controller->buttonPressed & U_CBUTTONS) && (baseDist2 <= 700.f)) {
-        set_mode_c_up(c);
+    if (gPlayer1Controller->buttonPressed & U_CBUTTONS) {
+        if (gCameraMovementFlags & CAM_MOVE_ZOOMED_OUT) {
+            gCameraMovementFlags &= ~CAM_MOVE_ZOOMED_OUT;
+            play_sound_cbutton_up();
+        } else {
+            set_mode_c_up(c);
+        }
     }
 
     // Zoom out
-    /*if (gPlayer1Controller->buttonPressed & D_CBUTTONS) {
+    if (gPlayer1Controller->buttonPressed & D_CBUTTONS) {
         if (gCameraMovementFlags & CAM_MOVE_ZOOMED_OUT) {
             gCameraMovementFlags |= CAM_MOVE_ALREADY_ZOOMED_OUT;
 #ifndef VERSION_JP
@@ -5008,7 +4985,7 @@ s32 radial_camera_input(struct Camera *c, UNUSED f32 unused) {
             gCameraMovementFlags |= CAM_MOVE_ZOOMED_OUT;
             play_sound_cbutton_down();
         }
-    }*/
+    }
 
     //! returning uninitialized variable
     return dummy;
