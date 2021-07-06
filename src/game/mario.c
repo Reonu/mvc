@@ -34,6 +34,11 @@
 #include "rumble_init.h"
 #include "include/seq_ids.h"
 
+#include "gfx_dimensions.h"
+
+u32 unused80339F10;
+s8 filler80339F1C[20];
+
 #include "src/game/tile_scroll.h"
 #include "levels/bob/header.h"
 
@@ -41,7 +46,6 @@
 
 u32 unused80339F10;
 s8 filler80339F1C[20];
-extern widescreen;
 extern u8 sCurrentBackgroundMusicSeqId;
 /**************************************************
  *                    ANIMATIONS                  *
@@ -2077,6 +2081,11 @@ s32 execute_mario_action(UNUSED struct Object *o) {
         update_mario_health(gMarioState);
         update_mario_info_for_cam(gMarioState);
         mario_update_hitbox_and_cap_model(gMarioState);
+
+    
+
+            //print_text(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(150), 210, "IGT");
+
 
         // Both of the wind handling portions play wind audio only in
         // non-Japanese releases.

@@ -1363,6 +1363,7 @@ s32 lvl_print_ending_text(UNUSED s16 arg0, UNUSED s32 arg1) {
         } else {
             print_text(10, 40, "HI MR SPEEDRUNNER");
             print_text(10, 20, "HOW ARE RUNS?");
+            
         }
 
 }
