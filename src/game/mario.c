@@ -1322,6 +1322,11 @@ void update_mario_button_inputs(struct MarioState *m) {
         }
     }
     #endif
+
+    if (gSpeedrunTimer < 2 && m->controller->buttonDown && D_JPAD) {
+        gWidescreen = 1;
+    }
+
     if (m->controller->buttonPressed & U_JPAD && (m->noclip == 0)) {
         if (m->showMoveset == 0) {
             m->showMovesetTimer = 90;
