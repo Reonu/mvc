@@ -46,7 +46,7 @@ extern u8 gIsConsole;
 extern u8 gWidescreen;
 #endif
 extern u8 gCustomCameraMode;
-extern u64 gSpeedrunTimer;
+extern u32 gSpeedrunTimer;
 #ifdef EEP
 extern s8 gEepromProbe;
 #endif
