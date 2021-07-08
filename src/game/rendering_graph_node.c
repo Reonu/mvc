@@ -327,15 +327,18 @@ static void geo_process_perspective(struct GraphNodePerspective *node) {
     if (gSpeedrunMode) {
         u32 timerMinutes = gSpeedrunTimer / (30 * 60);
         u32 timerSeconds = (gSpeedrunTimer - (timerMinutes * 1800)) / 30;
-        u32 fracSecs = ((gSpeedrunTimer - (timerMinutes * 1800) - (timerSeconds * 30)) & 0xFFFF) / 3;
+        u32 timerDeciseconds = ((gSpeedrunTimer - (timerMinutes * 1800) - (timerSeconds * 30)) & 0xFFFF) / 3;
+        u32 timerCentiseconds =  (gSpeedrunTimer/ 3) % 100;
         if (timerMinutes < 100) {
-            print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(102), 210, "%02d", timerMinutes);
+            print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(122), 210, "%02d", timerMinutes);
         } else {
-            print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(113), 210, "%02d", timerMinutes);
+            print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(133), 210, "%02d", timerMinutes);
         }
         
-        print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(71), 210, "%02d", timerSeconds);
-        print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(37), 210, "%d", fracSecs);
+        print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(91), 210, "%02d", timerSeconds);
+        print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(57), 210, "%d", timerDeciseconds);
+        print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(37), 210, "%02d", timerCentiseconds);
+
     }
 
 }
