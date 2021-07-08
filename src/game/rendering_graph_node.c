@@ -292,6 +292,7 @@ static void geo_process_ortho_projection(struct GraphNodeOrthoProjection *node) 
 /**
  * Process a perspective projection node.
  */
+extern void dividetimer(int timer, int *minute, int *second, int *centisecond);
 
 extern s32 widescreen;
 static void geo_process_perspective(struct GraphNodePerspective *node) {
@@ -325,10 +326,10 @@ static void geo_process_perspective(struct GraphNodePerspective *node) {
         gSpeedrunTimer++;
     }
     if (gSpeedrunMode) {
-        u32 timerMinutes = gSpeedrunTimer / (30 * 60);
-        u32 timerSeconds = (gSpeedrunTimer - (timerMinutes * 1800)) / 30;
-        u32 timerDeciseconds = ((gSpeedrunTimer - (timerMinutes * 1800) - (timerSeconds * 30)) & 0xFFFF) / 3;
-        u32 timerCentiseconds =  (gSpeedrunTimer/ 3) % 100;
+        int timerMinutes;
+        int timerSeconds;
+        int timerCentiseconds;
+        dividetimer(gSpeedrunTimer, &timerMinutes, &timerSeconds, &timerCentiseconds);
         if (timerMinutes < 100) {
             print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(122), 210, "%02d", timerMinutes);
         } else {
@@ -336,8 +337,7 @@ static void geo_process_perspective(struct GraphNodePerspective *node) {
         }
         
         print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(91), 210, "%02d", timerSeconds);
-        print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(57), 210, "%d", timerDeciseconds);
-        print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(37), 210, "%02d", timerCentiseconds);
+        print_text_fmt_int(GFX_DIMENSIONS_RECT_FROM_RIGHT_EDGE(57), 210, "%02d", timerCentiseconds);
 
     }
 

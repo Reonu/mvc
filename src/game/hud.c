@@ -476,7 +476,7 @@ void render_credits(void) {
             print_text(10, 180, "SAVING IS DISABLED!");
         }
     }
-    if (gMarioState->creditsTimer >= 90 && gMarioState->creditsTimer < 930 ) {
+    if (gMarioState->creditsTimer >= 90 && gMarioState->creditsTimer < 1020 ) {
         print_text(10, 220, "SPECIAL THANKS TO:");
     }
     if (gMarioState->creditsTimer >= 90 && gMarioState->creditsTimer < 180 ) {
@@ -490,8 +490,7 @@ void render_credits(void) {
     }
     if (gMarioState->creditsTimer >= 270 && gMarioState->creditsTimer < 360 ) {
         print_text(10, 200, "XINUS22");
-        print_text(10, 180, "CAKE SCREEN RENDER HELP");
-        print_text(10, 160, "TESTING");
+        print_text(10, 180, "CAKE SCREEN & TESTING");
     }
     if (gMarioState->creditsTimer >= 360 && gMarioState->creditsTimer < 450 ) {
         print_text(10, 200, "MRCOMIT");
@@ -516,7 +515,11 @@ void render_credits(void) {
     }
     if (gMarioState->creditsTimer >= 840 && gMarioState->creditsTimer < 930 ) {
         print_text(10, 200, "AXOLLYON");
-        print_text(10, 180, "DECAL HELP & TESTING");
+        print_text(10, 180, "DECALS & TESTING");
+    }
+    if (gMarioState->creditsTimer >= 930 && gMarioState->creditsTimer < 1020 ) {
+        print_text(10, 200, "DEVWIZARD");
+        print_text(10, 180, "TIMER CODE");
     }
     gMarioState->creditsTimer++;
 }
