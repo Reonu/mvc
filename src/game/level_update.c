@@ -1045,7 +1045,7 @@ s32 play_mode_paused(void) {
         if (gDebugLevelSelect) {
             fade_into_special_warp(-9, 1);
         } else {
-            initiate_warp(LEVEL_BOB, 1, 0x03, 0);
+            initiate_warp(EXIT_COURSE_LEVEL, EXIT_COURSE_AREA, EXIT_COURSE_NODE, 0);
             fade_into_special_warp(0, 0);
             set_play_mode(PLAY_MODE_NORMAL);
         }
@@ -1294,8 +1294,11 @@ s32 lvl_init_from_save_file(UNUSED s16 arg0, s32 levelNum) {
 #endif
     sWarpDest.type = WARP_TYPE_NOT_WARPING;
     sDelayedWarpOp = WARP_OP_NONE;
+#ifdef CASTLE_MUSIC_FIX
+    gNeverEnteredCastle = 0;
+#else
     gNeverEnteredCastle = !save_file_exists(gCurrSaveFileNum - 1);
-
+#endif
     gCurrLevelNum = levelNum;
     gCurrCourseNum = COURSE_NONE;
     gSavedCourseNum = COURSE_NONE;

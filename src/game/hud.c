@@ -21,6 +21,8 @@
  * cannon reticle, and the unused keys.
  **/
 
+// ------------- FPS COUNTER ---------------
+// To use it, call print_fps(x,y); every frame.
 #define FRAMETIME_COUNT 30
 
 OSTime frameTimes[FRAMETIME_COUNT];

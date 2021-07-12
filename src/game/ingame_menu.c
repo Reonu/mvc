@@ -1014,7 +1014,6 @@ s8 gDialogCourseActNum = 1;
 #define DIAG_VAL4 5
 #define DIAG_VAL2 240 // JP & US
 
-
 void render_dialog_entries(void) {
     void **dialogTable;
     struct DialogEntry *dialog;
@@ -1679,12 +1678,7 @@ void render_pause_castle_main_strings(s16 x, s16 y) {
     }
 #ifdef WIDE
     if (gPlayer1Controller->buttonPressed & L_TRIG){
-        if (!gWidescreen){
-                gWidescreen = 1;
-            }
-        else{
-                gWidescreen = 0;
-            }
+        gWidescreen ^= 1;
     }
 #endif
     gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);

@@ -14,6 +14,8 @@
 #include "rumble_init.h"
 #include "level_update.h"
 
+#include "config.h"
+
 struct LandingAction {
     s16 numFrames;
     s16 unk02;
@@ -1862,7 +1864,7 @@ s32 act_hold_freefall_land(struct MarioState *m) {
 }
 
 s32 act_long_jump_land(struct MarioState *m) {
-#ifdef VERSION_SH
+#if defined (VERSION_SH) || defined(DISABLE_BLJ)
     // BLJ (Backwards Long Jump) speed build up fix, crushing SimpleFlips's dreams since July 1997
     if (m->forwardVel < 0.0f) {
         m->forwardVel = 0.0f;
