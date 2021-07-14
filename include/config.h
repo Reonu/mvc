@@ -7,7 +7,7 @@
  */
 
 // Bug Fixes
-// --| US Version Nintendo Bug Fixes
+// --| Post-JP Version Nintendo Bug Fixes
 /// Fixes bug where obtaining over 999 coins sets the number of lives to 999 (or -25)
 #define BUGFIX_MAX_LIVES (0 || VERSION_US || VERSION_EU || VERSION_SH)
 /// Fixes bug where the Boss music won't fade out after defeating King Bob-omb
@@ -21,6 +21,14 @@
 #define BUGFIX_PIRANHA_PLANT_SLEEP_DAMAGE (0 || VERSION_US || VERSION_SH)
 /// Fixes bug where it shows a star when you grab a key in bowser battle stages
 #define BUGFIX_STAR_BOWSER_KEY (0 || VERSION_US || VERSION_EU || VERSION_SH)
+/// Fixes bug that enables Mario in time stop even if is not ready to speak
+#define BUGFIX_DIALOG_TIME_STOP (0 || VERSION_US || VERSION_EU || VERSION_SH)
+/// Fixes bug that causes Mario to still collide with Bowser in BITS after his defeat
+#define BUGFIX_BOWSER_COLLIDE_BITS_DEAD (0 || VERSION_US || VERSION_EU || VERSION_SH)
+/// Fixes bug where Bowser wouldn't reset his speed when fallen off (and adds missing checks)
+#define BUGFIX_BOWSER_FALLEN_OFF_STAGE (0 || VERSION_US || VERSION_EU || VERSION_SH)
+/// Fixes bug where Bowser would look weird while fading out
+#define BUGFIX_BOWSER_FADING_OUT (0 || VERSION_US || VERSION_EU || VERSION_SH)
 
 // Support Rumble Pak
 // Currently not recommended, as it may cause random crashes.
@@ -35,20 +43,19 @@
 
 // Border Height Define for NTSC Versions
 #ifdef TARGET_N64
-#ifndef VERSION_EU
-#define BORDER_HEIGHT 0
-#else
-#define BORDER_HEIGHT 0
-#endif
-#else
-// What's the point of having a border?
-#define BORDER_HEIGHT 0
+// Size of the black border at the top and bottom of the screen. You can set it to different values for console and emulator.
+// There is generally no reason to have a value other than 0 for emulator. As for console, it provides a (small) performance boost.
+#define BORDER_HEIGHT_CONSOLE 0
+#define BORDER_HEIGHT_EMULATOR 0
 
 #endif
 
 // -- ultrasm64-extbounds specific settings --
 
 // COMMON HACK CHANGES
+// Internal ROM name. NEEDS TO BE **EXACTLY** 20 CHARACTERS. Can't be 19 characters, can't be 21 characters. You can fill it with spaces.
+// The end quote should be here:               "
+#define INTERNAL_ROM_NAME "SM64 VACATION COURSE"
 // Disable lives and hide the lives counter
 #define DISABLE_LIVES
 // Skip peach letter cutscene
@@ -57,6 +64,12 @@
 #define CASTLE_MUSIC_FIX
 // Remove course specific camera processing
 #define CAMERA_FIX
+// Change the movement speed when hanging from a ceiling
+#define HANGING_SPEED 12.f
+// Makes Mario face the direction of the analog stick directly while hanging from a ceiling, without doing "semicircles"
+#define TIGHTER_HANGING_CONTROLS
+// Makes Mario turn around instantly when moving on the ground
+//#define SUPER_RESPONSIVE_CONTROLS
 // Disables fall damage
 #define NO_FALL_DAMAGE
 // Disables the scream that mario makes when falling off a great height (this is separate from actual fall damage)
@@ -73,7 +86,7 @@
 #define SKIP_TITLE_SCREEN
 // Uncomment this if you want to keep the mario head and not skip it
 //#define KEEP_MARIO_HEAD
-// Makes the coins ia8 64x64 instead of ia16 32x32. Uses new i8 textures so that vanilla coins look better.
+// Makes the coins ia8 64x64 instead of ia16 32x32. Uses new ia8 textures so that vanilla coins look better.
 #define IA8_COINS
 
 
@@ -92,6 +105,8 @@
 //#define NO_FALSE_LEDGEGRABS
 // Number of possible unique model ID's (keep it higher than 256)
 #define MODEL_ID_COUNT 256
+// Increase audio heap size to allow for more concurrent notes to be played and for more custom sequences/banks to be imported (does nothing with EU and SH versions)
+#define EXPAND_AUDIO_HEAP
 
 // BUG/GAME QOL FIXES
 // Fix instant warp offset not working when warping across different areas
@@ -125,7 +140,7 @@
 // Skybox size modifier, changing this will add support for larger skybox images. NOTE: Vanilla skyboxes may break if you change this option. Be sure to rescale them accordingly.
 // Whenever you change this, make sure to run "make -C tools clean" to rebuild the skybox tool (alternatively go into skyconv.c and change the file in any way (like adding/deleting a space) to specifically rebuild that tool).
 // When increasing this, you should probably also increase the GFX pool size. (the GFX_POOL_SIZE define in src/game/game_init.h)
-#define SKYBOX_SIZE 1
+#define SKYBOX_SIZE 2
 
 // If you want to change the extended boundaries mode, go to engine/extended_bounds.h and change EXTENDED_BOUNDS_MODE
 

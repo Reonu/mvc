@@ -17,6 +17,8 @@
 #include "level_table.h"
 #include "rumble_init.h"
 
+#include "config.h"
+
 #define POLE_NONE          0
 #define POLE_TOUCHED_FLOOR 1
 #define POLE_FELL_OFF      2
@@ -355,15 +357,19 @@ s32 perform_hanging_step(struct MarioState *m, Vec3f nextPos) {
 s32 update_hang_moving(struct MarioState *m) {
     s32 stepResult;
     Vec3f nextPos;
-    f32 maxSpeed = 12.0f;
+    f32 maxSpeed = HANGING_SPEED;
 
     m->forwardVel += 1.0f;
     if (m->forwardVel > maxSpeed) {
         m->forwardVel = maxSpeed;
     }
 
-    m->faceAngle[1] = m->intendedYaw;
-        //m->intendedYaw - approach_s32((s16)(m->intendedYaw - m->faceAngle[1]), 0, 0x800, 0x800);
+    m->faceAngle[1] =
+    #ifdef TIGHTER_HANGING_CONTROLS
+        m->intendedYaw;
+    #else
+        m->intendedYaw - approach_s32((s16)(m->intendedYaw - m->faceAngle[1]), 0, 0x800, 0x800);
+    #endif
 
     m->slideYaw = m->faceAngle[1];
     m->slideVelX = m->forwardVel * sins(m->faceAngle[1]);
@@ -573,8 +579,8 @@ s32 act_ledge_grab(struct MarioState *m) {
         return set_mario_action(m, ACT_LEDGE_CLIMB_FAST, 0);
     }
 
-    if (m->input & INPUT_UNKNOWN_10) {
-        if (m->marioObj->oInteractStatus & INT_STATUS_MARIO_UNK1) {
+    if (m->input & INPUT_STOMPED) {
+        if (m->marioObj->oInteractStatus & INT_STATUS_MARIO_KNOCKBACK_DMG) {
             m->hurtCounter += (m->flags & MARIO_CAP_ON_HEAD) ? 12 : 18;
         }
         return let_go_of_ledge(m);

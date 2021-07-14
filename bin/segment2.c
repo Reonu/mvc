@@ -2085,15 +2085,8 @@ const Gfx dl_hud_img_begin[] = {
     gsDPSetTexturePersp(G_TP_NONE),
     gsDPSetAlphaCompare(G_AC_THRESHOLD),
     gsDPSetBlendColor(255, 255, 255, 255),
-//#if defined(VERSION_EU) || defined(VERSION_SH)
     gsDPSetRenderMode(G_RM_NOOP, G_RM_NOOP2),
-//#endif
     gsDPSetTextureFilter(G_TF_POINT),
-#ifdef VERSION_EU
-    
-#elif defined(VERSION_JP) || defined(VERSION_US)
-    gsDPSetRenderMode(G_RM_AA_XLU_SURF, G_RM_AA_XLU_SURF2),
-#endif
     gsSPEndDisplayList(),
 };
 
@@ -2113,13 +2106,8 @@ const Gfx dl_hud_img_end[] = {
     gsDPSetTexturePersp(G_TP_PERSP),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsDPSetAlphaCompare(G_AC_NONE),
-//#ifdef VERSION_EU
     gsDPSetTextureFilter(G_TF_BILERP),
-//#endif
     gsDPSetCycleType(G_CYC_1CYCLE),
-#if defined(VERSION_JP) || defined(VERSION_US)
-    gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
-#endif
     gsSPEndDisplayList(),
 };
 
@@ -2487,7 +2475,7 @@ const Texture texture_waterbox_lava[] = {
 };
 
 // Unreferenced light group
-static const Lights1 segment2_lights_unused = gdSPDefLights1(
+UNUSED static const Lights1 segment2_lights_unused = gdSPDefLights1(
     0x40, 0x40, 0x40,
     0xff, 0xff, 0xff, 0x28, 0x28, 0x28
 );
