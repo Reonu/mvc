@@ -1207,12 +1207,7 @@ void mode_8_directions_camera(struct Camera *c) {
         s8DirModeYawOffset -= DEGREES(45);
         play_sound_cbutton_side();
     }
-#ifdef PARALLEL_LAKITU_CAM
- // extra functionality
-    else if (gPlayer1Controller->buttonPressed & U_JPAD) {
-        s8DirModeYawOffset = 0;
-        s8DirModeYawOffset = gMarioState->faceAngle[1]-0x8000;
-    }
+    // extra functionality
     else if (gPlayer1Controller->buttonDown & L_JPAD) {
         s8DirModeYawOffset -= DEGREES(2);
     }
@@ -1221,9 +1216,7 @@ void mode_8_directions_camera(struct Camera *c) {
     }
     else if (gPlayer1Controller->buttonPressed & D_JPAD) {
         s8DirModeYawOffset = s8DirModeYawOffset&0xE000;
-    }   
-#endif
-
+    }
     lakitu_zoom(400.f, 0x900);
     c->nextYaw = update_8_directions_camera(c, c->focus, pos);
     c->pos[0] = pos[0];
@@ -1646,8 +1639,7 @@ s32 update_boss_fight_camera(struct Camera *c, Vec3f focus, Vec3f pos) {
         switch (gCurrLevelArea) {
             case AREA_BOB:
                 pos[1] += 125.f;
-                // fall through
-                //! makes the BoB boss fight camera move up twice as high as it should
+                //! fall through, makes the BoB boss fight camera move up twice as high as it should
             case AREA_WF:
                 pos[1] += 125.f;
         }
@@ -5159,7 +5151,7 @@ s32 determine_dance_cutscene(UNUSED struct Camera *c) {
  * @return `pullResult` or `pushResult` depending on Mario's door action
  */
 u8 open_door_cutscene(u8 pullResult, u8 pushResult) {
-    s16 result = 0;
+    s16 result;
 
     if (sMarioCamState->action == ACT_PULLING_DOOR) {
         result = pullResult;

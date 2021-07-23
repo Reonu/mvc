@@ -1303,6 +1303,7 @@ s32 act_crawling(struct MarioState *m) {
                 mario_set_forward_vel(m, 10.0f);
             }
             //! Possibly unintended missing break
+            // fall through
 
         case GROUND_STEP_NONE:
             align_with_floor(m);

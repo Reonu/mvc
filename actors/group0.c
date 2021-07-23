@@ -55,12 +55,6 @@
 #include "chillychief/anims/data.inc.c"
 #include "chillychief/anims/table.inc.c"
 
-//penguin
-#include "penguin/model.inc.c"
-#include "penguin/anims/data.inc.c"
-#include "penguin/anims/table.inc.c"
-#include "penguin/collision.inc.c"
-
 //spindrift
 #include "spindrift/model.inc.c"
 #include "spindrift/anims/data.inc.c"
