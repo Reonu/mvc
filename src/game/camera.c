@@ -1290,6 +1290,7 @@ void mode_outward_radial_camera(struct Camera *c) {
  * so Mario will run slightly towards the camera.
  */
 s32 update_parallel_tracking_camera(struct Camera *c, Vec3f focus, Vec3f pos) {
+    /*
     Vec3f path[2];
     Vec3f parMidPoint;
     Vec3f marioOffset;
@@ -1472,13 +1473,15 @@ s32 update_parallel_tracking_camera(struct Camera *c, Vec3f focus, Vec3f pos) {
     // Update the camera focus and return the camera's yaw
     vec3f_copy(focus, marioPos);
     vec3f_get_dist_and_angle(focus, pos, &camParDist, &pathPitch, &pathYaw);
-    return pathYaw;
+    */
+    return 0;
 }
 
 /**
  * Updates the camera during fixed mode.
  */
 s32 update_fixed_camera(struct Camera *c, Vec3f focus, UNUSED Vec3f pos) {
+    /*
     f32 focusFloorOff;
     f32 goalHeight;
     f32 ceilHeight;
@@ -1562,15 +1565,15 @@ s32 update_fixed_camera(struct Camera *c, Vec3f focus, UNUSED Vec3f pos) {
             vec3f_set_dist_and_angle(c->focus, c->pos, distCamToFocus, pitch, yaw);
         }
     }
-
-    return faceAngle[1];
+    */
+    return 0;
 }
 
 /**
  * Updates the camera during a boss fight
  */
 s32 update_boss_fight_camera(struct Camera *c, Vec3f focus, Vec3f pos) {
-    struct Object *o;
+    /*struct Object *o;
     UNUSED u8 filler2[12];
     f32 focusDistance;
     UNUSED u8 filler3[4];
@@ -1651,7 +1654,7 @@ s32 update_boss_fight_camera(struct Camera *c, Vec3f focus, Vec3f pos) {
             case AREA_WF:
                 pos[1] += 125.f;
         }
-    }*/
+    }
 
     //! Must be same line to match on -O2
     // Prevent the camera from going to the ground in the outside boss fight
@@ -1692,8 +1695,8 @@ s32 update_boss_fight_camera(struct Camera *c, Vec3f focus, Vec3f pos) {
     // The constant 0x1000 doubles the pitch from the center when sLakituPitch is 0
     // When Lakitu is fully zoomed out, the pitch comes to 0x3800, or 78.75 degrees, up from the focus.
     vec3f_set_dist_and_angle(pos, pos, sLakituDist, sLakituPitch + 0x1000, yaw);
-
-    return yaw;
+    */
+    return 0;
 }
 
 // 2nd iteration of data
@@ -1776,6 +1779,7 @@ void mode_parallel_tracking_camera(struct Camera *c) {
  * Fixed camera mode, the camera rotates around a point and looks and zooms toward Mario.
  */
 void mode_fixed_camera(struct Camera *c) {
+    /*
     UNUSED u8 unused[8];
 
     if (gCurrLevelNum == LEVEL_BBH) {
@@ -1787,6 +1791,7 @@ void mode_fixed_camera(struct Camera *c) {
     c->yaw = c->nextYaw;
     pan_ahead_of_player(c);
     vec3f_set(sCastleEntranceOffset, 0.f, 0.f, 0.f);
+    */
 }
 
 /**
@@ -1994,7 +1999,7 @@ s32 mode_behind_mario(struct Camera *c) {
  * In slide mode, keep the camera 800 units from Mario
  */
 s16 update_slide_camera(struct Camera *c) {
-    struct Surface *floor;
+    /*struct Surface *floor;
     f32 floorHeight;
     Vec3f pos;
     f32 distCamToFocus;
@@ -2066,7 +2071,8 @@ s16 update_slide_camera(struct Camera *c) {
     }
 
     camYaw = calculate_yaw(c->focus, c->pos);
-    return camYaw;
+    */
+    return 0;
 }
 
 void mode_behind_mario_camera(struct Camera *c) {
@@ -2102,7 +2108,7 @@ s32 update_mario_camera(UNUSED struct Camera *c, Vec3f focus, Vec3f pos) {
  * The camera moves behind Mario, and can rotate all the way around
  */
 s16 update_default_camera(struct Camera *c) {
-    Vec3f tempPos;
+    /*Vec3f tempPos;
     Vec3f cPos;
     UNUSED u8 unused1[12];
     struct Surface *marioFloor;
@@ -2420,8 +2426,8 @@ s16 update_default_camera(struct Camera *c) {
     }
     if (gCurrLevelArea == AREA_WDW_TOWN) {
         yaw = clamp_positions_and_find_yaw(c->pos, c->focus, 2254.f, -3789.f, 3790.f, -2253.f);
-    }
-    return yaw;
+    }*/
+    return 0;
 }
 
 /**
@@ -2454,6 +2460,7 @@ void mode_mario_camera(struct Camera *c) {
  * Rotates the camera around the spiral staircase.
  */
 s32 update_spiral_stairs_camera(struct Camera *c, Vec3f focus, Vec3f pos) {
+    /*
     UNUSED s16 unused1;
     /// The returned yaw
     s16 camYaw;
@@ -2521,8 +2528,8 @@ s32 update_spiral_stairs_camera(struct Camera *c, Vec3f focus, Vec3f pos) {
     pos[0] = cPos[0];
     pos[2] = cPos[2];
     camYaw = calculate_yaw(focus, pos);
-
-    return camYaw;
+    */
+    return 0;
 }
 
 /**

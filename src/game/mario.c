@@ -1977,6 +1977,7 @@ s32 execute_mario_action(UNUSED struct Object *o) {
         }*/
         
     }
+
     if (gMarioState->surfboard == 1) {
         if (gMarioState->action & ACT_FLAG_RIDING_SHELL){
             o->header.gfx.sharedChild = gLoadedGraphNodes[MODEL_MARIO];

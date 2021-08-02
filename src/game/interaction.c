@@ -1106,7 +1106,7 @@ u32 interact_igloo_barrier(struct MarioState *m, UNUSED u32 interactType, struct
     m->interactObj = o;
     m->usedObj = o;
     interaction = determine_interaction(m, o);
-    if ((interaction & INT_HIT_FROM_ABOVE) || (interaction & INT_GROUND_POUND_OR_TWIRL)) {
+    if (interaction & INT_ATTACK_NOT_FROM_BELOW) {
             o->oAction = 1;
             if (o->oInteractionSubtype & INT_SUBTYPE_TWIRL_BOUNCE) {
                 bounce_off_object(m, o, o->oFriction);
