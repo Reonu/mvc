@@ -42,7 +42,7 @@ s8 filler80339F1C[20];
 #include "src/game/tile_scroll.h"
 #include "levels/bob/header.h"
 
-#define DEBUG
+//#define DEBUG
 
 u32 unused80339F10;
 s8 filler80339F1C[20];
