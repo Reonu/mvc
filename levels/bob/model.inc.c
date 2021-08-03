@@ -16689,7 +16689,7 @@ Gfx mat_revert_bob_dl_BlueRock[] = {
 
 Gfx mat_bob_dl_waterVertexAlpha_layer5[] = {
 	gsDPPipeSync(),
-	gsDPSetCombineLERP(0, 0, 0, 0, 0, 0, 0, 0, TEXEL0, 0, TEXEL1, SHADE, 0, 0, 0, SHADE),
+	gsDPSetCombineLERP(TEXEL0, 0, TEXEL1, SHADE, 0, 0, 0, SHADE, 0, 0, 0, COMBINED, 0, 0, 0, COMBINED),
 	gsSPClearGeometryMode(G_LIGHTING),
 	gsDPSetCycleType(G_CYC_2CYCLE),
 	gsDPSetRenderMode(G_RM_PASS, G_RM_AA_ZB_XLU_SURF2),
