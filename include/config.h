@@ -47,7 +47,7 @@
 #ifdef TARGET_N64
 // Size of the black border at the top and bottom of the screen. You can set it to different values for console and emulator.
 // There is generally no reason to have a value other than 0 for emulator. As for console, it provides a (small) performance boost.
-#define BORDER_HEIGHT_CONSOLE 0
+#define BORDER_HEIGHT_CONSOLE 5
 #define BORDER_HEIGHT_EMULATOR 0
 
 #endif
