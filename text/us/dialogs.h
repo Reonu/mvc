@@ -16,6 +16,12 @@
 #define GIVE_UP "give"
 #endif
 
+#ifdef VC_HACKS
+#define SURFBOARD_CONTROLS "Use it with X, Y or Z"
+#else
+#define SURFBOARD_CONTROLS "Use it with L"
+#endif
+
 DEFINE_DIALOG(DIALOG_000, 1, 7, 30, 200, _("\
 Mario has spent too much\n\
 time on vacation and\n\
@@ -493,7 +499,7 @@ DEFINE_DIALOG(DIALOG_139, 1, 6, 30, 200, _("\
 DEFINE_DIALOG(DIALOG_140, 1, 4, 30, 200, _("\
 You got a surfboard!\n\
 It's a single-use item.\n\
-Use it with L.\n\
+"SURFBOARD_CONTROLS " \n\
 \n\
 You can take it with\n\
 you, but it doesn't\n\
