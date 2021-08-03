@@ -1366,6 +1366,6 @@ s32 lvl_print_ending_text(UNUSED s16 arg0, UNUSED s32 arg1) {
             print_text(10, 20, "HOW ARE RUNS?");
             
         }
-
+        render_credits();
 }
 

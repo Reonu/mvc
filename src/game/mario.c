@@ -1927,9 +1927,6 @@ void scroll_bob_dl_Water_mesh_layer_5_vtx_0() {
 s32 execute_mario_action(UNUSED struct Object *o) {
     s32 inLoop = TRUE;
     
-    if ((gMarioState->numStars == 0) && (gMarioState->creditsTimer < 1020) && (!gSpeedrunMode)) {
-        render_credits();
-    }
     if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->pos[1] < -2700)) {
         gMarioState->pos[1] = gMarioState->pos[1] + 50;
     }
