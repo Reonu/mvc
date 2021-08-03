@@ -31,6 +31,8 @@
 #endif
 #include <prevent_bss_reordering.h>
 
+#include "config.h"
+
 // First 3 controller slots
 struct Controller gControllers[3];
 
