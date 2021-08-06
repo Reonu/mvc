@@ -36,13 +36,38 @@
 
 #include "gfx_dimensions.h"
 
+#include "src/game/tile_scroll.h"
+#include "levels/bob/header.h"
+#include "audio/load.h"
+
+#define NUM_BGM_SEQUENCES 6
+
+#define S16_MIN 0x8000
+#define S16_MAX 0x7FFF
+#define WTR_LVL -2464
+
+#define FADE_TIMER 25
+#define FADE_TIMER_END 1
+
+const s16 bgmTable[NUM_BGM_SEQUENCES][7] = {
+    /*              SEQUENCE FILES (LOWEST GETS PLAYED),    X_GE,          Y_GE,    Z_GE,    X_LT,    Y_LT,    Z_LT */
+    {(SEQ_STREAMED_BFSHORES << 8) | SEQ_STREAMED_BFLAKE,    2600,       WTR_LVL, S16_MIN, S16_MAX, S16_MAX,   -2000},
+    {                             SEQ_STREAMED_BFSHORES,     -50,       WTR_LVL,   -2000,    4000, S16_MAX,    6600},
+    {                             SEQ_STREAMED_BFSHORES,   -1100, WTR_LVL - 100, S16_MIN,    2300, S16_MAX,   -2000},
+    {                               SEQ_STREAMED_BFLAKE, S16_MIN,       WTR_LVL,    6300,    -250,   -1650, S16_MAX},
+    {                                SEQ_STREAMED_BFICE,    -250,       WTR_LVL,    7500, S16_MAX, S16_MAX, S16_MAX},
+    {                              SEQ_STREAMED_BFMOUNT, S16_MIN,       WTR_LVL, S16_MIN,   -1150, S16_MAX,    6125}
+//  {                              SEQ_STREAMED_BFMOUNT, S16_MIN, WTR_LVL - 100, S16_MIN,   -1150, S16_MAX,    6125} // Use this instead of the above to swap music in the lava cave as well
+};
+
 u32 unused80339F10;
 s8 filler80339F1C[20];
 
-#include "src/game/tile_scroll.h"
-#include "levels/bob/header.h"
+s32 musicTimer = FADE_TIMER_END - 1;
+u8 seqIdBackup = SEQ_STREAMED_BFLAKE;
+f32 maxFadeVolume = 1.0f;
 
-//#define DEBUG
+// #define DEBUG
 
 u32 unused80339F10;
 s8 filler80339F1C[20];
@@ -1920,12 +1945,66 @@ void scroll_bob_dl_Water_mesh_layer_5_vtx_0() {
 
 // End of texture scroll stuff
 
+// Return music BGM to use based on the bgmTables 2D array
+u8 get_music_bgm_switch() {
+    u8 i = 0;
+    u8 j;
+    u8 k;
+    s16 coords[3] = {gMarioState->pos[0], find_floor_height(gMarioState->pos[0], gMarioState->pos[1], gMarioState->pos[2]), gMarioState->pos[2]};
+
+    for (; i < NUM_BGM_SEQUENCES; ++i) {
+        if ((u8) (bgmTable[i][0] & 0xFF) == sCurrentBackgroundMusicSeqId || (u8) (bgmTable[i][0] >> 8) == sCurrentBackgroundMusicSeqId)
+            continue;
+
+        for (j = 1, k = 0; k < 3; ++j, ++k) {
+            if (bgmTable[i][j] >= coords[k])
+                break;
+        }
+
+        if (j != 4)
+            continue;
+            
+        for (k = 0; k < 3; ++j, ++k) {
+            if (bgmTable[i][j] < gMarioState->pos[k])
+                break;
+        }
+
+        if (j == 7)
+            return (bgmTable[i][0] & 0xFF);
+    }
+
+    return 0xFF;
+}
 
 /**
  * Main function for executing Mario's behavior.
  */
 s32 execute_mario_action(UNUSED struct Object *o) {
     s32 inLoop = TRUE;
+    u8 seqId;
+
+    if (musicTimer > FADE_TIMER_END) {
+        musicTimer--;
+        gSequencePlayers[SEQ_PLAYER_LEVEL].fadeVolume = sqrtf(maxFadeVolume * (f32) musicTimer / (f32) FADE_TIMER);
+        // gSequencePlayers[SEQ_PLAYER_LEVEL].fadeVolume = maxFadeVolume * (f32) musicTimer / (f32) FADE_TIMER;
+    }
+    else if (musicTimer == FADE_TIMER_END) {
+        musicTimer--;
+        stop_background_music(sCurrentBackgroundMusicSeqId);
+        seqId = get_music_bgm_switch();
+        if (seqId == 0xFF)
+            seqId = seqIdBackup;
+        play_music(SEQ_PLAYER_LEVEL, seqId, 0);
+    }
+    else {
+        seqId = get_music_bgm_switch();
+        if (seqId != 0xFF) {
+            musicTimer = FADE_TIMER;
+            seqIdBackup = seqId;
+            maxFadeVolume = gSequencePlayers[SEQ_PLAYER_LEVEL].fadeVolume * gSequencePlayers[SEQ_PLAYER_LEVEL].fadeVolume;
+            // maxFadeVolume = gSequencePlayers[SEQ_PLAYER_LEVEL].fadeVolume;
+        }
+    }
     
     if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->pos[1] < -2700)) {
         gMarioState->pos[1] = gMarioState->pos[1] + 50;
@@ -1933,29 +2012,7 @@ s32 execute_mario_action(UNUSED struct Object *o) {
     if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->canSwim != 1 && gMarioState->unlockEverything != 1 )) {
         initiate_warp(LEVEL_BOB,1,0x02,0);
     }
-    if ((gMarioState->pos[0] > -1000) && (gMarioState->pos[2] > 7700)) {
-        if (sCurrentBackgroundMusicSeqId != SEQ_STREAMED_BFICE) {
-            stop_background_music(sCurrentBackgroundMusicSeqId);
-            play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_STREAMED_BFICE), 30);
-        }
-    } else if ((gMarioState->pos[0] < -2100) && (gMarioState->pos[2] < 7000)) {
-        if (sCurrentBackgroundMusicSeqId != SEQ_STREAMED_BFMOUNT) {
-            stop_background_music(sCurrentBackgroundMusicSeqId);
-            play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_STREAMED_BFMOUNT), 30);           
-        }
-    }
-    else if ((gMarioState->pos[0] < 2000) && (gMarioState->pos[2] < 6000)) {
-            if (sCurrentBackgroundMusicSeqId != SEQ_STREAMED_BFSHORES) {
-                stop_background_music(sCurrentBackgroundMusicSeqId);
-                play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_STREAMED_BFSHORES), 30);
-            }
-    }
-    else if ((gMarioState->pos[0] < -3000) && (gMarioState->pos[2] > 3000)){
-            if (sCurrentBackgroundMusicSeqId != SEQ_STREAMED_BFLAKE) {
-                stop_background_music(sCurrentBackgroundMusicSeqId);
-                play_music(SEQ_PLAYER_LEVEL, SEQUENCE_ARGS(4, SEQ_STREAMED_BFLAKE), 30);
-            }
-    }
+
     if (gMarioState->action == ACT_LAVA_BOOST) {
         play_transition(WARP_TRANSITION_FADE_INTO_CIRCLE, 0x14, 0x00, 0x00, 0x00);
         initiate_warp(LEVEL_BOB,1,0x02,0);

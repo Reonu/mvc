@@ -312,11 +312,11 @@ u8 sBackgroundMusicDefaultVolume[] = {
     70,  // SEQ_EVENT_CUTSCENE_ENDING
     65,  // SEQ_MENU_FILE_SELECT
     0,   // SEQ_EVENT_CUTSCENE_LAKITU (not in JP)
-    127,
-    127,
-    127,
-    127,
-    127,
+    51,  // SEQ_STREAMED_BFMOUNT
+    79,  // SEQ_STREAMED_FILESELECTEPIC
+    79,  // SEQ_STREAMED_BFICE
+    79,  // SEQ_STREAMED_BFLAKE
+    79,  // SEQ_STREAMED_BFSHORES
 };
 
 STATIC_ASSERT(ARRAY_COUNT(sBackgroundMusicDefaultVolume) == SEQ_COUNT,
@@ -2065,22 +2065,26 @@ static u8 begin_background_music_fade(u16 fadeDuration) {
     }
 
     if (sBackgroundMusicTargetVolume != TARGET_VOLUME_UNSET) {
-        targetVolume = (sBackgroundMusicTargetVolume & TARGET_VOLUME_VALUE_MASK);
+        // targetVolume = (sBackgroundMusicTargetVolume & TARGET_VOLUME_VALUE_MASK);
+        targetVolume = (sBackgroundMusicTargetVolume & TARGET_VOLUME_VALUE_MASK) * (sBackgroundMusicDefaultVolume[sCurrentBackgroundMusicSeqId] / 127.0f);
     }
 
     if (sBackgroundMusicMaxTargetVolume != TARGET_VOLUME_UNSET) {
-        u8 maxTargetVolume = (sBackgroundMusicMaxTargetVolume & TARGET_VOLUME_VALUE_MASK);
+        // u8 maxTargetVolume = (sBackgroundMusicMaxTargetVolume & TARGET_VOLUME_VALUE_MASK);
+        u8 maxTargetVolume = (sBackgroundMusicMaxTargetVolume & TARGET_VOLUME_VALUE_MASK) * (sBackgroundMusicDefaultVolume[sCurrentBackgroundMusicSeqId] / 127.0f);
         if (targetVolume > maxTargetVolume) {
             targetVolume = maxTargetVolume;
         }
     }
 
-    if (sLowerBackgroundMusicVolume && targetVolume > 40) {
-        targetVolume = 40;
+    if (sLowerBackgroundMusicVolume && targetVolume > /*40*/ 60) {
+        // targetVolume = 40;
+        targetVolume = 60 * (sBackgroundMusicDefaultVolume[sCurrentBackgroundMusicSeqId] / 127.0f);
     }
 
-    if (sSoundBanksThatLowerBackgroundMusic != 0 && targetVolume > 20) {
-        targetVolume = 20;
+    if (sSoundBanksThatLowerBackgroundMusic != 0 && targetVolume > /*20*/ 35) {
+        // targetVolume = 20;
+        targetVolume = 35 * (sBackgroundMusicDefaultVolume[sCurrentBackgroundMusicSeqId] / 127.0f);
     }
 
     if (gSequencePlayers[SEQ_PLAYER_LEVEL].enabled == TRUE) {

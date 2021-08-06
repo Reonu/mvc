@@ -2505,7 +2505,7 @@ void sequence_player_process_sequence(struct SequencePlayer *seqPlayer) {
                         //if (cmd){}
 
                         if ((s16) seqPlayer->tempo <= 0) {
-                            seqPlayer->tempo = 1;
+                            seqPlayer->tempo = 0;
                         }
                         break;
 
