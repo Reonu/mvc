@@ -44,7 +44,7 @@
 
 #define S16_MIN 0x8000
 #define S16_MAX 0x7FFF
-#define WTR_LVL -2464
+#define WTR_LVL -2463
 
 #define FADE_TIMER 25
 #define FADE_TIMER_END 1
@@ -53,7 +53,7 @@ const s16 bgmTable[NUM_BGM_SEQUENCES][7] = {
     /*              SEQUENCE FILES (LOWEST GETS PLAYED),    X_GE,          Y_GE,    Z_GE,    X_LT,    Y_LT,    Z_LT */
     {(SEQ_STREAMED_BFSHORES << 8) | SEQ_STREAMED_BFLAKE,    2600,       WTR_LVL, S16_MIN, S16_MAX, S16_MAX,   -2000},
     {                             SEQ_STREAMED_BFSHORES,     -50,       WTR_LVL,   -2000,    4000, S16_MAX,    6600},
-    {                             SEQ_STREAMED_BFSHORES,   -1100, WTR_LVL - 100, S16_MIN,    2300, S16_MAX,   -2000},
+    {                             SEQ_STREAMED_BFSHORES,   -1100, WTR_LVL - 50, S16_MIN,    2300, S16_MAX,   -2000},
     {                               SEQ_STREAMED_BFLAKE, S16_MIN,       WTR_LVL,    6300,    -250,   -1650, S16_MAX},
     {                                SEQ_STREAMED_BFICE,    -250,       WTR_LVL,    7500, S16_MAX, S16_MAX, S16_MAX},
     {                              SEQ_STREAMED_BFMOUNT, S16_MIN,       WTR_LVL, S16_MIN,   -1150, S16_MAX,    6125}
