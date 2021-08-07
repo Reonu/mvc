@@ -594,7 +594,7 @@ void general_star_dance_handler(struct MarioState *m, s32 isInWater) {
         print_text((120), 40, "SAVING");
     }
     if (m->actionState == 0) {
-        if (m->numStars == 30) {
+        if ((m->numStars == 30) && (gStarTracker)) {
             stop_background_music(sCurrentBackgroundMusicSeqId);
             initiate_warp(LEVEL_ENDING, 0x00, 0, 0);
         }

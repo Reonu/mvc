@@ -1984,6 +1984,9 @@ s32 execute_mario_action(UNUSED struct Object *o) {
     s32 inLoop = TRUE;
     u8 seqId;
 
+    if (gMarioState->numStars == 29) {
+        gStarTracker = 1;
+    }
     // Music switching code
     if (musicTimer > FADE_TIMER_END) {
         musicTimer--;

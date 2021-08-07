@@ -1366,6 +1366,8 @@ s32 lvl_print_ending_text(UNUSED s16 arg0, UNUSED s32 arg1) {
             print_text(10, 20, "HOW ARE RUNS?");
             
         }
+        save_file_do_save(gCurrSaveFileNum - 1);
         render_credits();
+        gStarTracker = 0;
 }
 

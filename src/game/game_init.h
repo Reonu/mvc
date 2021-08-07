@@ -47,6 +47,7 @@ extern u8 gWidescreen;
 extern u8 gCustomCameraMode;
 extern u32 gSpeedrunTimer;
 extern u8 gBorderHeight;
+extern u8 gStarTracker;
 #ifdef EEP
 extern s8 gEepromProbe;
 #endif

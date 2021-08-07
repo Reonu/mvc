@@ -828,7 +828,7 @@ u32 interact_star_or_key(struct MarioState *m, UNUSED u32 interactType, struct O
         m->numStars =
             save_file_get_total_star_count(gCurrSaveFileNum - 1, COURSE_MIN - 1, COURSE_MAX - 1);
 
-        if (m->numStars == 30) {
+        if ((m->numStars == 30) && (gStarTracker)) {
             stop_background_music(sCurrentBackgroundMusicSeqId);
             initiate_warp(LEVEL_ENDING, 0x00, 0, 0);
         }
