@@ -312,11 +312,11 @@ u8 sBackgroundMusicDefaultVolume[] = {
     70,  // SEQ_EVENT_CUTSCENE_ENDING
     65,  // SEQ_MENU_FILE_SELECT
     0,   // SEQ_EVENT_CUTSCENE_LAKITU (not in JP)
-    127,
-    127,
-    127,
-    127,
-    127,
+    51,  // SEQ_STREAMED_BFMOUNT
+    79,  // SEQ_STREAMED_FILESELECTEPIC
+    79,  // SEQ_STREAMED_BFICE
+    79,  // SEQ_STREAMED_BFLAKE
+    79,  // SEQ_STREAMED_BFSHORES
 };
 
 STATIC_ASSERT(ARRAY_COUNT(sBackgroundMusicDefaultVolume) == SEQ_COUNT,
@@ -1276,6 +1276,13 @@ static f32 get_sound_freq_scale(u8 bank, u8 item) {
     return amount / US_FLOAT(15.0) + US_FLOAT(1.0);
 }
 
+void set_reverb(u8 levelIndex, u8 areaIndex, u8 reverbValue) {
+    if (levelIndex >= LEVEL_COUNT || areaIndex >= 3)
+        return;
+
+    sLevelAreaReverbs[levelIndex][areaIndex] = reverbValue;
+}
+
 /**
  * Called from threads: thread4_sound, thread5_game_loop (EU only)
  */
@@ -1364,6 +1371,9 @@ static void update_game_sound(void) {
                 soundId = (sSoundBanks[bank][soundIndex].soundBits >> SOUNDARGS_SHIFT_SOUNDID);
 
                 sSoundBanks[bank][soundIndex].soundStatus = soundStatus;
+
+                gSequencePlayers[SEQ_PLAYER_SFX].channels[channelIndex]->reverbVol =
+                                    get_sound_reverb(bank, soundIndex, channelIndex);
 
                 if (soundStatus == SOUND_STATUS_WAITING) {
                     if (sSoundBanks[bank][soundIndex].soundBits & SOUND_LOWER_BACKGROUND_MUSIC) {
@@ -2065,22 +2075,26 @@ static u8 begin_background_music_fade(u16 fadeDuration) {
     }
 
     if (sBackgroundMusicTargetVolume != TARGET_VOLUME_UNSET) {
-        targetVolume = (sBackgroundMusicTargetVolume & TARGET_VOLUME_VALUE_MASK);
+        // targetVolume = (sBackgroundMusicTargetVolume & TARGET_VOLUME_VALUE_MASK);
+        targetVolume = (sBackgroundMusicTargetVolume & TARGET_VOLUME_VALUE_MASK) * (sBackgroundMusicDefaultVolume[sCurrentBackgroundMusicSeqId] / 127.0f);
     }
 
     if (sBackgroundMusicMaxTargetVolume != TARGET_VOLUME_UNSET) {
-        u8 maxTargetVolume = (sBackgroundMusicMaxTargetVolume & TARGET_VOLUME_VALUE_MASK);
+        // u8 maxTargetVolume = (sBackgroundMusicMaxTargetVolume & TARGET_VOLUME_VALUE_MASK);
+        u8 maxTargetVolume = (sBackgroundMusicMaxTargetVolume & TARGET_VOLUME_VALUE_MASK) * (sBackgroundMusicDefaultVolume[sCurrentBackgroundMusicSeqId] / 127.0f);
         if (targetVolume > maxTargetVolume) {
             targetVolume = maxTargetVolume;
         }
     }
 
-    if (sLowerBackgroundMusicVolume && targetVolume > 40) {
-        targetVolume = 40;
+    if (sLowerBackgroundMusicVolume && targetVolume > /*40*/ 60) {
+        // targetVolume = 40;
+        targetVolume = 60 * (sBackgroundMusicDefaultVolume[sCurrentBackgroundMusicSeqId] / 127.0f);
     }
 
-    if (sSoundBanksThatLowerBackgroundMusic != 0 && targetVolume > 20) {
-        targetVolume = 20;
+    if (sSoundBanksThatLowerBackgroundMusic != 0 && targetVolume > /*20*/ 35) {
+        // targetVolume = 20;
+        targetVolume = 35 * (sBackgroundMusicDefaultVolume[sCurrentBackgroundMusicSeqId] / 127.0f);
     }
 
     if (gSequencePlayers[SEQ_PLAYER_LEVEL].enabled == TRUE) {
