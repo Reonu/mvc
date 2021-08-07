@@ -1360,7 +1360,7 @@ void update_mario_button_inputs(struct MarioState *m) {
             m->showMovesetTimer = 90;
             m->showMoveset = 0;
         }
-        m->creditsTimer = 930;
+        m->creditsTimer = 1110;
     }   
     if (m->debugMode == 1) {
         if (m->controller->buttonPressed & R_JPAD) {

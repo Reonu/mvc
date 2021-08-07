@@ -330,12 +330,8 @@ void render_debug_mode(void) {
 void render_credits(void) {
     if (gMarioState->creditsTimer > 0 && gMarioState->creditsTimer < 90 ) {
         print_text(10, 220, "HACK BY REONU");
-        if (gSpeedrunMode) {
-            print_text(10, 200, "SPEEDRUN MODE ENABLED");
-            print_text(10, 180, "SAVING IS DISABLED!");
-        }
     }
-    if (gMarioState->creditsTimer >= 90 && gMarioState->creditsTimer < 1020 ) {
+    if (gMarioState->creditsTimer >= 90 && gMarioState->creditsTimer < 1110 ) {
         print_text(10, 220, "SPECIAL THANKS TO:");
     }
     if (gMarioState->creditsTimer >= 90 && gMarioState->creditsTimer < 180 ) {
@@ -379,6 +375,10 @@ void render_credits(void) {
     if (gMarioState->creditsTimer >= 930 && gMarioState->creditsTimer < 1020 ) {
         print_text(10, 200, "DEVWIZARD");
         print_text(10, 180, "TIMER CODE");
+    }
+    if (gMarioState->creditsTimer >= 1020 && gMarioState->creditsTimer < 1110 ) {
+        print_text(10, 200, "ARCTICJAGUAR725");
+        print_text(10, 180, "HIGH QUALITY BGM");
     }
     gMarioState->creditsTimer++;
 }
