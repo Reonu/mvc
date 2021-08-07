@@ -1276,6 +1276,13 @@ static f32 get_sound_freq_scale(u8 bank, u8 item) {
     return amount / US_FLOAT(15.0) + US_FLOAT(1.0);
 }
 
+void set_reverb(u8 levelIndex, u8 areaIndex, u8 reverbValue) {
+    if (levelIndex >= LEVEL_COUNT || areaIndex >= 3)
+        return;
+
+    sLevelAreaReverbs[levelIndex][areaIndex] = reverbValue;
+}
+
 /**
  * Called from threads: thread4_sound, thread5_game_loop (EU only)
  */
@@ -1364,6 +1371,9 @@ static void update_game_sound(void) {
                 soundId = (sSoundBanks[bank][soundIndex].soundBits >> SOUNDARGS_SHIFT_SOUNDID);
 
                 sSoundBanks[bank][soundIndex].soundStatus = soundStatus;
+
+                gSequencePlayers[SEQ_PLAYER_SFX].channels[channelIndex]->reverbVol =
+                                    get_sound_reverb(bank, soundIndex, channelIndex);
 
                 if (soundStatus == SOUND_STATUS_WAITING) {
                     if (sSoundBanks[bank][soundIndex].soundBits & SOUND_LOWER_BACKGROUND_MUSIC) {

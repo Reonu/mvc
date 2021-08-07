@@ -63,11 +63,12 @@ const s16 bgmTable[NUM_BGM_SEQUENCES][7] = {
 u32 unused80339F10;
 s8 filler80339F1C[20];
 
-s32 musicTimer = FADE_TIMER_END - 1;
 u8 seqIdBackup = SEQ_STREAMED_BFLAKE;
+u8 caveStatus = FALSE;
+s32 musicTimer = FADE_TIMER_END - 1;
 f32 maxFadeVolume = 1.0f;
 
-// #define DEBUG
+#define DEBUG
 
 u32 unused80339F10;
 s8 filler80339F1C[20];
@@ -1957,7 +1958,7 @@ u8 get_music_bgm_switch() {
             continue;
 
         for (j = 1, k = 0; k < 3; ++j, ++k) {
-            if (bgmTable[i][j] >= coords[k])
+            if (coords[k] < bgmTable[i][j])
                 break;
         }
 
@@ -1965,7 +1966,7 @@ u8 get_music_bgm_switch() {
             continue;
             
         for (k = 0; k < 3; ++j, ++k) {
-            if (bgmTable[i][j] < gMarioState->pos[k])
+            if (gMarioState->pos[k] >= bgmTable[i][j])
                 break;
         }
 
@@ -1983,9 +1984,10 @@ s32 execute_mario_action(UNUSED struct Object *o) {
     s32 inLoop = TRUE;
     u8 seqId;
 
+    // Music switching code
     if (musicTimer > FADE_TIMER_END) {
         musicTimer--;
-        gSequencePlayers[SEQ_PLAYER_LEVEL].fadeVolume = sqrtf(maxFadeVolume * (f32) musicTimer / (f32) FADE_TIMER);
+        gSequencePlayers[SEQ_PLAYER_LEVEL].fadeVolume = maxFadeVolume * sqrtf((f32) musicTimer / (f32) FADE_TIMER);
         // gSequencePlayers[SEQ_PLAYER_LEVEL].fadeVolume = maxFadeVolume * (f32) musicTimer / (f32) FADE_TIMER;
     }
     else if (musicTimer == FADE_TIMER_END) {
@@ -2001,10 +2003,22 @@ s32 execute_mario_action(UNUSED struct Object *o) {
         if (seqId != 0xFF) {
             musicTimer = FADE_TIMER;
             seqIdBackup = seqId;
-            maxFadeVolume = gSequencePlayers[SEQ_PLAYER_LEVEL].fadeVolume * gSequencePlayers[SEQ_PLAYER_LEVEL].fadeVolume;
-            // maxFadeVolume = gSequencePlayers[SEQ_PLAYER_LEVEL].fadeVolume;
+            maxFadeVolume = gSequencePlayers[SEQ_PLAYER_LEVEL].fadeVolume;
         }
     }
+
+    // Quiet cave music w/ reverb parameter hijacking
+    if (gMarioState->floor && gMarioState->floor->type == SURFACE_CAMERA_ROTATE_LEFT) {
+        caveStatus = TRUE;
+        lower_background_noise(2);
+        set_reverb(gCurrLevelNum, gCurrAreaIndex - 1, 0x30);
+    }
+    else if (caveStatus && gMarioState->floor && gMarioState->floor->type != SURFACE_CAMERA_ROTATE_LEFT) {
+        caveStatus = FALSE;
+        raise_background_noise(2);
+        set_reverb(gCurrLevelNum, gCurrAreaIndex - 1, 0x00);
+    }
+
     
     if ((gMarioState->action & ACT_FLAG_SWIMMING) && (gMarioState->pos[1] < -2700)) {
         gMarioState->pos[1] = gMarioState->pos[1] + 50;
