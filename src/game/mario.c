@@ -40,8 +40,6 @@
 #include "levels/bob/header.h"
 #include "audio/load.h"
 
-#define NUM_BGM_SEQUENCES 6
-
 #define S16_MIN 0x8000
 #define S16_MAX 0x7FFF
 #define WTR_LVL -2463
@@ -49,13 +47,14 @@
 #define FADE_TIMER 25
 #define FADE_TIMER_END 1
 
-const s16 bgmTable[NUM_BGM_SEQUENCES][7] = {
+const s16 bgmTable[][7] = {
     /*              SEQUENCE FILES (LOWEST GETS PLAYED),    X_GE,          Y_GE,    Z_GE,    X_LT,    Y_LT,    Z_LT */
     {(SEQ_STREAMED_BFSHORES << 8) | SEQ_STREAMED_BFLAKE,    2600,       WTR_LVL, S16_MIN, S16_MAX, S16_MAX,   -2000},
     {                             SEQ_STREAMED_BFSHORES,     -50,       WTR_LVL,   -2000,    4000, S16_MAX,    6600},
     {                             SEQ_STREAMED_BFSHORES,   -1100,  WTR_LVL - 50, S16_MIN,    2300, S16_MAX,   -2000},
-    {                               SEQ_STREAMED_BFLAKE, S16_MIN,       WTR_LVL,    6300,    -250,   -1650, S16_MAX},
-    {                                SEQ_STREAMED_BFICE,    -250,       WTR_LVL,    7500, S16_MAX, S16_MAX, S16_MAX},
+    {                               SEQ_STREAMED_BFLAKE, S16_MIN,       WTR_LVL,    6300,   -4000,   -1650, S16_MAX},
+    {   (SEQ_STREAMED_BFICE << 8) | SEQ_STREAMED_BFLAKE,   -4000,       WTR_LVL,    6300,       0,   -1650, S16_MAX},
+    {                                SEQ_STREAMED_BFICE,       0,       WTR_LVL,    7500, S16_MAX, S16_MAX, S16_MAX},
     {                              SEQ_STREAMED_BFMOUNT, S16_MIN,       WTR_LVL, S16_MIN,   -1150, S16_MAX,    6125}
 //  {                              SEQ_STREAMED_BFMOUNT, S16_MIN, WTR_LVL - 100, S16_MIN,   -1150, S16_MAX,    6125} // Use this instead of the above to swap music in the lava cave as well
 };
@@ -1951,14 +1950,15 @@ u8 get_music_bgm_switch() {
     u8 i = 0;
     u8 j;
     u8 k;
-    s16 coords[3] = {gMarioState->pos[0], find_floor_height(gMarioState->pos[0], gMarioState->pos[1], gMarioState->pos[2]), gMarioState->pos[2]};
+    s16 coordsMin[3] = {gMarioState->pos[0], find_floor_height(gMarioState->pos[0], gMarioState->pos[1], gMarioState->pos[2]), gMarioState->pos[2]};
+    s16 coordsMax[3] = {coordsMin[0], gMarioState->pos[1], coordsMin[2]};
 
-    for (; i < NUM_BGM_SEQUENCES; ++i) {
+    for (; i < sizeof(bgmTable) / sizeof(bgmTable[0]); ++i) {
         if ((u8) (bgmTable[i][0] & 0xFF) == sCurrentBackgroundMusicSeqId || (u8) (bgmTable[i][0] >> 8) == sCurrentBackgroundMusicSeqId)
             continue;
 
         for (j = 1, k = 0; k < 3; ++j, ++k) {
-            if (coords[k] < bgmTable[i][j])
+            if (coordsMin[k] < bgmTable[i][j])
                 break;
         }
 
@@ -1966,7 +1966,7 @@ u8 get_music_bgm_switch() {
             continue;
             
         for (k = 0; k < 3; ++j, ++k) {
-            if (gMarioState->pos[k] >= bgmTable[i][j])
+            if (coordsMax[k] >= bgmTable[i][j])
                 break;
         }
 
