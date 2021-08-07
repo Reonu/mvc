@@ -67,7 +67,7 @@ u8 caveStatus = FALSE;
 s32 musicTimer = FADE_TIMER_END - 1;
 f32 maxFadeVolume = 1.0f;
 
-#define DEBUG
+// #define DEBUG
 
 u32 unused80339F10;
 s8 filler80339F1C[20];
@@ -1945,7 +1945,7 @@ void scroll_bob_dl_Water_mesh_layer_5_vtx_0() {
 
 // End of texture scroll stuff
 
-// Return music BGM to use based on the bgmTables 2D array
+// Return music BGM to use based on the bgmTable 2D array
 u8 get_music_bgm_switch() {
     u8 i = 0;
     u8 j;
