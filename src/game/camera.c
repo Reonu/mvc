@@ -3066,7 +3066,7 @@ void update_camera(struct Camera *c) {
 
     gCamera = c;
     update_camera_hud_status(c);
-    /*if (c->cutscene == 0) {
+    if (c->cutscene == 0) {
         // Only process R_TRIG if 'fixed' is not selected in the menu
         if (cam_select_alt_mode(0) == CAM_SELECTION_MARIO) {
             if (gPlayer1Controller->buttonPressed & R_TRIG) {
@@ -3078,7 +3078,7 @@ void update_camera(struct Camera *c) {
             }
         }
         play_sound_if_cam_switched_to_lakitu_or_mario();
-    }*/
+    }
 
     // Initialize the camera
     sStatusFlags &= ~CAM_FLAG_FRAME_AFTER_CAM_INIT;
