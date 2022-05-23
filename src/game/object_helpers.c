@@ -50,6 +50,34 @@ Gfx *geo_update_projectile_pos_from_parent(s32 callContext, UNUSED struct GraphN
     return NULL;
 }
 
+Gfx *geo_set_star_color(s32 callContext, struct GraphNode *node, UNUSED void *context) {
+    Gfx *dlStart, *dlHead;
+    struct Object *objectGraphNode;
+    struct GraphNodeGenerated *currentGraphNode;
+    u8 layer;
+    dlStart = NULL;
+    // You'd set the flags to 7 << 8 to make it affect layer 7
+    if (callContext == GEO_CONTEXT_RENDER) {
+        currentGraphNode = (struct GraphNodeGenerated *) node;
+        objectGraphNode = (struct Object *) gCurGraphNodeObject; // TODO: change this to object pointer
+        layer = currentGraphNode->parameter & 0xFF;
+
+        if (layer != 0) {
+            currentGraphNode->fnNode.node.flags =
+                (layer << 8) | (currentGraphNode->fnNode.node.flags & 0xFF);
+        }
+    
+        dlStart = alloc_display_list(sizeof(Gfx) * 3);
+        dlHead = dlStart;
+        u8 r = (objectGraphNode->oPrimRGB >> 16) & 0xff;
+        u8 g = (objectGraphNode->oPrimRGB >> 8) & 0xff;
+        u8 b = objectGraphNode->oPrimRGB & 0xff;
+        gDPSetPrimColor(dlHead++, 0, 0, r, g, b, 255);
+        gSPEndDisplayList(dlHead);
+    }
+    return dlStart;
+}
+
 Gfx *geo_update_layer_transparency(s32 callContext, struct GraphNode *node, UNUSED void *context) {
     Gfx *dlStart, *dlHead;
     struct Object *objectGraphNode;

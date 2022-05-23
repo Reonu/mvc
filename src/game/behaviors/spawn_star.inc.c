@@ -14,10 +14,29 @@ static struct ObjectHitbox sCollectStarHitbox = {
     /* hurtboxHeight:     */ 0,
 };
 
+u32 colours[][3] = {
+    {255,0,0}, // red
+    {0,255,0}, // green
+    {0,0,255}, // blue
+    {255,255,0}, // yellow
+    {255,0,255}, // purple
+    {0,255,255}, // cyan
+    {255,255,255}, // white
+    {255,127,0}, // orange
+    {127,127,127}, // grey
+    {255,0,127}, // magenta
+    {127,0,0}, // maroon
+    {255,127,127}, // pink
+    {127,255,127}, // lime
+    {127,127,255}, // light blue
+};
+
+#define ARRAY_SIZE(x) (sizeof((x)) / sizeof((x)[0]))
 void bhv_collect_star_init(void) {
     s8 starId;
     u8 currentLevelStarFlags;
-
+    u32 index = (random_u16() * ARRAY_SIZE(colours)) / 65536;
+    o->oPrimRGB = (colours[index][0] << 16) | (colours[index][1] << 8) | colours[index][2]; 
     starId = (o->oBehParams >> 24) & 0xFF;
 #ifdef GLOBAL_STAR_IDS
     currentLevelStarFlags = save_file_get_star_flags(gCurrSaveFileNum - 1, (starId/7) - 1);
