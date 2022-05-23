@@ -2108,7 +2108,7 @@ s32 update_mario_camera(UNUSED struct Camera *c, Vec3f focus, Vec3f pos) {
  * The camera moves behind Mario, and can rotate all the way around
  */
 s16 update_default_camera(struct Camera *c) {
-    /*Vec3f tempPos;
+    Vec3f tempPos;
     Vec3f cPos;
     UNUSED u8 unused1[12];
     struct Surface *marioFloor;
@@ -2426,7 +2426,7 @@ s16 update_default_camera(struct Camera *c) {
     }
     if (gCurrLevelArea == AREA_WDW_TOWN) {
         yaw = clamp_positions_and_find_yaw(c->pos, c->focus, 2254.f, -3789.f, 3790.f, -2253.f);
-    }*/
+    }
     return 0;
 }
 
