@@ -47,6 +47,8 @@
 #define FADE_TIMER 25
 #define FADE_TIMER_END 1
 
+#define DEBUG
+
 const s16 bgmTable[][7] = {
     /*              SEQUENCE FILES (LOWEST GETS PLAYED),    X_GE,          Y_GE,    Z_GE,    X_LT,    Y_LT,    Z_LT */
     {(SEQ_STREAMED_BFSHORES << 8) | SEQ_STREAMED_BFLAKE,    2600,       WTR_LVL, S16_MIN, S16_MAX, S16_MAX,   -2000},
