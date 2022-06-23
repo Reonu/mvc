@@ -2072,7 +2072,7 @@ s32 execute_mario_action(UNUSED struct Object *o) {
         gMarioState->numLives = 99;
     }
 
-    if (__osControllerTypes[0] == CONT_TYPE_GCN) {
+    if ((__osControllerTypes[0] == CONT_TYPE_GCN) || (__osControllerTypes[1] == CONT_TYPE_GCN)) {
         gMarioState->surfboardMask = GCN_X_BUTTON | GCN_Y_BUTTON | L_TRIG;
     } else {
         gMarioState->surfboardMask = L_TRIG;
