@@ -106,7 +106,8 @@ void crash_screen_print(s32 x, s32 y, const char *fmt, ...) {
     char *ptr;
     u32 glyph;
     s32 size;
-    char buf[0x100];
+    char buf[0x108];
+    bzero(&buf, sizeof(buf));
 
     va_list args;
     va_start(args, fmt);
@@ -117,7 +118,6 @@ void crash_screen_print(s32 x, s32 y, const char *fmt, ...) {
         ptr = buf;
 
         while (*ptr) {
-
             glyph = gCrashScreenCharToGlyph[*ptr & 0x7f];
 
             if (glyph != 0xff) {

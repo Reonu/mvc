@@ -2,13 +2,19 @@
 s32 height = 0;
 void bhv_1up_interact(void) {
     UNUSED s32 sp1C;
+    u8 dialogID;
 
+    if (__osControllerTypes[0] == CONT_TYPE_GCN) {
+        dialogID = 139;
+    } else {
+        dialogID = 140;
+    }
     if (obj_check_if_collided_with_object(o, gMarioObject) == 1) {
         play_sound(SOUND_GENERAL_COLLECT_1UP, gGlobalSoundSource);
         if ((o->oBehParams >> 24) & 0x01){
             gMarioState->surfboard=1;
             if ((gMarioState->hadSurfboard == 0) && (!gSpeedrunMode)) {
-                set_mario_action(gMarioState, ACT_READING_AUTOMATIC_DIALOG, 140);
+                set_mario_action(gMarioState, ACT_READING_AUTOMATIC_DIALOG, dialogID);
                 gMarioState->hadSurfboard = 1;
             }
             

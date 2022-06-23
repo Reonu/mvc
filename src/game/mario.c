@@ -1397,7 +1397,7 @@ void dismount_shell(struct MarioState *m)
         }
         
     }*/
-    if (m->controller->buttonPressed & L_TRIG && m->surfboard == 1 ){
+    if (m->controller->buttonPressed & m->surfboardMask && m->surfboard == 1 ){
         if (m->action & ACT_FLAG_RIDING_SHELL)
             {
                 dismount_shell(m);
@@ -2071,6 +2071,13 @@ s32 execute_mario_action(UNUSED struct Object *o) {
     if (gMarioState->numLives < 99) {
         gMarioState->numLives = 99;
     }
+
+    if (__osControllerTypes[0] == CONT_TYPE_GCN) {
+        gMarioState->surfboardMask = GCN_X_BUTTON | GCN_Y_BUTTON | L_TRIG;
+    } else {
+        gMarioState->surfboardMask = L_TRIG;
+    }
+
 
     /*
     * Moveset system

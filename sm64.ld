@@ -149,7 +149,11 @@ SECTIONS
       */libz.a:*.o(.text);
       */libhvqm2.a:*.o(.text);
       BUILD_DIR/lib/rsp.o(.text);   
-      lib/PR/hvqm/hvqm2sp1.o(.text);
+      lib/PR/audio/n_aspMain.o(.text*);
+      lib/PR/hvqm/hvqm2sp1.o(.text*);
+      _mainSegmentTextEnd = .;
+      /* Overwrite a libultra function with its modified counterpart for GCN controller support */
+      __osContGetInitData = __osContGetInitDataEx;
 
       /* data */
       BUILD_DIR/src/game*.o(.*data*);

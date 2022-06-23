@@ -25,7 +25,7 @@ struct DemoInput
 
 extern struct Controller gControllers[3];
 extern OSContStatus gControllerStatuses[4];
-extern OSContPad gControllerPads[4];
+extern OSContPadEx gControllerPads[4];
 extern OSMesgQueue gGameVblankQueue;
 extern OSMesgQueue gGfxVblankQueue;
 extern OSMesg gGameMesgBuf[1];

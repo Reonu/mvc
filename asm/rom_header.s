@@ -14,23 +14,35 @@
 .word  0x00000000               /* Checksum 2 */
 .word  0x00000000               /* Unknown */
 .word  0x00000000               /* Unknown */
-.if VERSION_SH == 1
 .ascii INTERNAL_ROM_NAME   /* Internal ROM name */
-.else
-.ascii INTERNAL_ROM_NAME   /* Internal ROM name */
-.endif
-.word  0x00000000               /* Unknown */
-.word  0x0000004E               /* Cartridge */
-.ascii "SM"                     /* Cartridge ID */
-
-/* Region */
-#ifdef VERSION_EU
-    .ascii "P"                  /* PAL (Europe) */
-#elif defined(VERSION_US)
-    .ascii "E"                  /* NTSC-U (North America) */
+#if defined(USE_GAMECUBE_CONTROLLER)
+/* Advanced homebrew ROM header bytes: https://n64brew.dev/wiki/ROM_Header#Advanced_Homebrew_ROM_Header */
+.word  0x82000000
 #else
-    .ascii "J"                  /* NTSC-J (Japan) */
+.word  0x00000000               /* Unknown */
+#endif
+.word  0x0000004E               /* Cartridge */
+#if defined(EEP4K) && !defined(USE_GAMECUBE_CONTROLLER)
+.ascii "SM"                     /* Cartridge ID */
+#else
+.ascii "ED"                     /* Cartridge ID */
 #endif
 
+/* Region */
+#if defined(VERSION_JP) || defined(VERSION_SH)
+    .ascii "J"                  /* NTSC-J (Japan) */
+#else
+    .ascii "E"                  /* NTSC-U (North America) */
+#endif
 
-    .byte  0x00                 /* Version */
+#if defined(SRAM)
+    .byte  0x32                 /* Version */
+#elif defined(EEP16K)
+    .byte  0x22                 /* Version */
+#elif defined(SRAM768K)
+    .byte  0x42                 /* Version */
+#elif defined(FLASHRAM)
+    .byte  0x52                 /* Version */
+#else
+    .byte  0x12                 /* Version */
+#endif
