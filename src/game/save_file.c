@@ -642,6 +642,17 @@ void save_file_set_widescreen_mode(u8 mode) {
 }
 #endif
 
+u8 save_file_get_analog_cam_mode(void) {
+    return gSaveBuffer.menuData[0].analogCam;
+}
+
+void save_file_set_analog_cam_mode(u8 mode) {
+    gSaveBuffer.menuData[0].analogCam = mode;
+
+    gMainMenuDataModified = TRUE;
+    save_main_menu_data();
+}
+
 u16 save_file_get_sound_mode(void) {
     return gSaveBuffer.menuData[0].soundMode;
 }

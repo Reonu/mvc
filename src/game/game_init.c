@@ -84,6 +84,9 @@ u8 gWidescreen;
 #endif
 u8 gCustomCameraMode;
 u8 gStarTracker;
+u8 gAnalogCam;
+u8 gJustSwitchedCam = 0;
+u8 gGcController;
 u32 gSpeedrunTimer;
 u16 sCurrFBNum = 0;
 u16 frameBufferIndex = 0;
@@ -599,6 +602,17 @@ void read_controller_inputs(void) {
 
     for (i = 0; i < 2; i++) {
         struct Controller *controller = &gControllers[i];
+        u32 oldButton = controller->controllerData->button;
+        if (gIsConsole && __osControllerTypes[i] == CONT_TYPE_GCN) {
+            u32 newButton = oldButton & ~(Z_TRIG | L_TRIG);
+            if (oldButton & Z_TRIG) {
+                newButton |= L_TRIG;
+            }
+            if (controller->controllerData->l_trig > 64) {
+                newButton |= Z_TRIG;
+            }
+            controller->controllerData->button = newButton;
+        }
 
         // if we're receiving inputs, update the controller struct with the new button info.
         if (controller->controllerData != NULL) {
@@ -678,6 +692,11 @@ void init_controllers(void) {
     } else {
         gPlayer1Controller = &gControllers[0];
     }
+    if ((__osControllerTypes[0] == CONT_TYPE_GCN) || (__osControllerTypes[1] == CONT_TYPE_GCN)) {
+        gGcController = TRUE;
+    } else {
+        gGcController = FALSE;
+    }
 }
 
 // Game thread core
@@ -742,6 +761,12 @@ void thread5_game_loop(UNUSED void *arg) {
 #ifdef WIDE
     gWidescreen = save_file_get_widescreen_mode();
 #endif
+    if (gGcController) {
+        gAnalogCam = save_file_get_analog_cam_mode();
+    } else {
+        gAnalogCam = FALSE;
+    }
+    
     render_init();
 
     while (TRUE) {

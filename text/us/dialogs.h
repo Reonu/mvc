@@ -484,8 +484,15 @@ DEFINE_DIALOG(DIALOG_136, 1, 6, 30, 200, _("\
 DEFINE_DIALOG(DIALOG_137, 1, 6, 30, 200, _("\
 "))
 
-DEFINE_DIALOG(DIALOG_138, 1, 3, 30, 200, _("\
-"))
+DEFINE_DIALOG(DIALOG_138, 1, 4, 30, 200, _("\
+You got a surfboard!\n\
+It's a single-use item.\n\
+Use it with X, Y or Z.\n\
+\n\
+You can take it with\n\
+you, but it doesn't\n\
+work on lava, so\n\
+don't even try!"))
 
 DEFINE_DIALOG(DIALOG_139, 1, 4, 30, 200, _("\
 You got a surfboard!\n\
@@ -496,7 +503,6 @@ You can take it with\n\
 you, but it doesn't\n\
 work on lava, so\n\
 don't even try!"))
-
 
 DEFINE_DIALOG(DIALOG_140, 1, 4, 30, 200, _("\
 You got a surfboard!\n\

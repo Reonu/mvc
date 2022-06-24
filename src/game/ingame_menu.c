@@ -35,7 +35,11 @@ s8 gRedCoinsCollected;
 u8 textCurrRatio43[] = { TEXT_HUD_CURRENT_RATIO_43 };
 u8 textCurrRatio169[] = { TEXT_HUD_CURRENT_RATIO_169 };
 u8 textPressL[] = { TEXT_HUD_PRESS_L };
+u8 textPressZ[] = { TEXT_HUD_PRESS_Z };
 #endif
+u8 textAnalogDisabled[] = { TEXT_ANALOG_DISABLED };
+u8 textAnalogEnabled[] = { TEXT_ANALOG_ENABLED };
+u8 textPressR[] = { TEXT_PRESS_R };
 
 extern u8 gLastCompletedCourseNum;
 extern u8 gLastCompletedStarNum;
@@ -1497,11 +1501,19 @@ void render_widescreen_setting(void) {
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
     if (!gWidescreen) {
         print_generic_string(10, 20, textCurrRatio43);
-        print_generic_string(10, 7, textPressL);           
+        if (gIsConsole && gGcController) {
+            print_generic_string(10, 7, textPressZ);
+        } else {
+            print_generic_string(10, 7, textPressL);
+        }      
     }
     else {
         print_generic_string(10, 20, textCurrRatio169);
-        print_generic_string(10, 7, textPressL);
+        if (gIsConsole && gGcController) {
+            print_generic_string(10, 7, textPressZ);
+        } else {
+            print_generic_string(10, 7, textPressL);
+        }
     }
     gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
     if (gPlayer1Controller->buttonPressed & L_TRIG){
@@ -1510,6 +1522,25 @@ void render_widescreen_setting(void) {
     }
 }
 #endif
+
+void render_analog_setting(void) {
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_begin);
+    gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, gDialogTextAlpha);
+    if (!gAnalogCam) {
+        print_generic_string(200, 20, textAnalogDisabled);
+        print_generic_string(200, 7, textPressR);           
+    }
+    else {
+        print_generic_string(200, 20, textAnalogEnabled);
+        print_generic_string(200, 7, textPressR);
+    }
+    gSPDisplayList(gDisplayListHead++, dl_ia_text_end);
+    if (gPlayer1Controller->buttonPressed & R_TRIG){
+        gAnalogCam ^= 1;
+        save_file_set_analog_cam_mode(gAnalogCam);
+        gJustSwitchedCam = TRUE;
+    }    
+}
 
 #define CRS_NUM_X1 100
 #define TXT_STAR_X 98
@@ -1866,6 +1897,9 @@ s16 render_pause_courses_and_castle(void) {
     #ifdef WIDE
         render_widescreen_setting();
     #endif
+        if (gGcController)
+            render_analog_setting();
+
     if (gDialogTextAlpha < 250) {
         gDialogTextAlpha += 25;
     }

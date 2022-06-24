@@ -5,7 +5,12 @@ void bhv_1up_interact(void) {
     u8 dialogID;
 
     if (__osControllerTypes[0] == CONT_TYPE_GCN) {
-        dialogID = 139;
+        if (gIsConsole) {
+            dialogID = 138;
+        } else {
+            dialogID = 139;
+        }
+        
     } else {
         dialogID = 140;
     }

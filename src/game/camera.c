@@ -1189,6 +1189,21 @@ void mode_radial_camera(struct Camera *c) {
     pan_ahead_of_player(c);
 }
 
+s32 snap_to_45_degrees(s16 angle) {
+    if (angle % DEGREES(45)) {
+        s16 d1 = ABS(angle) % DEGREES(45);
+        s16 d2 = DEGREES(45) - d1;
+        if (angle > 0) {
+            if (d1 < d2) return angle - d1;
+            else return angle + d2;
+        } else {
+            if (d1 < d2) return angle + d1;
+            else return angle - d2;
+        }
+    }
+    return angle;
+}
+
 /**
  * A mode that only has 8 camera angles, 45 degrees apart
  */
@@ -1198,31 +1213,38 @@ void mode_8_directions_camera(struct Camera *c) {
     s16 oldAreaYaw = sAreaYaw;
 
     radial_camera_input(c, 0.f);
+    if (gAnalogCam) {
+    if (gPlayer1Controller->controllerData->c_stick_x)
+        s8DirModeYawOffset += DEGREES(gPlayer1Controller->controllerData->c_stick_x * 4 / 64);
+    } else {
+        if (gPlayer1Controller->buttonPressed & R_CBUTTONS) {
+            s8DirModeYawOffset += DEGREES(45);
+            play_sound_cbutton_side();
+        }
+        if (gPlayer1Controller->buttonPressed & L_CBUTTONS) {
+            s8DirModeYawOffset -= DEGREES(45);
+            play_sound_cbutton_side();
+        }
+    #ifdef PARALLEL_LAKITU_CAM
+        else if (gPlayer1Controller->buttonDown & L_JPAD) {
+            s8DirModeYawOffset -= DEGREES(2);
+        }
+        else if (gPlayer1Controller->buttonDown & R_JPAD) {
+            s8DirModeYawOffset += DEGREES(2);
+        }
+        else if (gPlayer1Controller->buttonPressed & D_JPAD) {
+            s8DirModeYawOffset = snap_to_45_degrees(s8DirModeYawOffset);
+        }   
+    #endif
 
-    if (gPlayer1Controller->buttonPressed & R_CBUTTONS) {
-        s8DirModeYawOffset += DEGREES(45);
-        play_sound_cbutton_side();
+        if (gJustSwitchedCam) {
+            print_text(20,20,"hi");
+            s8DirModeYawOffset = snap_to_45_degrees(s8DirModeYawOffset);
+            gJustSwitchedCam = FALSE;
+        }
     }
-    if (gPlayer1Controller->buttonPressed & L_CBUTTONS) {
-        s8DirModeYawOffset -= DEGREES(45);
-        play_sound_cbutton_side();
-    }
-#ifdef PARALLEL_LAKITU_CAM
- // extra functionality
-    /*else if (gPlayer1Controller->buttonPressed & U_JPAD) {
-        s8DirModeYawOffset = 0;
-        s8DirModeYawOffset = gMarioState->faceAngle[1]-0x8000;
-    }*/
-    else if (gPlayer1Controller->buttonDown & L_JPAD) {
-        s8DirModeYawOffset -= DEGREES(2);
-    }
-    else if (gPlayer1Controller->buttonDown & R_JPAD) {
-        s8DirModeYawOffset += DEGREES(2);
-    }
-    else if (gPlayer1Controller->buttonPressed & D_JPAD) {
-        s8DirModeYawOffset = s8DirModeYawOffset&0xE000;
-    }   
-#endif
+
+
 
     lakitu_zoom(400.f, 0x900);
     c->nextYaw = update_8_directions_camera(c, c->focus, pos);
@@ -3066,7 +3088,7 @@ void update_camera(struct Camera *c) {
 
     gCamera = c;
     update_camera_hud_status(c);
-    if (c->cutscene == 0) {
+    /*if ((c->cutscene == 0) && (!gAnalogCam)) {
         // Only process R_TRIG if 'fixed' is not selected in the menu
         if (cam_select_alt_mode(0) == CAM_SELECTION_MARIO) {
             if (gPlayer1Controller->buttonPressed & R_TRIG) {
@@ -3078,7 +3100,7 @@ void update_camera(struct Camera *c) {
             }
         }
         play_sound_if_cam_switched_to_lakitu_or_mario();
-    }
+    }*/
 
     // Initialize the camera
     sStatusFlags &= ~CAM_FLAG_FRAME_AFTER_CAM_INIT;
@@ -4895,7 +4917,8 @@ void play_sound_cbutton_down(void) {
 }
 
 void play_sound_cbutton_side(void) {
-    play_sound(SOUND_MENU_CAMERA_TURN, gGlobalSoundSource);
+    if (!gAnalogCam)
+        play_sound(SOUND_MENU_CAMERA_TURN, gGlobalSoundSource);
 }
 
 void play_sound_button_change_blocked(void) {

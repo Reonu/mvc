@@ -48,6 +48,9 @@ extern u8 gCustomCameraMode;
 extern u32 gSpeedrunTimer;
 extern u8 gBorderHeight;
 extern u8 gStarTracker;
+extern u8 gAnalogCam;
+extern u8 gGcController;
+extern u8 gJustSwitchedCam;
 #ifdef EEP
 extern s8 gEepromProbe;
 #endif
