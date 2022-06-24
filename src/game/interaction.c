@@ -132,6 +132,8 @@ static u8 sDisplayingDoorText = FALSE;
 static u8 sJustTeleported = FALSE;
 static u8 sPssSlideStarted = FALSE;
 
+u32 starColour;
+
 /**
  * Returns the type of cap Mario is wearing.
  */
@@ -776,6 +778,7 @@ u32 interact_star_or_key(struct MarioState *m, UNUSED u32 interactType, struct O
     u32 noExit = (o->oInteractionSubtype & INT_SUBTYPE_NO_EXIT) != 0;
 #endif
     u32 grandStar = (o->oInteractionSubtype & INT_SUBTYPE_GRAND_STAR) != 0;
+    starColour = o->oPrimRGB;
     noExit = 1;
     if (m->health >= 0x100) {
         if (!gSpeedrunMode) {

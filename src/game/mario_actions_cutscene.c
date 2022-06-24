@@ -588,6 +588,7 @@ s32 act_debug_free_move(struct MarioState *m) {
 }
 void general_star_dance_handler(struct MarioState *m, s32 isInWater) {
     struct Object *celebStar = NULL;
+    extern u32 starColour;
     s32 dialogID;
     if (m->actionTimer > 40)
     {
@@ -605,8 +606,7 @@ void general_star_dance_handler(struct MarioState *m, s32 isInWater) {
         switch (++m->actionTimer) {
             case 1:
                 celebStar = spawn_object(m->marioObj, MODEL_STAR, bhvCelebrationStar);
-                celebStar->header.gfx.sharedChild = m->interactObj->header.gfx.sharedChild;
-                celebStar->oPrimRGB = m->interactObj->oPrimRGB;
+                celebStar->oPrimRGB = starColour;
                 disable_background_sound();
                 if (m->actionArg & 1) {
                     play_course_clear();
