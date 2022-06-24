@@ -415,6 +415,7 @@ void bhv_menu_button_loop(void) {
             break;
     }
     cur_obj_scale(gCurrentObject->oMenuButtonScale);
+    random_u16();
 }
 
 /**
@@ -2293,8 +2294,8 @@ s32 lvl_init_menu_values_and_cursor_pos(UNUSED s32 arg, UNUSED s32 unused) {
     // the cursor will point on Mario A save file.
     switch (gCurrSaveFileNum) {
         case 1: // File A
-            sCursorPos[0] = -94.0f;
-            sCursorPos[1] = 46.0f;
+            sCursorPos[0] = -10.0f;
+            sCursorPos[1] = 30.0f;
             break;
         case 2: // File B
             sCursorPos[0] = 24.0f;
