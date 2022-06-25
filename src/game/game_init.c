@@ -608,7 +608,7 @@ void read_controller_inputs(void) {
             if (oldButton & Z_TRIG) {
                 newButton |= L_TRIG;
             }
-            if (controller->controllerData->l_trig > 64) {
+            if (controller->controllerData->l_trig > 85) {
                 newButton |= Z_TRIG;
             }
             controller->controllerData->button = newButton;

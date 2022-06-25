@@ -1362,7 +1362,7 @@ void update_mario_button_inputs(struct MarioState *m) {
             m->showMovesetTimer = 90;
             m->showMoveset = 0;
         }
-        m->creditsTimer = 1110;
+        //m->creditsTimer = 1110;
     }   
     if (m->debugMode == 1) {
         if (m->controller->buttonPressed & R_JPAD) {
@@ -1628,9 +1628,9 @@ void update_mario_health(struct MarioState *m) {
                     // when in snow terrains lose 3 health.
                     // If using the debug level select, do not lose any HP to water.
                     if ((m->pos[1] >= (m->waterLevel - 140)) && !terrainIsSnow) {
-                        m->health += 0x1A;
+                        //m->health += 0x1A;
                     } else if (!gDebugLevelSelect) {
-                        m->health -= (terrainIsSnow ? 3 : 1);
+                        //m->health -= (terrainIsSnow ? 3 : 1);
                     }
                 }
             }
@@ -1982,6 +1982,19 @@ u8 get_music_bgm_switch() {
 /**
  * Main function for executing Mario's behavior.
  */
+#define THRESHOLD_MINUS_Z -12624
+#define WORLD_EDGE_MINUS_Z -13400
+
+#define THRESHOLD_PLUS_Z 11457
+#define WORLD_EDGE_PLUS_Z 12411
+
+#define THRESHOLD_MINUS_X -10734
+#define WORLD_EDGE_MINUS_X -12330
+
+#define THRESHOLD_PLUS_X 10700
+#define WORLD_EDGE_PLUS_X 11190
+
+#define MAX_PUSHING_FORCE 60
 s32 execute_mario_action(UNUSED struct Object *o) {
     s32 inLoop = TRUE;
     u8 seqId;
@@ -2078,6 +2091,30 @@ s32 execute_mario_action(UNUSED struct Object *o) {
         gMarioState->surfboardMask = L_TRIG;
     }
 
+    if (gMarioState->pos[2] < THRESHOLD_MINUS_Z) {
+        f32 diff = WORLD_EDGE_MINUS_Z - THRESHOLD_MINUS_Z;
+        f32 diff2 = gMarioState->pos[2] - THRESHOLD_MINUS_Z;
+        f32 push = diff2/diff;
+        gMarioState->pos[2] += push * MAX_PUSHING_FORCE;
+    } 
+    if (gMarioState->pos[2] > THRESHOLD_PLUS_Z) {
+        f32 diff = WORLD_EDGE_PLUS_Z - THRESHOLD_PLUS_Z;
+        f32 diff2 = gMarioState->pos[2] - THRESHOLD_PLUS_Z;
+        f32 push = diff2/diff;
+        gMarioState->pos[2] -= push * MAX_PUSHING_FORCE;
+    }
+    if (gMarioState->pos[0] < THRESHOLD_MINUS_X) {
+        f32 diff = WORLD_EDGE_MINUS_X - THRESHOLD_MINUS_X;
+        f32 diff2 = gMarioState->pos[0] - THRESHOLD_MINUS_X;
+        f32 push = diff2/diff;
+        gMarioState->pos[0] += push * MAX_PUSHING_FORCE;
+    } 
+    if (gMarioState->pos[0] > THRESHOLD_PLUS_X) {
+        f32 diff = WORLD_EDGE_PLUS_X - THRESHOLD_PLUS_X;
+        f32 diff2 = gMarioState->pos[0] - THRESHOLD_PLUS_X;
+        f32 push = diff2/diff;
+        gMarioState->pos[0] -= push * MAX_PUSHING_FORCE;
+    } 
 
     /*
     * Moveset system

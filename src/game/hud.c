@@ -625,7 +625,7 @@ void render_hud(void) {
         }
 
 
-        if (hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT) {
+        if ((hudDisplayFlags & HUD_DISPLAY_FLAG_COIN_COUNT) && (gMarioState->numCoins < 100)) {
             render_hud_coins();
         }
 

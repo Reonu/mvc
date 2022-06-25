@@ -13,8 +13,14 @@
 
 #include "actors/common1.h"
 
+/* Fast64 begin persistent block [includes] */
+/* Fast64 end persistent block [includes] */
+
 #include "make_const_nonconst.h"
 #include "levels/bob/header.h"
+
+/* Fast64 begin persistent block [scripts] */
+/* Fast64 end persistent block [scripts] */
 
 const LevelScript level_bob_entry[] = {
 	INIT_LEVEL(),
@@ -34,6 +40,9 @@ const LevelScript level_bob_entry[] = {
 	LOAD_MODEL_FROM_GEO(MODEL_BOB_CHAIN_CHOMP_GATE, bob_geo_000440), 
 	LOAD_MODEL_FROM_GEO(MODEL_BOB_SEESAW_PLATFORM, bob_geo_000458), 
 	LOAD_MODEL_FROM_GEO(MODEL_BOB_BARS_GRILLS, bob_geo_000470), 
+
+	/* Fast64 begin persistent block [level commands] */
+	/* Fast64 end persistent block [level commands] */
 
 	AREA(1, bob_area_1),
 		WARP_NODE(0x0A, LEVEL_BOB, 0x01, 0x0A, WARP_NO_CHECKPOINT),
@@ -56,6 +65,7 @@ const LevelScript level_bob_entry[] = {
 		OBJECT(MODEL_AMP, -4435, 1303, 4707, 0, 76, 0, 0x02000000, bhvCirclingAmp),
 		OBJECT(MODEL_AMP, -4308, 1570, 4223, 0, 123, 0, 0x02000000, bhvCirclingAmp),
 		OBJECT(MODEL_WOODEN_SIGNPOST, -4083, 3222, 5047, 0, 141, 0, 0x009E0000, bhvMessagePanel),
+		OBJECT(MODEL_WOODEN_SIGNPOST, -4209, 316, 5146, 0, -45, 0, (137 << 16), bhvMessagePanel),
 		OBJECT(MODEL_WOODEN_SIGNPOST, -3001, 2156, 5219, 0, 164, 0, 0x009D0000, bhvMessagePanel),
 		OBJECT(MODEL_AMP, -4338, 1019, 4993, 0, 36, 0, 0x02000000, bhvCirclingAmp),
 		OBJECT(0xFF, -3697, 3222, 4395, 0, 0, 0, 0x01000000, bhv1Up),
@@ -73,7 +83,6 @@ const LevelScript level_bob_entry[] = {
 		OBJECT(MODEL_FAN_SPRING, -6789, -119, 3825, 0, 0, 0, 0x4C000000, bhvGreenSpring),
 		OBJECT(MODEL_CHILL_BULLY, -9397, -2205, -355, 0, 0, 0, 0x00000000, bhvSmallBully),
 		OBJECT(MODEL_CHILL_BULLY, -9108, -2205, -137, 0, 0, 0, 0x00000000, bhvSmallBully),
-		OBJECT(MODEL_BULLET_BILL, -3142, -1584, -6554, 0, 107, 0, 0x00000000, bhvBulletBill),
 		OBJECT(MODEL_BULLET_BILL, -3141, -1584, -7649, 0, 73, 0, 0x00000000, bhvBulletBill),
 		OBJECT(MODEL_BULLET_BILL, -10107, -1432, 2014, 0, 125, 0, 0x00000000, bhvBulletBill),
 		OBJECT(MODEL_BULLY, -8290, -1895, -8033, 0, 0, 0, 0x00000000, bhvSmallBully),
@@ -185,6 +194,8 @@ const LevelScript level_bob_entry[] = {
 		MACRO_OBJECTS(bob_area_1_macro_objs),
 		SET_BACKGROUND_MUSIC(0x00, SEQ_STREAMED_BFLAKE),
 		TERRAIN_TYPE(TERRAIN_GRASS),
+		/* Fast64 begin persistent block [area commands] */
+		/* Fast64 end persistent block [area commands] */
 	END_AREA(),
 
 	FREE_LEVEL_POOL(),

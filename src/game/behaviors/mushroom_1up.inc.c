@@ -4,7 +4,7 @@ void bhv_1up_interact(void) {
     UNUSED s32 sp1C;
     u8 dialogID;
 
-    if (__osControllerTypes[0] == CONT_TYPE_GCN) {
+    if (gGcController) {
         if (gIsConsole) {
             dialogID = 138;
         } else {

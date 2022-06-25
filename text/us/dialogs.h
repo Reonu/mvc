@@ -35,8 +35,7 @@ If you get softlocked,\n\
 use Exit Course to\n\
 activate the Anti-GBJ\n\
 Technology.\n\
-This hack supports the\n\
-Rumble Pak.\n\
+\n\
 \n\
 You can move the camera\n\
 with more precision by\n\
@@ -46,8 +45,42 @@ DPAD| locks it to\n\
 Have fun!\n\
 -Reonu"))
 
-DEFINE_DIALOG(DIALOG_001, 1, 4, 95, 200, _("\
-"))
+DEFINE_DIALOG(DIALOG_001, 1, 7, 95, 200, _("\
+Mario has spent too much\n\
+time on vacation and\n\
+has forgotten all of\n\
+his moves! Get some\n\
+Power Stars so that\n\
+he can remember!\n\
+\n\
+This story totally\n\
+makes sense!\n\
+Press DPAD^ to\n\
+check which moves\n\
+you currently have\n\
+available.\n\
+\n\
+If you get softlocked,\n\
+use Exit Course to\n\
+activate the Anti-GBJ\n\
+Technology.\n\
+\n\
+\n\
+\n\
+GameCube controller\n\
+detected.\n\
+You can enable an analog\n\
+camera mode in the pause\n\
+screen.\n\
+\n\
+\n\
+You can move the camera\n\
+with more precision by\n\
+using DPAD> and < \n\
+DPAD| locks it to\n\
+8 directions again.\n\
+Have fun!\n\
+-Reonu"))
 
 DEFINE_DIALOG(DIALOG_002, 1, 4, 95, 200, _("\
 "))
@@ -481,8 +514,9 @@ DEFINE_DIALOG(DIALOG_135, 1, 5, 30, 200, _("\
 DEFINE_DIALOG(DIALOG_136, 1, 6, 30, 200, _("\
 "))
 
-DEFINE_DIALOG(DIALOG_137, 1, 6, 30, 200, _("\
-"))
+DEFINE_DIALOG(DIALOG_137, 1, 2, 30, 200, _("\
+You can hang on\n\
+these vines!"))
 
 DEFINE_DIALOG(DIALOG_138, 1, 4, 30, 200, _("\
 You got a surfboard!\n\

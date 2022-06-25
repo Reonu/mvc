@@ -514,7 +514,13 @@ s32 act_reading_sign(struct MarioState *m) {
             m->pos[2] += marioObj->oMarioReadingSignDPosZ / 11.0f;
             // create the text box
             if (m->actionTimer++ == 10) {
-                create_dialog_inverted_box(m->usedObj->oBehParams2ndByte);
+                u8 dialogID;
+                if (gGcController && (m->usedObj->oBehParams2ndByte == 0x00)) {
+                    dialogID = 1;
+                } else {
+                    dialogID = m->usedObj->oBehParams2ndByte;
+                }
+                create_dialog_inverted_box(dialogID);
                 m->actionState = 2;
             }
             break;
