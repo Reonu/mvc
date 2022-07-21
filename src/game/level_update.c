@@ -29,6 +29,7 @@
 #include "level_table.h"
 #include "course_table.h"
 #include "rumble_init.h"
+#include "game/print.h"
 
 #include "config.h"
 
@@ -1359,8 +1360,11 @@ s32 lvl_print_ending_text(UNUSED s16 arg0, UNUSED s32 arg1) {
         if (!gSpeedrunMode) {
             print_text(10, 80, "DID YOU KNOW YOU CAN");
             print_text(10, 60, "ENABLE A SPEEDRUN MODE BY");
-            if (gIsConsole && gGcController)
-            print_text(10, 40, "PRESSING L ON THE");
+            if (gIsConsole && gGcController) {
+                print_text(10, 40, "PRESSING Z ON THE");
+            } else {
+                print_text(10, 40, "PRESSING L ON THE");
+            }
             print_text(10, 20, "FILE SELECT?");
         } else {
             print_text(10, 40, "HI MR SPEEDRUNNER");

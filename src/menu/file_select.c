@@ -1415,7 +1415,7 @@ void bhv_menu_button_manager_loop(void) {
 void handle_cursor_button_input(void) {
     // If scoring a file, pressing A just changes the coin score mode.
     if (gPlayer1Controller->buttonPressed & L_TRIG) {
-        gSpeedrunMode = 1;
+        gSpeedrunMode ^= 1;
     }
     if (sSelectedButtonID == MENU_BUTTON_SCORE_FILE_A || sSelectedButtonID == MENU_BUTTON_SCORE_FILE_B
         || sSelectedButtonID == MENU_BUTTON_SCORE_FILE_C

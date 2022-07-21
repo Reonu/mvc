@@ -1216,7 +1216,7 @@ void mode_8_directions_camera(struct Camera *c) {
     if (gAnalogCam) {
     if (gPlayer1Controller->controllerData->c_stick_x)
         s8DirModeYawOffset += DEGREES(gPlayer1Controller->controllerData->c_stick_x * 4 / 64);
-    } else if (!gCustomCameraMode) {
+    } else if ((!gCustomCameraMode) || (gMarioState->numStars > 0)) {
         if (gPlayer1Controller->buttonPressed & R_CBUTTONS) {
             s8DirModeYawOffset += DEGREES(45);
             play_sound_cbutton_side();

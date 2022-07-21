@@ -14,6 +14,7 @@
 #include "save_file.h"
 #include "print.h"
 #include "engine/surface_load.h"
+#include "game/level_update.h"
 
 /* @file hud.c
  * This file implements HUD rendering and power meter animations.
