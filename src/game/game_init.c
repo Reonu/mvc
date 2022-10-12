@@ -492,27 +492,54 @@ UNUSED static void record_demo(void) {
  */
 void adjust_analog_stick(struct Controller *controller) {
     UNUSED u8 pad[8];
+    s16 deadzone;
+    s16 offset;
 
     // Reset the controller's x and y floats.
     controller->stickX = 0;
     controller->stickY = 0;
 
+    if (gGcController && gIsConsole) {
+        deadzone = 12;
+        offset = 10;
+        if (ABS(controller->rawStickX) < deadzone) controller->rawStickX = 0;
+        if (ABS(controller->rawStickY) < deadzone) controller->rawStickY = 0;
+    } else {
+        deadzone = 8;
+        offset = 6;        
+    }
+
     // Modulate the rawStickX and rawStickY to be the new f32 values by adding/subtracting 6.
-    if (controller->rawStickX <= -8) {
-        controller->stickX = controller->rawStickX + 6;
+    if (controller->rawStickX <= -deadzone) {
+        controller->stickX = controller->rawStickX + offset;
     }
 
-    if (controller->rawStickX >= 8) {
-        controller->stickX = controller->rawStickX - 6;
+    if (controller->rawStickX >= deadzone) {
+        controller->stickX = controller->rawStickX - offset;
     }
 
-    if (controller->rawStickY <= -8) {
-        controller->stickY = controller->rawStickY + 6;
+    if (controller->rawStickY <= -deadzone) {
+        controller->stickY = controller->rawStickY + offset;
     }
 
-    if (controller->rawStickY >= 8) {
-        controller->stickY = controller->rawStickY - 6;
+    if (controller->rawStickY >= deadzone) {
+        controller->stickY = controller->rawStickY - offset;
     }
+
+    /*if (gPlayer1Controller == controller) {
+        print_text_fmt_int(20,20,"DEADZONE %d", deadzone);
+        print_text_fmt_int(20,40,"OFFSET %d", offset);
+        print_text_fmt_int(20,60,"STICK X %d", controller->stickX);
+        print_text_fmt_int(20,80,"STICK Y %d", controller->stickY);
+        print_text_fmt_int(20,100,"GC CONTROLLER %d", gGcController);
+        print_text_fmt_int(20,120,"CONSOLE %d", gIsConsole);
+        print_text_fmt_int(20,140,"RAW X %d", controller->rawStickX);
+        print_text_fmt_int(20,160,"RAW Y %d", controller->rawStickY);
+    }*/
+
+
+
+
 
     // Calculate f32 magnitude from the center by vector length.
     controller->stickMag =
@@ -602,20 +629,20 @@ void read_controller_inputs(void) {
 
     for (i = 0; i < 2; i++) {
         struct Controller *controller = &gControllers[i];
-        u32 oldButton = controller->controllerData->button;
-        if (gIsConsole && __osControllerTypes[i] == CONT_TYPE_GCN) {
-            u32 newButton = oldButton & ~(Z_TRIG | L_TRIG);
-            if (oldButton & Z_TRIG) {
-                newButton |= L_TRIG;
-            }
-            if (controller->controllerData->l_trig > 85) {
-                newButton |= Z_TRIG;
-            }
-            controller->controllerData->button = newButton;
-        }
 
         // if we're receiving inputs, update the controller struct with the new button info.
         if (controller->controllerData != NULL) {
+            if (gIsConsole && __osControllerTypes[i] == CONT_TYPE_GCN) {
+                u32 oldButton = controller->controllerData->button;
+                u32 newButton = oldButton & ~(Z_TRIG | L_TRIG);
+                if (oldButton & Z_TRIG) {
+                    newButton |= L_TRIG;
+                }
+                if (controller->controllerData->l_trig > 85) {
+                    newButton |= Z_TRIG;
+                }
+                controller->controllerData->button = newButton;
+            }
             controller->rawStickX = controller->controllerData->stick_x;
             controller->rawStickY = controller->controllerData->stick_y;
             controller->buttonPressed = controller->controllerData->button

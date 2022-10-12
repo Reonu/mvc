@@ -32,10 +32,10 @@ you currently have\n\
 available.\n\
 \n\
 If you get softlocked,\n\
-use Exit Course to\n\
-activate the Anti-GBJ\n\
-Technology.\n\
-\n\
+select Respawn in\n\
+the pause menu to\n\
+activate the\n\
+Anti-GBJ Technology\n\
 \n\
 You can move the camera\n\
 with more precision by\n\
@@ -61,10 +61,10 @@ you currently have\n\
 available.\n\
 \n\
 If you get softlocked,\n\
-use Exit Course to\n\
-activate the Anti-GBJ\n\
-Technology.\n\
-\n\
+select Respawn in\n\
+the pause menu to\n\
+activate the\n\
+Anti-GBJ Technology\n\
 \n\
 \n\
 GameCube controller\n\
