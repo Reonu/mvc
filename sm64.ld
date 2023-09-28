@@ -102,6 +102,7 @@ SECTIONS
    END_SEG(boot)
 
    . = (RAM_START + 0x400);
+   . = ALIGN(0x100);
    BEGIN_NOLOAD(zbuffer)
    {
       BUILD_DIR/src/buffers/zbuffer.o(.bss*);
@@ -109,6 +110,8 @@ SECTIONS
    END_NOLOAD(zbuffer)
 
    . = _zbufferSegmentBssEnd;
+   . = ALIGN(RAM_1MB);
+
    BEGIN_NOLOAD(buffers)
    {
       BUILD_DIR/src/buffers/buffers.o(.bss*);
@@ -275,11 +278,13 @@ SECTIONS
    END_NOLOAD(engine)
 
    . = _engineSegmentBssEnd;
+   . = ALIGN(RAM_1MB);
    BEGIN_NOLOAD(framebuffers)
    {
       BUILD_DIR/src/buffers/framebuffers.o(.bss*);
    }
    END_NOLOAD(framebuffers)
+   . = ALIGN(RAM_1MB);
 
    __mainPoolStart = .;
    __mainPoolSize  = (RAM_END - .);
