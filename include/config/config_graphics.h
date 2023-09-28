@@ -84,10 +84,8 @@
  */
 // #define SILHOUETTE 127
 
-/**
- * Use 64x64 quarter shadow textures (Vanilla are 16x16).
- */
-// #define HD_SHADOWS
+// Use 64x64 quarter shadow textures (Vanilla are 16x16).
+#define HD_SHADOWS
 
 /**
  * Makes certain objects (mainly trees) transparent when the camera gets close.
