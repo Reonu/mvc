@@ -5,15 +5,11 @@
 #define PLASTERED "splattered"
 #define SCAM_ME "cheat!\n"
 #define SCRAM "get lost"
-#define YOU_CANT_SWIM_IN_IT "Its too heavy to swim\nwith."
-#define GIVE_UP "give up"
 #else
 #define COMRADES "comrades"
 #define PLASTERED "plastered"
 #define SCAM_ME "scam\nME. "
 #define SCRAM "scram--"
-#define YOU_CANT_SWIM_IN_IT "You can't swim in it."
-#define GIVE_UP "give"
 #endif
 
 DEFINE_DIALOG(DIALOG_000, 1, 7, 30, 200, _("\

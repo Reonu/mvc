@@ -73,7 +73,9 @@ extern "C" {
  */
 
 /* Perform alignment on input 's' */
+#ifndef ALIGN
 #define	ALIGN(s, align)	(((u32)(s) + ((align)-1)) & ~((align)-1))
+#endif
 
 
 /***************************************
@@ -106,11 +108,11 @@ typedef struct _Region_s {
  * Function prototypes
  *
  */
-extern void	*osCreateRegion(void *, u32, u32, u32);
-extern void 	*osMalloc(void *); 
-extern void	osFree(void *, void *); 
-extern s32	osGetRegionBufCount(void *); 
-extern s32	osGetRegionBufSize(void *); 
+extern void	*osCreateRegion(void *startAddress, u32 length, u32 bufferSize, u32 alignSize);
+extern void 	*osMalloc(void *region); 
+extern void	osFree(void *region, void *addr); 
+extern s32	osGetRegionBufCount(void *region); 
+extern s32	osGetRegionBufSize(void *region); 
 
 
 #ifdef _LANGUAGE_C_PLUS_PLUS

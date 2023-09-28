@@ -112,6 +112,11 @@ typedef struct {
 
 /* Controller type */
 
+// Console ID:
+#define CONT_CONSOLE_MASK       (0x3 <<  3) // 0x0018 | 0: N64, 1: Dolphin
+#define CONT_CONSOLE_N64        (  0 <<  3) // 0x0000
+#define CONT_CONSOLE_GCN        (  1 <<  3) // 0x0008
+
 #define CONT_ABSOLUTE           0x0001
 #define CONT_RELATIVE           0x0002
 #define CONT_JOYPORT            0x0004
@@ -223,14 +228,13 @@ extern u8 __osControllerTypes[MAXCONTROLLERS];
 
 /* Controller interface */
 
-extern s32		osContInit(OSMesgQueue *, u8 *, OSContStatus *);
-extern s32		osContReset(OSMesgQueue *, OSContStatus *);
+extern s32		osContInit(         OSMesgQueue *mq, u8 *bitpattern, OSContStatus *status);
 extern s32		osContReset(        OSMesgQueue *mq,                 OSContStatus *status);
 extern s32		osContStartQuery(   OSMesgQueue *mq);
 extern s32		osContStartReadData(OSMesgQueue *mq);
 extern s32		osContStartReadDataEx(OSMesgQueue *mq);
 #ifndef _HW_VERSION_1
-extern s32		osContSetCh(u8);
+extern s32		osContSetCh(u8 ch);
 #endif
 extern void		osContGetQuery(OSContStatus *status);
 extern void		osContGetReadData(OSContPad *pad);

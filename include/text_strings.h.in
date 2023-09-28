@@ -28,7 +28,7 @@
 #define TEXT_HUD_CONGRATULATIONS _("CONGRATULATIONS") // Course Complete Text, Bowser Courses
 
 //Widescreen stuff
-#ifdef WIDE
+#if defined(WIDE) && !defined(PUPPYCAM)
 #define TEXT_HUD_CURRENT_RATIO_43 _("ASPECT RATIO: 4:3")
 #define TEXT_HUD_CURRENT_RATIO_169 _("ASPECT RATIO: 16:9")
 #define TEXT_HUD_PRESS_L _("PRESS L TO SWITCH")
@@ -241,7 +241,12 @@
 
 #endif
 
-#ifdef VERSION_EU
+
+#define TEXT_ENGLISH _("ENGLISH")
+#define TEXT_FRENCH _("FRANÇAIS")
+#define TEXT_GERMAN _("DEUTSCH")
+
+#if MULTILANG
 
 /**
  * File Select Text
@@ -324,10 +329,6 @@
 #define TEXT_STEREO_DE _("STEREO")
 #define TEXT_MONO_DE _("MONO")
 #define TEXT_HEADSET_DE _("PHONES")
-
-#define TEXT_ENGLISH _("ENGLISH")
-#define TEXT_FRENCH _("FRANÇAIS")
-#define TEXT_GERMAN _("DEUTSCH")
 
 #define TEXT_HI_SCORE_FR _("MEILLEUR SCORE")
 #define TEXT_HI_SCORE_DE _("BESTLEISTUNG")

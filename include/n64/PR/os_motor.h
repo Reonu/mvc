@@ -71,8 +71,8 @@ extern s32 osMotorInitEx(OSMesgQueue *mq, OSPfs *pfs, int controller_no);
 extern s32 __osMotorAccess(OSPfs *pfs, s32 flag);
 extern s32 __osMotorAccessEx(OSPfs *pfs, s32 flag);
 #else
-extern s32 osMotorStop(OSPfs *);
-extern s32 osMotorStart(OSPfs *);
+extern s32 osMotorStop( OSPfs *pfs);
+extern s32 osMotorStart(OSPfs *pfs);
 #endif
 
 

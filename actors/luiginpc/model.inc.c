@@ -1,30 +1,9 @@
-Lights1 luiginpc_Green_f3d_lights = gdSPDefLights1(
-	0xA, 0x7F, 0x1,
-	0x15, 0xFE, 0x2, 0x28, 0x28, 0x28);
 
-Lights1 luiginpc_Skin_f3d_lights = gdSPDefLights1(
-	0x7E, 0x60, 0x3C,
-	0xFD, 0xC0, 0x79, 0x28, 0x28, 0x28);
 
-Lights1 luiginpc_Hair_f3d_lights = gdSPDefLights1(
-	0x36, 0x2, 0x0,
-	0x6C, 0x5, 0x0, 0x28, 0x28, 0x28);
 
-Lights1 luiginpc_Sideburns_f3d_lights = gdSPDefLights1(
-	0x7E, 0x60, 0x3C,
-	0xFD, 0xC0, 0x79, 0x28, 0x28, 0x28);
 
-Lights1 luiginpc_Moustache_f3d_lights = gdSPDefLights1(
-	0x7E, 0x60, 0x3C,
-	0xFD, 0xC0, 0x79, 0x28, 0x28, 0x28);
 
-Lights1 luiginpc_face_0___eye_open_lights = gdSPDefLights1(
-	0x7E, 0x60, 0x3C,
-	0xFD, 0xC0, 0x79, 0x28, 0x28, 0x28);
 
-Lights1 luiginpc_Emblem_f3d_lights = gdSPDefLights1(
-	0xA, 0x79, 0x1,
-	0x15, 0xF3, 0x2, 0x28, 0x28, 0x28);
 
 Gfx luiginpc_TransparentLUIGI_MOUSTACHE_rgba32_aligner[] = {gsSPEndDisplayList()};
 u8 luiginpc_TransparentLUIGI_MOUSTACHE_rgba32[] = {
@@ -3881,7 +3860,8 @@ Gfx mat_luiginpc_Green_f3d[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(luiginpc_Green_f3d_lights),
+    gsSPLightColor(LIGHT_1, 0x15fe02ff),
+    gsSPLightColor(LIGHT_2, 0xa7f01ff),
 	gsSPEndDisplayList(),
 };
 
@@ -3897,7 +3877,8 @@ Gfx mat_luiginpc_Skin_f3d[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_32b, 8, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0, G_TX_WRAP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(luiginpc_Skin_f3d_lights),
+    gsSPLightColor(LIGHT_1, 0xfdc079ff),
+    gsSPLightColor(LIGHT_2, 0x7e603cff),
 	gsSPEndDisplayList(),
 };
 
@@ -3905,7 +3886,8 @@ Gfx mat_luiginpc_Hair_f3d[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(luiginpc_Hair_f3d_lights),
+    gsSPLightColor(LIGHT_1, 0x6c0500ff),
+    gsSPLightColor(LIGHT_2, 0x360200ff),
 	gsSPEndDisplayList(),
 };
 
@@ -3928,7 +3910,8 @@ Gfx mat_luiginpc_Sideburns_f3d[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(luiginpc_Sideburns_f3d_lights),
+    gsSPLightColor(LIGHT_1, 0xfdc079ff),
+    gsSPLightColor(LIGHT_2, 0x7e603cff),
 	gsSPEndDisplayList(),
 };
 
@@ -3957,7 +3940,8 @@ Gfx mat_luiginpc_Moustache_f3d[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_4b, 2, 0, 0, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(luiginpc_Moustache_f3d_lights),
+    gsSPLightColor(LIGHT_1, 0xfdc079ff),
+    gsSPLightColor(LIGHT_2, 0x7e603cff),
 	gsSPEndDisplayList(),
 };
 
@@ -3979,7 +3963,8 @@ Gfx mat_luiginpc_face_0___eye_open[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, 0, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(luiginpc_face_0___eye_open_lights),
+    gsSPLightColor(LIGHT_1, 0xfdc079ff),
+    gsSPLightColor(LIGHT_2, 0x7e603cff),
 	gsSPEndDisplayList(),
 };
 
@@ -4002,7 +3987,8 @@ Gfx mat_luiginpc_Emblem_f3d[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_8b, 4, 0, 0, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0, G_TX_CLAMP | G_TX_NOMIRROR, 5, 0),
 	gsDPSetTileSize(0, 0, 0, 124, 124),
-	gsSPSetLights1(luiginpc_Emblem_f3d_lights),
+    gsSPLightColor(LIGHT_1, 0x15f302ff),
+    gsSPLightColor(LIGHT_2, 0xa7901ff),
 	gsSPEndDisplayList(),
 };
 

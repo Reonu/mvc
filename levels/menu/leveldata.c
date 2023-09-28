@@ -11,10 +11,6 @@
 #include "make_const_nonconst.h"
 
 // 0x07000000 - 0x07000018
-static const Lights1 lights_menu_save_button = gdSPDefLights1(
-    0x3f, 0x3f, 0x3f,
-    0xff, 0xff, 0xff, 0x28, 0x28, 0x28
-);
 
 // 0x07000018 - 0x07000818
 ALIGNED8 static const Texture texture_menu_stone[] = {
@@ -79,8 +75,8 @@ static const Gfx dl_tex_block_menu_save_button_base[] = {
 
 // 0x070031A0 - 0x07003218
 static const Gfx dl_vertex_menu_save_button_borders[] = {
-    gsSPLight(&lights_menu_save_button.l, 1),
-    gsSPLight(&lights_menu_save_button.a, 2),
+    gsSPLightColor(LIGHT_1, 0xffffffff),
+    gsSPLightColor(LIGHT_2, 0x3f3f3fff),
     gsSPVertex(vertex_menu_save_button_borders, 16, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  1,  3,  2, 0x0),
     gsSP2Triangles( 4,  5,  6, 0x0,  5,  7,  6, 0x0),
@@ -126,8 +122,8 @@ static const Gfx dl_tex_block_menu_save_button_back[] = {
 
 // 0x070032E0 - 0x07003330
 static const Gfx dl_vertex_menu_save_button_back[] = {
-    gsSPLight(&lights_menu_save_button.l, 1),
-    gsSPLight(&lights_menu_save_button.a, 2),
+    gsSPLightColor(LIGHT_1, 0xffffffff),
+    gsSPLightColor(LIGHT_2, 0x3f3f3fff),
     gsSPVertex(vertex_menu_save_button_back, 4, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  1,  3,  2, 0x0),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
@@ -179,8 +175,8 @@ const Gfx dl_menu_save_button_back[] = {
 const Gfx dl_menu_save_button_fade_back[] = {
     gsDPPipeSync(),
     gsSPClearGeometryMode(G_SHADING_SMOOTH),
-    gsSPLight(&lights_menu_save_button.l, 1),
-    gsSPLight(&lights_menu_save_button.a, 2),
+    gsSPLightColor(LIGHT_1, 0xffffffff),
+    gsSPLightColor(LIGHT_2, 0x3f3f3fff),
     gsSPVertex(vertex_menu_save_button_back, 4, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  1,  3,  2, 0x0),
     gsDPPipeSync(),
@@ -189,10 +185,6 @@ const Gfx dl_menu_save_button_fade_back[] = {
 };
 
 // 0x07003450 - 0x07003468
-static const Lights1 lights_menu_main_button = gdSPDefLights1(
-    0x3f, 0x3f, 0x3f,
-    0xff, 0xff, 0xff, 0x28, 0x28, 0x28
-);
 
 // 0x07003468 - 0x07003468
 ALIGNED8 static const Texture texture_menu_erase[] = {
@@ -298,8 +290,8 @@ static const Vtx vertex_menu_main_button_group4[] = {
 
 // 0x07006038 - 0x07006150
 static const Gfx dl_vertex_menu_main_button[] = {
-    gsSPLight(&lights_menu_main_button.l, 1),
-    gsSPLight(&lights_menu_main_button.a, 2),
+    gsSPLightColor(LIGHT_1, 0xffffffff),
+    gsSPLightColor(LIGHT_2, 0x3f3f3fff),
     gsSPVertex(vertex_menu_main_button_group1, 16, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  3,  4,  5, 0x0),
     gsSP2Triangles( 6,  7,  8, 0x0,  6,  9,  7, 0x0),
@@ -436,6 +428,7 @@ static const Gfx dl_menu_hand[] = {
     gsSPVertex(vertex_menu_hand, 4, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  0,  2,  3, 0x0),
     gsSPTexture(0x0001, 0x0001, 0, G_TX_RENDERTILE, G_OFF),
+    gsDPPipeSync(),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
     gsSPEndDisplayList(),
@@ -598,18 +591,16 @@ ALIGNED8 static const Texture texture_menu_hud_char_kana_dakuten_do[] = {
 // Menu HUD print table, only used in JP
 // 0x0700ABD0
 const Texture *const menu_hud_lut[] = {
-    texture_menu_hud_char_katakana_hu, texture_menu_hud_char_katakana_small_a,         texture_menu_hud_char_katakana_i, texture_menu_hud_char_katakana_ru,
-    texture_menu_hud_char_katakana_se,      texture_menu_hud_char_katakana_re,        texture_menu_hud_char_katakana_ku, texture_menu_hud_char_katakana_to,
-    texture_menu_hud_char_hiragana_wo,      texture_menu_hud_char_katakana_ko, texture_menu_hud_char_kana_handakuten_pi, texture_menu_hud_char_choonpu,
-    texture_menu_hud_char_hiragana_su,      texture_menu_hud_char_hiragana_ru,        texture_menu_hud_char_hiragana_ke, texture_menu_hud_char_katakana_ma,
-    texture_menu_hud_char_katakana_ri,       texture_menu_hud_char_katakana_o,        texture_menu_hud_char_katakana_su, texture_menu_hud_char_katakana_a,
-    texture_menu_hud_char_hiragana_mi,  texture_menu_hud_char_hira_dakuten_do,        texture_menu_hud_char_hiragana_no, texture_menu_hud_char_question,
-    texture_menu_hud_char_katakana_sa,       texture_menu_hud_char_katakana_u,         texture_menu_hud_char_katakana_n, texture_menu_hud_char_kana_dakuten_do,
+    texture_menu_hud_char_katakana_hu, texture_menu_hud_char_katakana_small_a, texture_menu_hud_char_katakana_i,         texture_menu_hud_char_katakana_ru,
+    texture_menu_hud_char_katakana_se, texture_menu_hud_char_katakana_re,      texture_menu_hud_char_katakana_ku,        texture_menu_hud_char_katakana_to,
+    texture_menu_hud_char_hiragana_wo, texture_menu_hud_char_katakana_ko,      texture_menu_hud_char_kana_handakuten_pi, texture_menu_hud_char_choonpu,
+    texture_menu_hud_char_hiragana_su, texture_menu_hud_char_hiragana_ru,      texture_menu_hud_char_hiragana_ke,        texture_menu_hud_char_katakana_ma,
+    texture_menu_hud_char_katakana_ri, texture_menu_hud_char_katakana_o,       texture_menu_hud_char_katakana_su,        texture_menu_hud_char_katakana_a,
+    texture_menu_hud_char_hiragana_mi, texture_menu_hud_char_hira_dakuten_do,  texture_menu_hud_char_hiragana_no,        texture_menu_hud_char_question,
+    texture_menu_hud_char_katakana_sa, texture_menu_hud_char_katakana_u,       texture_menu_hud_char_katakana_n,         texture_menu_hud_char_kana_dakuten_do,
 };
 
 #if defined(VERSION_JP) || defined(VERSION_SH)
-UNUSED static const u64 menu_unused_0 = 0;
-
 // 0x0700AC48
 ALIGNED8 static const Texture texture_menu_font_char_jp_0[] = {
 #include "levels/menu/main_menu_seg7.0AC48.ia8.inc.c"
@@ -1717,8 +1708,6 @@ const Gfx dl_menu_ia8_text_end[] = {
     gsSPEndDisplayList(),
 };
 
-UNUSED static const u64 menu_unused_1 = 0;
-
 #ifdef VERSION_EU
 
 // 0x0700BDA0 - 0x0700CDA0
@@ -1790,6 +1779,7 @@ const Gfx dl_menu_rgba16_wood_course_end[] = {
     gsDPSetTileSize(0, 0, 0, (64 - 1) << G_TEXTURE_IMAGE_FRAC, (32 - 1) << G_TEXTURE_IMAGE_FRAC),
     gsSPVertex(vertex_menu_course_upper, 4, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  0,  2,  3, 0x0),
+    gsDPPipeSync(),
     gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, texture_menu_course_lower),
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD),
     gsDPLoadSync(),
@@ -1800,6 +1790,7 @@ const Gfx dl_menu_rgba16_wood_course_end[] = {
     gsSP2Triangles( 0,  1,  2, 0x0,  0,  2,  3, 0x0),
     gsDPSetRenderMode(G_RM_AA_ZB_OPA_SURF, G_RM_AA_ZB_OPA_SURF2),
     gsSPTexture(0x0001, 0x0001, 0, G_TX_RENDERTILE, G_OFF),
+    gsDPPipeSync(),
     gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
     gsSPEndDisplayList(),
 };

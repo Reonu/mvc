@@ -26,8 +26,8 @@ const GeoLayout klepto_geo[] = {
                      GEO_OPEN_NODE(),
                         GEO_SWITCH_CASE(4, geo_switch_anim_state),
                         GEO_OPEN_NODE(),
-                           GEO_NODE_START(),
-                           GEO_NODE_START(),
+                           GEO_NODE_START(), // KLEPTO_ANIM_STATE_HOLDING_NOTHING
+                           GEO_NODE_START(), // KLEPTO_ANIM_STATE_HOLDING_CAP
                            GEO_OPEN_NODE(),
                               GEO_SCALE(0x00, 16384),
                               GEO_OPEN_NODE(),
@@ -35,19 +35,19 @@ const GeoLayout klepto_geo[] = {
                                  GEO_TRANSLATE_ROTATE_WITH_DL(LAYER_OPAQUE, 0, 100, 0, 180, 270, 0, mario_cap_seg3_dl_03022F48),
                               GEO_CLOSE_NODE(),
                            GEO_CLOSE_NODE(),
-                           GEO_NODE_START(),
+                           GEO_NODE_START(), // KLEPTO_ANIM_STATE_HOLDING_STAR
                            GEO_OPEN_NODE(),
                               GEO_TRANSLATE_ROTATE(LAYER_OPAQUE, 75, 75, 0, 180, 270, 0),
 										GEO_OPEN_NODE(),
 											GEO_BRANCH_AND_LINK(star_geo),
 										GEO_CLOSE_NODE(),
                            GEO_CLOSE_NODE(),
-                           GEO_NODE_START(),
+                           GEO_NODE_START(), // KLEPTO_ANIM_STATE_HOLDING_TRANSPARENT_STAR
                            GEO_OPEN_NODE(),
                               GEO_SCALE(0x00, 16384),
                               GEO_OPEN_NODE(),
                                  GEO_ASM(0, geo_offset_klepto_held_object),
-                                 GEO_TRANSLATE_ROTATE_WITH_DL(LAYER_OPAQUE, 0, 100, 0, 180, 270, 0, transparent_star_seg3_dl_0302C620),
+                                 GEO_TRANSLATE_ROTATE_WITH_DL(LAYER_OCCLUDE_SILHOUETTE_OPAQUE, 0, 100, 0, 180, 270, 0, transparent_star_seg3_dl_body),
                               GEO_CLOSE_NODE(),
                            GEO_CLOSE_NODE(),
                         GEO_CLOSE_NODE(),

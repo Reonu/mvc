@@ -60,30 +60,13 @@ const Gfx bully_seg5_dl_05000398[] = {
 };
 
 // 0x05000408
-static const Lights1 bully_seg5_lights_05000408 = gdSPDefLights1(
-    0x00, 0x38, 0x00,
-    0x00, 0xe3, 0x00, 0x28, 0x28, 0x28
-);
 
 // 0x05000420
-static const Lights1 bully_seg5_lights_05000420 = gdSPDefLights1(
-    0x00, 0x3f, 0x00,
-    0x00, 0xff, 0x00, 0x28, 0x28, 0x28
-);
 
 // Unreferenced light group
-UNUSED static const Lights1 bully_lights_unused = gdSPDefLights1(
-    0x3f, 0x29, 0x00,
-    0xff, 0xa5, 0x00, 0x28, 0x28, 0x28
-);
 
 // 0x05000450
-static const Lights1 bully_seg5_lights_05000450 = gdSPDefLights1(
-    0x00, 0x00, 0x00,
-    0x00, 0x00, 0x00, 0x28, 0x28, 0x28
-);
 
-// //! There's another malformed light entry here.
 // 0x05000468
 ALIGNED8 static const Texture bully_seg5_texture_05000468[] = {
 #include "actors/bully/bully_left_side.rgba16.inc.c"
@@ -149,16 +132,6 @@ static const Vtx bully_seg5_vertex_05002E68[] = {
     {{{   -37,     27,      0}, 0, {     0,      0}, {0xff, 0x7f, 0x00, 0x00}}},
     {{{    56,     28,     46}, 0, {     0,      0}, {0xff, 0x7f, 0x00, 0x00}}},
     {{{    90,     28,      0}, 0, {     0,      0}, {0xff, 0x7f, 0x00, 0xff}}},
-};
-
-// 0x05002EA8
-static const Vtx bully_seg5_vertex_05002EA8[] = {
-    {{{    60,    143,      0}, 0, {     0,      0}, {0x0c, 0x7e, 0x00, 0x00}}},
-    {{{    57,    127,    -67}, 0, {     0,      0}, {0x0c, 0x7a, 0xe3, 0x00}}},
-    {{{   -46,    137,    -67}, 0, {     0,      0}, {0x0c, 0x7a, 0xe3, 0x00}}},
-    {{{   -42,    153,      0}, 0, {     0,      0}, {0x0c, 0x7e, 0x00, 0xff}}},
-    {{{   -46,    137,     67}, 0, {     0,      0}, {0x0c, 0x7a, 0x1d, 0xff}}},
-    {{{    57,    127,     67}, 0, {     0,      0}, {0x0c, 0x7a, 0x1d, 0xff}}},
 };
 
 // 0x05002F08
@@ -323,8 +296,8 @@ static const Vtx bully_seg5_vertex_05003608[] = {
 
 // 0x05003708 - 0x050037A0
 const Gfx bully_seg5_dl_05003708[] = {
-    gsSPLight(&bully_seg5_lights_05000408.l, 1),
-    gsSPLight(&bully_seg5_lights_05000408.a, 2),
+    gsSPLightColor(LIGHT_1, 0xe300ff),
+    gsSPLightColor(LIGHT_2, 0x3800ff),
     gsSPVertex(bully_seg5_vertex_05002C68, 14, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  2,  1,  3, 0x0),
     gsSP2Triangles( 2,  3,  4, 0x0,  1,  5,  6, 0x0),
@@ -339,8 +312,8 @@ const Gfx bully_seg5_dl_05003708[] = {
 
 // 0x050037A0 - 0x05003838
 const Gfx bully_seg5_dl_050037A0[] = {
-    gsSPLight(&bully_seg5_lights_05000420.l, 1),
-    gsSPLight(&bully_seg5_lights_05000420.a, 2),
+    gsSPLightColor(LIGHT_1, 0xff00ff),
+    gsSPLightColor(LIGHT_2, 0x3f00ff),
     gsSPVertex(bully_seg5_vertex_05002D88, 14, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  3,  4,  1, 0x0),
     gsSP2Triangles( 3,  1,  0, 0x0,  5,  6,  7, 0x0),
@@ -353,20 +326,10 @@ const Gfx bully_seg5_dl_050037A0[] = {
     gsSPEndDisplayList(),
 };
 
-// 0x05003838 - 0x05003878
-const Gfx bully_seg5_dl_05003838[] = {
-    gsSPLight((u8*)bully_seg5_texture_05000468 + 0x8, 1), //! yet another malformed light...
-    gsSPLight(bully_seg5_texture_05000468, 2),
-    gsSPVertex(bully_seg5_vertex_05002EA8, 6, 0),
-    gsSP2Triangles( 0,  1,  2, 0x0,  0,  2,  3, 0x0),
-    gsSP2Triangles( 3,  4,  5, 0x0,  3,  5,  0, 0x0),
-    gsSPEndDisplayList(),
-};
-
 // 0x05003878 - 0x05003C50
 const Gfx bully_seg5_dl_05003878[] = {
-    gsSPLight(&bully_seg5_lights_05000450.l, 1),
-    gsSPLight(&bully_seg5_lights_05000450.a, 2),
+    gsSPLightColor(LIGHT_1, 0xff),
+    gsSPLightColor(LIGHT_2, 0xff),
     gsSPVertex(bully_seg5_vertex_05002F08, 16, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  1,  0,  3, 0x0),
     gsSP2Triangles( 1,  3,  4, 0x0,  4,  3,  5, 0x0),

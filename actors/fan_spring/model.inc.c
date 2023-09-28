@@ -1,14 +1,5 @@
-Lights1 fan_spring_f3d_material_lights = gdSPDefLights1(
-	0x27, 0x2F, 0x25,
-	0x4E, 0x5E, 0x4A, 0x28, 0x28, 0x28);
 
-Lights1 fan_spring_fanblade_lights = gdSPDefLights1(
-	0x7F, 0x7F, 0x7F,
-	0xFE, 0xFE, 0xFE, 0x28, 0x28, 0x28);
 
-Lights1 fan_spring_f3d_material_001_lights = gdSPDefLights1(
-	0x58, 0x58, 0x58,
-	0xB1, 0xB1, 0xB1, 0x28, 0x28, 0x28);
 
 Gfx fan_spring_fan_ci4_aligner[] = {gsSPEndDisplayList()};
 u8 fan_spring_fan_ci4[] = {
@@ -452,7 +443,8 @@ Gfx mat_fan_spring_f3d_material[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(fan_spring_f3d_material_lights),
+    gsSPLightColor(LIGHT_1, 0x4e5e4aff),
+    gsSPLightColor(LIGHT_2, 0x272f25ff),
 	gsSPEndDisplayList(),
 };
 
@@ -476,7 +468,8 @@ Gfx mat_fan_spring_fanblade[] = {
 	gsDPPipeSync(),
 	gsDPSetTile(G_IM_FMT_CI, G_IM_SIZ_4b, 4, 0, 0, 0, G_TX_WRAP | G_TX_NOMIRROR, 6, 0, G_TX_WRAP | G_TX_NOMIRROR, 6, 0),
 	gsDPSetTileSize(0, 0, 0, 252, 252),
-	gsSPSetLights1(fan_spring_fanblade_lights),
+    gsSPLightColor(LIGHT_1, 0xfefefeff),
+    gsSPLightColor(LIGHT_2, 0x7f7f7fff),
 	gsSPEndDisplayList(),
 };
 
@@ -492,7 +485,8 @@ Gfx mat_fan_spring_f3d_material_001[] = {
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPClearGeometryMode(G_CULL_BACK),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(fan_spring_f3d_material_001_lights),
+    gsSPLightColor(LIGHT_1, 0xb1b1b1ff),
+    gsSPLightColor(LIGHT_2, 0x585858ff),
 	gsSPEndDisplayList(),
 };
 

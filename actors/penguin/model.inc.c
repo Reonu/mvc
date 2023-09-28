@@ -1,79 +1,51 @@
 // Penguin
 
 // 0x05002D80
-static const Lights1 penguin_seg5_lights_05002D80 = gdSPDefLights1(
-    0x06, 0x06, 0x39,
-    0x0f, 0x0f, 0x90, 0x28, 0x28, 0x28
-);
 
 // 0x05002D98
-static const Lights1 penguin_seg5_lights_05002D98 = gdSPDefLights1(
-    0x52, 0x34, 0x0a,
-    0xce, 0x84, 0x1a, 0x28, 0x28, 0x28
-);
 
 // 0x05002DB0
-static const Lights1 penguin_seg5_lights_05002DB0 = gdSPDefLights1(
-    0x59, 0x42, 0x14,
-    0xdf, 0xa7, 0x34, 0x28, 0x28, 0x28
-);
 
 // 0x05002DC8
-static const Lights1 penguin_seg5_lights_05002DC8 = gdSPDefLights1(
-    0x66, 0x66, 0x65,
-    0xff, 0xff, 0xfd, 0x28, 0x28, 0x28
-);
 
 // 0x05002DE0
-ALIGNED8 static const Texture penguin_seg5_texture_05002DE0[] = {
+ALIGNED8 static const Texture penguin_seg5_texture_eye_open[] = {
 #include "actors/penguin/penguin_eye_open.rgba16.inc.c"
 };
 
 // 0x050035E0
-ALIGNED8 static const Texture penguin_seg5_texture_050035E0[] = {
+ALIGNED8 static const Texture penguin_seg5_texture_eye_half_closed[] = {
 #include "actors/penguin/penguin_eye_half_closed.rgba16.inc.c"
 };
 
 // 0x05003DE0
-ALIGNED8 static const Texture penguin_seg5_texture_05003DE0[] = {
+ALIGNED8 static const Texture penguin_seg5_texture_eye_closed[] = {
 #include "actors/penguin/penguin_eye_closed.rgba16.inc.c"
 };
 
 // 0x050045E0
-ALIGNED8 static const Texture penguin_seg5_texture_050045E0[] = {
+ALIGNED8 static const Texture penguin_seg5_texture_eye_angry[] = {
 #include "actors/penguin/penguin_eye_angry.rgba16.inc.c"
 };
 
 // 0x05004DE0
-ALIGNED8 static const Texture penguin_seg5_texture_05004DE0[] = {
+ALIGNED8 static const Texture penguin_seg5_texture_eye_sad[] = {
 #include "actors/penguin/penguin_eye_angry_unused.rgba16.inc.c"
 };
 
 // 0x050055E0
-ALIGNED8 static const Texture penguin_seg5_texture_050055E0[] = {
+ALIGNED8 static const Texture penguin_seg5_texture_beak[] = {
 #include "actors/penguin/penguin_beak.rgba16.inc.c"
 };
 
 // 0x05005DE0
-static const Lights1 penguin_seg5_lights_05005DE0 = gdSPDefLights1(
-    0x04, 0x0f, 0x41,
-    0x0b, 0x26, 0xa4, 0x28, 0x28, 0x28
-);
 
 // 0x05005DF8
-static const Lights1 penguin_seg5_lights_05005DF8 = gdSPDefLights1(
-    0x66, 0x66, 0x66,
-    0xff, 0xff, 0xff, 0x28, 0x28, 0x28
-);
 
 // 0x05005E10
-static const Lights1 penguin_seg5_lights_05005E10 = gdSPDefLights1(
-    0x60, 0x55, 0x0b,
-    0xf2, 0xd5, 0x1c, 0x28, 0x28, 0x28
-);
 
 // 0x05005E28
-static const Vtx penguin_seg5_vertex_05005E28[] = {
+static const Vtx penguin_seg5_vertex_eyes[] = {
     {{{    27,     97,     36}, 0, {   484,   1164}, {0xac, 0x4a, 0x3a, 0xff}}},
     {{{    79,     90,     42}, 0, {   696,   -154}, {0x32, 0x64, 0x3b, 0xff}}},
     {{{    57,    105,      0}, 0, {  -440,    404}, {0x31, 0x75, 0x00, 0xff}}},
@@ -85,7 +57,7 @@ static const Vtx penguin_seg5_vertex_05005E28[] = {
 };
 
 // 0x05005EA8
-static const Vtx penguin_seg5_vertex_05005EA8[] = {
+static const Vtx penguin_seg5_vertex_beak_top[] = {
     {{{    26,    154,      0}, 0, {  -468,   1134}, {0x2c, 0x77, 0xff, 0xff}}},
     {{{    27,     97,     36}, 0, {  1974,   1130}, {0xac, 0x4a, 0x3a, 0xff}}},
     {{{    57,    105,      0}, 0, {  1030,   -328}, {0x31, 0x75, 0x00, 0xff}}},
@@ -144,35 +116,35 @@ static const Vtx penguin_seg5_vertex_050060E8[] = {
 };
 
 // 0x05006158
-static const Vtx penguin_seg5_vertex_05006158[] = {
+static const Vtx penguin_seg5_vertex_beak_bottom[] = {
     {{{    27,     97,     36}, 0, {     0,      0}, {0xac, 0x4a, 0x3a, 0xff}}},
     {{{    26,    154,      0}, 0, {     0,      0}, {0x2c, 0x77, 0xff, 0xff}}},
     {{{    27,     97,    -35}, 0, {     0,      0}, {0xbc, 0x50, 0xba, 0xff}}},
 };
 
 // 0x05006188 - 0x050061C8
-const Gfx penguin_seg5_dl_05006188[] = {
-    gsSPLight(&penguin_seg5_lights_05005DE0.l, 1),
-    gsSPLight(&penguin_seg5_lights_05005DE0.a, 2),
-    gsSPVertex(penguin_seg5_vertex_05005E28, 8, 0),
+const Gfx penguin_seg5_sub_dl_eyes_model[] = {
+    gsSPLightColor(LIGHT_1, 0xb26a4ff),
+    gsSPLightColor(LIGHT_2, 0x40f41ff),
+    gsSPVertex(penguin_seg5_vertex_eyes, 8, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  1,  0,  3, 0x0),
     gsSP2Triangles( 4,  5,  6, 0x0,  7,  6,  5, 0x0),
     gsSPEndDisplayList(),
 };
 
 // 0x050061C8 - 0x050061F8
-const Gfx penguin_seg5_dl_050061C8[] = {
-    gsSPLight(&penguin_seg5_lights_05005DF8.l, 1),
-    gsSPLight(&penguin_seg5_lights_05005DF8.a, 2),
-    gsSPVertex(penguin_seg5_vertex_05005EA8, 4, 0),
+const Gfx penguin_seg5_sub_dl_beak_model[] = {
+    gsSPLightColor(LIGHT_1, 0xffffffff),
+    gsSPLightColor(LIGHT_2, 0x666666ff),
+    gsSPVertex(penguin_seg5_vertex_beak_top, 4, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  3,  0,  2, 0x0),
     gsSPEndDisplayList(),
 };
 
 // 0x050061F8 - 0x05006380
-const Gfx penguin_seg5_dl_050061F8[] = {
-    gsSPLight(&penguin_seg5_lights_05005DE0.l, 1),
-    gsSPLight(&penguin_seg5_lights_05005DE0.a, 2),
+const Gfx penguin_seg5_sub_dl_head_model[] = {
+    gsSPLightColor(LIGHT_1, 0xb26a4ff),
+    gsSPLightColor(LIGHT_2, 0x40f41ff),
     gsSPVertex(penguin_seg5_vertex_05005EE8, 16, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  1,  3,  2, 0x0),
     gsSP2Triangles( 4,  1,  5, 0x0,  1,  4,  6, 0x0),
@@ -196,15 +168,15 @@ const Gfx penguin_seg5_dl_050061F8[] = {
     gsSP2Triangles( 0,  1,  2, 0x0,  1,  3,  2, 0x0),
     gsSP2Triangles( 4,  0,  2, 0x0,  5,  2,  3, 0x0),
     gsSP2Triangles( 2,  5,  4, 0x0,  4,  5,  6, 0x0),
-    gsSPLight(&penguin_seg5_lights_05005E10.l, 1),
-    gsSPLight(&penguin_seg5_lights_05005E10.a, 2),
-    gsSPVertex(penguin_seg5_vertex_05006158, 3, 0),
+    gsSPLightColor(LIGHT_1, 0xf2d51cff),
+    gsSPLightColor(LIGHT_2, 0x60550bff),
+    gsSPVertex(penguin_seg5_vertex_beak_bottom, 3, 0),
     gsSP1Triangle( 0,  1,  2, 0x0),
     gsSPEndDisplayList(),
 };
 
 // 0x05006380 - 0x050063C8
-const Gfx penguin_seg5_dl_05006380[] = {
+const Gfx penguin_seg5_sub_dl_head_begin[] = {
     gsDPPipeSync(),
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 0, 0, G_TX_LOADTILE, 0, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD, G_TX_WRAP | G_TX_NOMIRROR, G_TX_NOMASK, G_TX_NOLOD),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_ON),
@@ -212,73 +184,74 @@ const Gfx penguin_seg5_dl_05006380[] = {
     gsDPSetTile(G_IM_FMT_RGBA, G_IM_SIZ_16b, 8, 0, G_TX_RENDERTILE, 0, G_TX_CLAMP, 5, G_TX_NOLOD, G_TX_CLAMP, 5, G_TX_NOLOD),
     gsDPSetTileSize(0, 0, 0, (32 - 1) << G_TEXTURE_IMAGE_FRAC, (32 - 1) << G_TEXTURE_IMAGE_FRAC),
     gsDPPipeSync(),
-    gsDPSetCombineMode(G_CC_BLENDRGBA, G_CC_BLENDRGBA),
+    gsDPSetCombineMode(G_CC_BLENDRGBFADEA, G_CC_BLENDRGBFADEA),
     gsSPEndDisplayList(),
 };
 
 // 0x050063C8 - 0x05006428
-const Gfx penguin_seg5_dl_050063C8[] = {
-    gsSPDisplayList(penguin_seg5_dl_05006188),
+const Gfx penguin_seg5_dl_head[] = {
+    gsSPDisplayList(penguin_seg5_sub_dl_eyes_model),
     gsDPPipeSync(),
-    gsDPSetCombineMode(G_CC_MODULATERGB, G_CC_MODULATERGB),
-    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, penguin_seg5_texture_050055E0),
+    gsDPSetCombineMode(G_CC_MODULATERGBFADE, G_CC_MODULATERGBFADE),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, penguin_seg5_texture_beak),
     gsDPLoadSync(),
     gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
-    gsSPDisplayList(penguin_seg5_dl_050061C8),
+    gsSPDisplayList(penguin_seg5_sub_dl_beak_model),
     gsSPTexture(0xFFFF, 0xFFFF, 0, G_TX_RENDERTILE, G_OFF),
     gsDPPipeSync(),
+    gsDPSetCombineMode(G_CC_SHADEFADEA, G_CC_SHADEFADEA),
+    gsSPDisplayList(penguin_seg5_sub_dl_head_model),
     gsDPSetCombineMode(G_CC_SHADE, G_CC_SHADE),
-    gsSPDisplayList(penguin_seg5_dl_050061F8),
     gsSPEndDisplayList(),
 };
 
 // 0x05006428 - 0x05006458
-const Gfx penguin_seg5_dl_05006428[] = {
-    gsSPDisplayList(penguin_seg5_dl_05006380),
-    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, penguin_seg5_texture_05002DE0),
+const Gfx penguin_seg5_dl_head_eyes_open[] = {
+    gsSPDisplayList(penguin_seg5_sub_dl_head_begin),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, penguin_seg5_texture_eye_open),
     gsDPLoadSync(),
     gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
-    gsSPDisplayList(penguin_seg5_dl_050063C8),
+    gsSPDisplayList(penguin_seg5_dl_head),
     gsSPEndDisplayList(),
 };
 
 // 0x05006458 - 0x05006488
-const Gfx penguin_seg5_dl_05006458[] = {
-    gsSPDisplayList(penguin_seg5_dl_05006380),
-    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, penguin_seg5_texture_050035E0),
+const Gfx penguin_seg5_dl_head_eyes_half_closed[] = {
+    gsSPDisplayList(penguin_seg5_sub_dl_head_begin),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, penguin_seg5_texture_eye_half_closed),
     gsDPLoadSync(),
     gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
-    gsSPDisplayList(penguin_seg5_dl_050063C8),
+    gsSPDisplayList(penguin_seg5_dl_head),
     gsSPEndDisplayList(),
 };
 
 // 0x05006488 - 0x050064B8
-const Gfx penguin_seg5_dl_05006488[] = {
-    gsSPDisplayList(penguin_seg5_dl_05006380),
-    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, penguin_seg5_texture_05003DE0),
+const Gfx penguin_seg5_dl_head_eyes_closed[] = {
+    gsSPDisplayList(penguin_seg5_sub_dl_head_begin),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, penguin_seg5_texture_eye_closed),
     gsDPLoadSync(),
     gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
-    gsSPDisplayList(penguin_seg5_dl_050063C8),
+    gsSPDisplayList(penguin_seg5_dl_head),
     gsSPEndDisplayList(),
 };
 
 // 0x050064B8 - 0x050064E8
-const Gfx penguin_seg5_dl_050064B8[] = {
-    gsSPDisplayList(penguin_seg5_dl_05006380),
-    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, penguin_seg5_texture_050045E0),
+const Gfx penguin_seg5_dl_head_eyes_angry[] = {
+    gsSPDisplayList(penguin_seg5_sub_dl_head_begin),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, penguin_seg5_texture_eye_angry),
     gsDPLoadSync(),
     gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
-    gsSPDisplayList(penguin_seg5_dl_050063C8),
+    gsSPDisplayList(penguin_seg5_dl_head),
     gsSPEndDisplayList(),
 };
 
 // 0x050064E8 - 0x05006518
-const Gfx penguin_seg5_dl_050064E8[] = {
-    gsSPDisplayList(penguin_seg5_dl_05006380),
-    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, penguin_seg5_texture_05004DE0),
+const Gfx penguin_seg5_dl_head_eyes_sad[] = {
+    gsSPDisplayList(penguin_seg5_sub_dl_head_begin),
+    gsDPSetTextureImage(G_IM_FMT_RGBA, G_IM_SIZ_16b, 1, penguin_seg5_texture_eye_sad),
     gsDPLoadSync(),
     gsDPLoadBlock(G_TX_LOADTILE, 0, 0, 32 * 32 - 1, CALC_DXT(32, G_IM_SIZ_16b_BYTES)),
-    gsSPDisplayList(penguin_seg5_dl_050063C8),
+    gsSPDisplayList(penguin_seg5_dl_head),
     gsSPEndDisplayList(),
 };
 
@@ -548,8 +521,8 @@ static const Vtx penguin_seg5_vertex_050070A8[] = {
 
 // 0x05007198 - 0x050071E8
 const Gfx penguin_seg5_dl_05007198[] = {
-    gsSPLight(&penguin_seg5_lights_05002D80.l, 1),
-    gsSPLight(&penguin_seg5_lights_05002D80.a, 2),
+    gsSPLightColor(LIGHT_1, 0xf0f90ff),
+    gsSPLightColor(LIGHT_2, 0x60639ff),
     gsSPVertex(penguin_seg5_vertex_05006518, 10, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  3,  4,  5, 0x0),
     gsSP2Triangles( 5,  6,  3, 0x0,  3,  6,  7, 0x0),
@@ -559,8 +532,8 @@ const Gfx penguin_seg5_dl_05007198[] = {
 
 // 0x050071E8 - 0x05007238
 const Gfx penguin_seg5_dl_050071E8[] = {
-    gsSPLight(&penguin_seg5_lights_05002D80.l, 1),
-    gsSPLight(&penguin_seg5_lights_05002D80.a, 2),
+    gsSPLightColor(LIGHT_1, 0xf0f90ff),
+    gsSPLightColor(LIGHT_2, 0x60639ff),
     gsSPVertex(penguin_seg5_vertex_050065B8, 10, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  3,  2,  4, 0x0),
     gsSP2Triangles( 5,  6,  7, 0x0,  7,  6,  8, 0x0),
@@ -570,8 +543,8 @@ const Gfx penguin_seg5_dl_050071E8[] = {
 
 // 0x05007238 - 0x050072C8
 const Gfx penguin_seg5_dl_05007238[] = {
-    gsSPLight(&penguin_seg5_lights_05002D98.l, 1),
-    gsSPLight(&penguin_seg5_lights_05002D98.a, 2),
+    gsSPLightColor(LIGHT_1, 0xce841aff),
+    gsSPLightColor(LIGHT_2, 0x52340aff),
     gsSPVertex(penguin_seg5_vertex_05006658, 15, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  0,  3,  4, 0x0),
     gsSP2Triangles( 4,  5,  6, 0x0,  6,  7,  2, 0x0),
@@ -585,8 +558,8 @@ const Gfx penguin_seg5_dl_05007238[] = {
 
 // 0x050072C8 - 0x05007358
 const Gfx penguin_seg5_dl_050072C8[] = {
-    gsSPLight(&penguin_seg5_lights_05002D98.l, 1),
-    gsSPLight(&penguin_seg5_lights_05002D98.a, 2),
+    gsSPLightColor(LIGHT_1, 0xce841aff),
+    gsSPLightColor(LIGHT_2, 0x52340aff),
     gsSPVertex(penguin_seg5_vertex_05006748, 15, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  3,  4,  5, 0x0),
     gsSP2Triangles( 5,  4,  6, 0x0,  7,  8,  9, 0x0),
@@ -600,13 +573,13 @@ const Gfx penguin_seg5_dl_050072C8[] = {
 
 // 0x05007358 - 0x05007540
 const Gfx penguin_seg5_dl_05007358[] = {
-    gsSPLight(&penguin_seg5_lights_05002DB0.l, 1),
-    gsSPLight(&penguin_seg5_lights_05002DB0.a, 2),
+    gsSPLightColor(LIGHT_1, 0xdfa734ff),
+    gsSPLightColor(LIGHT_2, 0x594214ff),
     gsSPVertex(penguin_seg5_vertex_05006838, 5, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  3,  0,  2, 0x0),
     gsSP1Triangle( 1,  4,  3, 0x0),
-    gsSPLight(&penguin_seg5_lights_05002D80.l, 1),
-    gsSPLight(&penguin_seg5_lights_05002D80.a, 2),
+    gsSPLightColor(LIGHT_1, 0xf0f90ff),
+    gsSPLightColor(LIGHT_2, 0x60639ff),
     gsSPVertex(penguin_seg5_vertex_05006888, 16, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  3,  4,  5, 0x0),
     gsSP2Triangles( 6,  7,  8, 0x0,  6,  9,  0, 0x0),
@@ -634,8 +607,8 @@ const Gfx penguin_seg5_dl_05007358[] = {
     gsSPVertex(penguin_seg5_vertex_05006D68, 8, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  2,  1,  3, 0x0),
     gsSP2Triangles( 4,  5,  6, 0x0,  6,  7,  4, 0x0),
-    gsSPLight(&penguin_seg5_lights_05002D80.l, 1),
-    gsSPLight(&penguin_seg5_lights_05002D80.a, 2),
+    gsSPLightColor(LIGHT_1, 0xf0f90ff),
+    gsSPLightColor(LIGHT_2, 0x60639ff),
     gsSPVertex(penguin_seg5_vertex_05006DE8, 4, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  3,  0,  2, 0x0),
     gsSPEndDisplayList(),
@@ -643,8 +616,8 @@ const Gfx penguin_seg5_dl_05007358[] = {
 
 // 0x05007540 - 0x05007708
 const Gfx penguin_seg5_dl_05007540[] = {
-    gsSPLight(&penguin_seg5_lights_05002D80.l, 1),
-    gsSPLight(&penguin_seg5_lights_05002D80.a, 2),
+    gsSPLightColor(LIGHT_1, 0xf0f90ff),
+    gsSPLightColor(LIGHT_2, 0x60639ff),
     gsSPVertex(penguin_seg5_vertex_05006E28, 15, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  3,  4,  5, 0x0),
     gsSP2Triangles( 6,  7,  8, 0x0,  2,  9,  6, 0x0),
@@ -663,8 +636,8 @@ const Gfx penguin_seg5_dl_05007540[] = {
     gsSPVertex(penguin_seg5_vertex_05007018, 9, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  3,  1,  0, 0x0),
     gsSP2Triangles( 4,  5,  6, 0x0,  7,  2,  8, 0x0),
-    gsSPLight(&penguin_seg5_lights_05002DC8.l, 1),
-    gsSPLight(&penguin_seg5_lights_05002DC8.a, 2),
+    gsSPLightColor(LIGHT_1, 0xfffffdff),
+    gsSPLightColor(LIGHT_2, 0x666665ff),
     gsSPVertex(penguin_seg5_vertex_050070A8, 15, 0),
     gsSP2Triangles( 0,  1,  2, 0x0,  3,  1,  4, 0x0),
     gsSP2Triangles( 5,  2,  6, 0x0,  7,  8,  9, 0x0),
