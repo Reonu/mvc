@@ -3,8 +3,8 @@
 #include "memory.h"
 #include "engine/math_util.h"
 #include "src/engine/behavior_script.h"
+#include "tile_scroll.h"
 #include "texscroll.h"
-#include "game/tile_scroll.h"
 
 #ifdef TARGET_N64
 #define SCROLL_CONDITION(condition) condition
@@ -16,12 +16,7 @@
 #include "src/game/texscroll/bob_texscroll.inc.c"
 void scroll_textures() {
 	if(SCROLL_CONDITION(sSegmentROMTable[0x7] == (uintptr_t)_bob_segment_7SegmentRomStart)) {
-		//scroll_textures_bob();
-	}
-
-	if(SCROLL_CONDITION(sSegmentROMTable[0x7] == (uintptr_t)_bob_segment_7SegmentRomStart)) {
-		//scroll_textures_bob();
+		scroll_textures_bob();
 	}
 
 }
-
