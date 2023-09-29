@@ -659,9 +659,33 @@ Lights1 defaultLight = gdSPDefLights1(
     0x3F, 0x3F, 0x3F, 0xFF, 0xFF, 0xFF, 0x00, 0x00, 0x00
 );
 
-Vec3f globalLightDirection = { -0x28, 0x28, -0x28 };
+Vec3f globalLightDirection = { 0x28, 0x28, 0x28 };
+Vec3f menuLightDirection = { 0x28, 0x28, 0x28 };
+Vec3f BoBLightDirection = { -10, 15, -40 };
+
+void set_global_light_direction(Vec3f direction) {
+    Vec3f normalized;
+    vec3f_copy(normalized, direction);
+    vec3f_normalize(normalized);
+    globalLightDirection[0] = (s8)(s32)(normalized[0] * 0x28);
+    globalLightDirection[1] = (s8)(s32)(normalized[1] * 0x28);
+    globalLightDirection[2] = (s8)(s32)(normalized[2] * 0x28);
+}
 
 void setup_global_light() {
+    static s16 lastLevel = LEVEL_NONE;
+    if (gCurrLevelNum != lastLevel) {
+        lastLevel = gCurrLevelNum;
+        switch (gCurrLevelNum) {
+            case LEVEL_BOB:
+                set_global_light_direction(BoBLightDirection);
+                break;
+            default:
+                set_global_light_direction(menuLightDirection);
+                break;
+        }
+    }
+
     Lights1* curLight = (Lights1*)alloc_display_list(sizeof(Lights1));
     bcopy(&defaultLight, curLight, sizeof(Lights1));
 
