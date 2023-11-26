@@ -28,6 +28,8 @@
 #include "spawn_sound.h"
 #include "puppylights.h"
 
+#include "levels/bob/header.h"
+
 static s32 clear_move_flag(u32 *bitSet, s32 flag);
 
 Gfx *geo_update_projectile_pos_from_parent(s32 callContext, UNUSED struct GraphNode *node, Mat4 mtx) {
@@ -2360,4 +2362,61 @@ void cur_obj_spawn_star_at_y_offset(f32 targetX, f32 targetY, f32 targetZ, f32 o
     o->oPosY += offsetY + gDebugInfo[DEBUG_PAGE_ENEMYINFO][0];
     spawn_default_star(targetX, targetY, targetZ);
     o->oPosY = objectPosY;
+}
+
+extern struct AllocOnlyPool *gDisplayListHeap;
+extern void geo_append_display_list(void *displayList, s16 layer);
+extern s16 gMatStackIndex;
+extern Mat4 gMatStack[32];
+extern Mtx *gMatStackFixed[32];
+extern u32 gMoveSpeed;
+Gfx *geo_render_INFBG(s32 callContext, struct GraphNode *node, UNUSED f32 b[4][4]) {
+    Mat4 mat;
+    Mtx *mtx = alloc_display_list(sizeof(*mtx));
+    s32 i;
+    f32 pos[3];
+    static Vec3s rotation = { 0, 0, 0 };
+    rotation[1] += DEGREES(0.04f);
+    if (callContext == GEO_CONTEXT_RENDER) {
+#define FARAWAYNESS .95f // the closer to 1 the further away
+
+        for (i = 0; i < 3; i++) {
+            pos[i] = gCurGraphNodeCamera->pos[i] * FARAWAYNESS;
+        }
+
+        mtxf_rotate_zxy_and_translate(mat, pos, rotation);
+        mtxf_mul(gMatStack[gMatStackIndex + 1], mat, gMatStack[gMatStackIndex]);
+        gMatStackIndex++;
+        mtxf_to_mtx(mtx, gMatStack[gMatStackIndex]);
+        gMatStackFixed[gMatStackIndex] = mtx;
+        geo_append_display_list(galaxy_background_AAABeachBackground_mesh, 0); // DL pointer
+        
+        gMatStackIndex--;
+    }
+    return 0;
+}
+Gfx *geo_render_sun(s32 callContext, struct GraphNode *node, UNUSED f32 b[4][4]) {
+    Mat4 mat;
+    Mtx *mtx = alloc_display_list(sizeof(*mtx));
+    s32 i;
+    f32 pos[3];
+    static Vec3s rotation = { 0, 0, 0 };
+    //rotation[1] += DEGREES(0.07f);
+    if (callContext == GEO_CONTEXT_RENDER) {
+#define FARAWAYNESS .95f // the closer to 1 the further away
+
+        for (i = 0; i < 3; i++) {
+            pos[i] = gCurGraphNodeCamera->pos[i] * FARAWAYNESS;
+        }
+
+        mtxf_rotate_zxy_and_translate(mat, pos, rotation);
+        mtxf_mul(gMatStack[gMatStackIndex + 1], mat, gMatStack[gMatStackIndex]);
+        gMatStackIndex++;
+        mtxf_to_mtx(mtx, gMatStack[gMatStackIndex]);
+        gMatStackFixed[gMatStackIndex] = mtx;
+        geo_append_display_list(sun_AAAASun_mesh, 0); // DL pointer
+        
+        gMatStackIndex--;
+    }
+    return 0;
 }

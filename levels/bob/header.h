@@ -33,4 +33,8 @@ extern const LevelScript level_bob_entry[];
 
 #include "levels/bob/header.inc.h"
 
+#include "levels/bob/galaxy_background/header.h"
+
+#include "levels/bob/sun/header.h"
+
 #endif

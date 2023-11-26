@@ -3,6 +3,8 @@
 const GeoLayout bob_area_1_geo[] = {
 	GEO_NODE_START(),
 	GEO_OPEN_NODE(),
+		GEO_ASM(0, geo_render_INFBG),
+		GEO_ASM(0, geo_render_sun),
 		GEO_TRANSLATE_NODE(LAYER_OPAQUE, 7446, -1964, 9456),
 		GEO_OPEN_NODE(),
 			GEO_RENDER_RANGE(-2048, 5000),

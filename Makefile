@@ -5,7 +5,7 @@ include util.mk
 # Default target
 default: all
 
-TARGET_STRING := sm64
+TARGET_STRING := mvcupdate
 
 # Preprocessor definitions
 DEFINES :=
@@ -87,7 +87,7 @@ else ifeq ($(VERSION),sh)
   DEFINES += VERSION_SH=1
 endif
 
-TARGET := mvc.$(VERSION)
+TARGET := mvcupdate.$(VERSION)
 # FIXLIGHTS - converts light objects to light color commands for assets, needed for vanilla-style lighting
 FIXLIGHTS ?= 1
 
