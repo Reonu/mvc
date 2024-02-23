@@ -4,6 +4,8 @@
 
 In order to compile, you need BOTH AN US ROM AND A JAPANESE ROM, named baserom.us.z64 and baserom.jp.z64. You also need to run ``python3 extract_assets.py jp`` before trying to compile. You also need gcc, which you can install with the following command: `sudo apt install gcc-mips-linux-gnu`
 
+Feel free to use this source code for whatever you want. All I ask is that you provide credit. 
+
 # HackerSM64
 **AFTER CLONING THE REPO, CHECK OUT THE `include/config.h` FILE BEFORE ANYTHING ELSE! IT THERE'S A LOT OF STUFF IN THIS REPO THAT CAN BE TOGGLED THERE.**
 
