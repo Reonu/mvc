@@ -74,6 +74,35 @@ f32 maxFadeVolume = 1.0f;
 u32 unused80339F10;
 s8 filler80339F1C[20];
 extern u8 sCurrentBackgroundMusicSeqId;
+
+
+void mario_give_all_moves(struct MarioState *m) {
+    m->canDive = 1;
+    m->canJump = 1;
+    m->canDoubleJump = 1;
+    m->canLongJump = 1;
+    m->canKick = 1;
+    m->canGroundPound = 1;
+    m->canHoldPole = 1;
+    m->canBackFlip = 1;
+    m->canTripleJump = 1;
+    m->canWallKick = 1;
+    m->canSideFlip = 1;
+}
+
+void mario_take_away_all_moves(struct MarioState *m) {
+    m->canDive = 0;
+    m->canJump = 0;
+    m->canDoubleJump = 0;
+    m->canLongJump = 0;
+    m->canKick = 0;
+    m->canGroundPound = 0;
+    m->canHoldPole = 0;
+    m->canBackFlip = 0;
+    m->canTripleJump = 0;
+    m->canWallKick = 0;
+    m->canSideFlip = 0;    
+}
 /**************************************************
  *                    ANIMATIONS                  *
  **************************************************/
@@ -2013,33 +2042,68 @@ s32 execute_mario_action(UNUSED struct Object *obj) {
     /*
     * Moveset system
     */
-    if (gMarioState->numStars >= 1) {
-            gMarioState->canDive = 1;
+
+   if (gReverseMode) {
+        if (gMarioState->numStars == 0) {
+            mario_give_all_moves(gMarioState);
         }
-    if (gMarioState->numStars >= 3) {
-            gMarioState ->canJump = 1;
-    }
-    if (gMarioState->numStars >= 5) {
-        gMarioState->canDoubleJump = 1;
-    }
-    if (gMarioState->numStars >= 7){
-        gMarioState->canLongJump = 1;
-    }
-    if (gMarioState->numStars >= 9){
-        gMarioState->canKick = 1;
-        gMarioState->canGroundPound = 1;
-    }
-    if (gMarioState->numStars >= 12){
-        gMarioState->canHoldPole = 1;
-    }
-    if (gMarioState->numStars >= 15){
-        gMarioState->canBackFlip = 1;
-        gMarioState->canTripleJump = 1;
-    }
-    if (gMarioState->numStars >= 20){
-        gMarioState->canWallKick = 1;
-        gMarioState->canSideFlip = 1;
-    }
+        if (gMarioState->numStars >= 10) {
+            gMarioState->canSideFlip = 0;
+            gMarioState->canWallKick = 0;
+        }
+        if (gMarioState->numStars >= 13) {
+            gMarioState->canBackFlip = 0;
+            gMarioState->canTripleJump = 0;
+        }
+        if (gMarioState->numStars >= 15) {
+            gMarioState->canHoldPole = 0;
+        }
+        if (gMarioState->numStars >= 17) {
+            gMarioState->canKick = 0;
+            gMarioState->canGroundPound = 0;
+        }
+        if (gMarioState->numStars >= 19) {
+            gMarioState->canLongJump = 0;
+        }
+        if (gMarioState->numStars >= 25) {
+            gMarioState->canDoubleJump = 0;
+        }
+        if (gMarioState->numStars >= 27) {
+            gMarioState->canJump = 0;
+        }
+        if (gMarioState->numStars >= 29) {
+            gMarioState->canDive = 0;
+        }
+   } else {
+        if (gMarioState->numStars >= 1) {
+                gMarioState->canDive = 1;
+            }
+        if (gMarioState->numStars >= 3) {
+                gMarioState ->canJump = 1;
+        }
+        if (gMarioState->numStars >= 5) {
+            gMarioState->canDoubleJump = 1;
+        }
+        if (gMarioState->numStars >= 7){
+            gMarioState->canLongJump = 1;
+        }
+        if (gMarioState->numStars >= 9){
+            gMarioState->canKick = 1;
+            gMarioState->canGroundPound = 1;
+        }
+        if (gMarioState->numStars >= 12){
+            gMarioState->canHoldPole = 1;
+        }
+        if (gMarioState->numStars >= 15){
+            gMarioState->canBackFlip = 1;
+            gMarioState->canTripleJump = 1;
+        }
+        if (gMarioState->numStars >= 20){
+            gMarioState->canWallKick = 1;
+            gMarioState->canSideFlip = 1;
+        }
+   }
+
     /*
     * End of moveset system
     */
@@ -2210,6 +2274,9 @@ void init_mario(void) {
 
         capObject->oForwardVel = 0;
         capObject->oMoveAngleYaw = 0;
+    }
+    if (gReverseMode) {
+        mario_give_all_moves(gMarioState);
     }
 }
 

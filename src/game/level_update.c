@@ -1414,18 +1414,18 @@ s32 lvl_play_the_end_screen_sound(UNUSED s16 initOrUpdate, UNUSED s32 levelNum) 
 }
 s32 lvl_print_ending_text(UNUSED s16 arg0, UNUSED s32 arg1) {
         if (!gSpeedrunMode) {
-            print_text(10, 80, "DID YOU KNOW YOU CAN");
-            print_text(10, 60, "ENABLE A SPEEDRUN MODE BY");
+            print_text(10, 80, "ON FILE SELECT PRESS");
             if (gIsConsole && gGcController) {
-                print_text(10, 40, "PRESSING Z ON THE");
+                print_text(10, 60, "Z FOR SPEEDRUN MODE OR");
             } else {
-                print_text(10, 40, "PRESSING L ON THE");
+                print_text(10, 60, "L FOR SPEEDRUN MODE OR");
             }
-            print_text(10, 20, "FILE SELECT?");
-        } else {
+            print_text(10, 40, "R FOR REVERSE MODE");
+        } else if (!gReverseMode) {
             print_text(10, 40, "HI MR SPEEDRUNNER");
             print_text(10, 20, "HOW ARE RUNS?");
-            
+        } else {
+            print_text(10, 40, "IS REVERSE MODE FUN?");
         }
         save_file_do_save(gCurrSaveFileNum - 1);
         render_credits();

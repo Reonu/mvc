@@ -173,6 +173,8 @@ unsigned char textNo[] = { TEXT_NO };
 static unsigned char textConsole[] = { TEXT_AUTO_CONSOLE };
 static unsigned char textEmu[] = { TEXT_AUTO_EMU };
 static unsigned char textSpeedrun[] = { TEXT_SPEEDRUN };
+static unsigned char textReverse[] = { TEXT_REVERSE };
+static unsigned char textSpeedrunAndReverse[] = { TEXT_SPEEDRUN_AND_REVERSE };
 
 /**
  * Yellow Background Menu Initial Action
@@ -1182,6 +1184,9 @@ void handle_cursor_button_input(void) {
     if (gPlayer1Controller->buttonPressed & L_TRIG) {
         gSpeedrunMode ^= 1;
     }
+    if (gPlayer1Controller->buttonPressed & R_TRIG) {
+        gReverseMode ^= 1;
+    }
     if (sSelectedButtonID == MENU_BUTTON_SCORE_FILE_A || sSelectedButtonID == MENU_BUTTON_SCORE_FILE_B
         || sSelectedButtonID == MENU_BUTTON_SCORE_FILE_C
         || sSelectedButtonID == MENU_BUTTON_SCORE_FILE_D) {
@@ -1357,7 +1362,13 @@ void print_main_menu_strings(void) {
     gDPSetEnvColor(gDisplayListHead++, 255, 255, 255, sTextBaseAlpha);
 #ifndef VERSION_EU
     if (gSpeedrunMode) {
-        print_hud_lut_string(HUD_LUT_DIFF, 70, 35, textSpeedrun);
+        if (gReverseMode) {
+            print_hud_lut_string(HUD_LUT_DIFF, 40, 35, textSpeedrunAndReverse);
+        } else {
+            print_hud_lut_string(HUD_LUT_DIFF, 70, 35, textSpeedrun);
+        }
+    } else if (gReverseMode) {
+            print_hud_lut_string(HUD_LUT_DIFF, 80, 35, textReverse);
     }
     else if (gIsConsole) {
         print_hud_lut_string(HUD_LUT_DIFF, 85, 35, textConsole);

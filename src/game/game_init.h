@@ -90,6 +90,7 @@ extern u32 gGlobalTimer;
 
 
 extern u8 gSpeedrunMode;
+extern u8 gReverseMode;
 
 void setup_game_memory(void);
 void thread5_game_loop(UNUSED void *arg);

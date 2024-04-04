@@ -86,6 +86,7 @@ u16 sCurrFBNum = 0;
 u16 frameBufferIndex = 0;
 
 u8 gSpeedrunMode;
+u8 gReverseMode;
 
 u8 gBorderHeight;
 u8 *gAreaSkyboxStart[AREA_COUNT];

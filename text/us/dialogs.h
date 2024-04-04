@@ -642,28 +642,39 @@ DEFINE_DIALOG(DIALOG_160, 1, 4, 30, 200, _("\
 "))
 
 DEFINE_DIALOG(DIALOG_161, 1, 4, 30, 200, _("\
-"))
+Mario forgor how to\n\
+walkick and\n\
+sideflip!"))
 
 DEFINE_DIALOG(DIALOG_162, 1, 4, 30, 200, _("\
-"))
+Mario forgor how to\n\
+triple jump and\n\
+backflip!"))
 
 DEFINE_DIALOG(DIALOG_163, 1, 5, 30, 200, _("\
-"))
+Mario forgor how\n\
+to grab poles!"))
 
 DEFINE_DIALOG(DIALOG_164, 1, 4, 30, 200, _("\
-"))
+Mario forgor how\n\
+to punch, kick\n\
+and ground pound!"))
 
 DEFINE_DIALOG(DIALOG_165, 1, 5, 30, 200, _("\
-"))
+Mario forgor how to\n\
+long jump!"))
 
 DEFINE_DIALOG(DIALOG_166, 1, 4, 30, 200, _("\
-"))
+Mario forgor how\n\
+to double jump!"))
 
 DEFINE_DIALOG(DIALOG_167, 1, 4, 30, 200, _("\
-."))
+Mario forgor how\n\
+to jump!"))
 
 DEFINE_DIALOG(DIALOG_168, 1, 5, 30, 200, _("\
-"))
+Mario forgor\n\
+everything!"))
 
 DEFINE_DIALOG(DIALOG_169, 1, 4, 30, 200, _("\
 "))
