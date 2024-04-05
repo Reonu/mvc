@@ -138,9 +138,8 @@ s32 set_triple_jump_action(struct MarioState *m, UNUSED u32 action, UNUSED u32 a
     } else if (m->forwardVel > 20.0f) {
         if (m->canTripleJump || m->unlockEverything) {
             return set_mario_action(m, ACT_TRIPLE_JUMP, 0);
-        }
-        else {
-            return set_mario_action(m, ACT_IDLE, 0);
+        } else {
+            return set_mario_action(m, ACT_JUMP, 0);
         }
             
     } else {
@@ -955,8 +954,12 @@ s32 act_turning_around(struct MarioState *m) {
         return set_mario_action(m, ACT_BEGIN_SLIDING, 0);
     }
 
-    if (m->input & INPUT_A_PRESSED && (m->canSideFlip == 1 || m->unlockEverything == 1)) {
-        return set_jumping_action(m, ACT_SIDE_FLIP, 0);
+    if (m->input & INPUT_A_PRESSED) {
+        if ((m->canSideFlip == 1 || m->unlockEverything == 1)) {
+            return set_jumping_action(m, ACT_SIDE_FLIP, 0);
+        } else {
+            return set_jumping_action(m, ACT_JUMP, 0);
+        }
     }
 
     if (m->input & INPUT_IDLE) {
@@ -1006,8 +1009,12 @@ s32 act_finish_turning_around(struct MarioState *m) {
         return set_mario_action(m, ACT_BEGIN_SLIDING, 0);
     }
 
-    if (m->input & INPUT_A_PRESSED && (m->canSideFlip == 1 || m->unlockEverything == 1)) {
-        return set_jumping_action(m, ACT_SIDE_FLIP, 0);
+    if (m->input & INPUT_A_PRESSED) {
+        if ((m->canSideFlip == 1 || m->unlockEverything == 1)) {
+            return set_jumping_action(m, ACT_SIDE_FLIP, 0);
+        } else {
+            return set_jumping_action(m, ACT_JUMP, 0);
+        }
     }
 
 #ifdef RESET_DIRECTION_WHEN_TURNING_AROUND
@@ -1767,6 +1774,8 @@ s32 common_landing_cancels(struct MarioState *m, struct LandingAction *landingAc
     if (m->input & INPUT_A_PRESSED) {
         if ((gMarioState->canDoubleJump == 1) || (gMarioState->unlockEverything == 1)) {
             return setAPressAction(m, landingAction->aPressedAction, 0);
+        } else {
+            return setAPressAction(m, ACT_JUMP, 0);
         }
         
     }
@@ -1780,10 +1789,7 @@ s32 common_landing_cancels(struct MarioState *m, struct LandingAction *landingAc
 
 s32 act_jump_land(struct MarioState *m) {
     if (common_landing_cancels(m, &sJumpLandAction, set_jumping_action)) {
-        if ((gMarioState->canDoubleJump == 1) || (gMarioState->unlockEverything == 1)) {
-            return TRUE;
-        }
-        
+        return TRUE;
     }
 
     common_landing_action(m, MARIO_ANIM_LAND_FROM_SINGLE_JUMP, ACT_FREEFALL);
@@ -1865,10 +1871,7 @@ s32 act_long_jump_land(struct MarioState *m) {
 
 s32 act_double_jump_land(struct MarioState *m) {
     if (common_landing_cancels(m, &sDoubleJumpLandAction, set_triple_jump_action)) {
-         if ((gMarioState->canTripleJump == 1) || (gMarioState->unlockEverything == 1)) {
-             return TRUE;
-         }
-        
+        return TRUE;
     }
     common_landing_action(m, MARIO_ANIM_LAND_FROM_DOUBLE_JUMP, ACT_FREEFALL);
     return FALSE;
