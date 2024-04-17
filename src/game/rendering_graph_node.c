@@ -544,8 +544,16 @@ void geo_process_master_list(struct GraphNodeMasterList *node) {
 /**
  * Process a perspective projection node.
  */
-extern void dividetimer(int timer, int *minute, int *second, int *centisecond);
+void dividetimer(int timer, int *minute, int *second, int *centisecond) {
+    #define FRAMERATE 30
 
+    int total_seconds = timer / FRAMERATE;
+    int remainder_frames = timer % FRAMERATE;
+
+    *centisecond = remainder_frames * 100 / FRAMERATE;
+    *second = total_seconds % 60;
+    *minute = total_seconds / 60;
+}
 void geo_process_perspective(struct GraphNodePerspective *node) {
     if (node->fnNode.func != NULL) {
         node->fnNode.func(GEO_CONTEXT_RENDER, &node->fnNode.node, gMatStack[gMatStackIndex]);
