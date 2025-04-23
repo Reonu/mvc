@@ -1068,10 +1068,8 @@ s32 set_jump_from_landing(struct MarioState *m) {
                 case ACT_FREEFALL_LAND:
                     if ((gMarioState->canDoubleJump == 1) || (gMarioState->unlockEverything == 1)) {
                         set_mario_action(m, ACT_DOUBLE_JUMP, 0);
-                    } else if (gMarioState->canJump) {
-                        set_mario_action(m, ACT_JUMP, 0);
                     } else {
-                        set_mario_action(m, ACT_IDLE, 0);
+                        set_mario_action(m, ACT_JUMP, 0);
                     }
                     
                     break;
@@ -1079,10 +1077,8 @@ s32 set_jump_from_landing(struct MarioState *m) {
                 case ACT_SIDE_FLIP_LAND_STOP:
                     if ((gMarioState->canDoubleJump == 1) || (gMarioState->unlockEverything == 1)) {
                         set_mario_action(m, ACT_DOUBLE_JUMP, 0);
-                    } else if (gMarioState->canJump) {
-                        set_mario_action(m, ACT_JUMP, 0);
                     } else {
-                        set_mario_action(m, ACT_IDLE, 0);
+                        set_mario_action(m, ACT_JUMP, 0);
                     }
                     
                     break;
@@ -1095,16 +1091,12 @@ s32 set_jump_from_landing(struct MarioState *m) {
                     } else if (m->forwardVel > 20.0f) {
                         if ((gMarioState->canTripleJump) || (gMarioState->unlockEverything)) {
                             set_mario_action(m, ACT_TRIPLE_JUMP, 0);
-                        } else if (gMarioState->canJump) {
+                        } else if (gMarioState->canJump == 1) {
                             set_mario_action(m, ACT_JUMP, 0);
-                        } else {
-                            set_mario_action(m, ACT_IDLE, 0);
                         }
                         
-                    } else if (gMarioState->canJump) {
-                        set_mario_action(m, ACT_JUMP, 0);
                     } else {
-                        set_mario_action(m, ACT_IDLE, 0);
+                        set_mario_action(m, ACT_JUMP, 0);
                     }
                     break;
 
