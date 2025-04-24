@@ -4215,7 +4215,6 @@ Gfx mat_galaxy_background_bigtexturemode2_layer0[] = {
 Gfx mat_revert_galaxy_background_bigtexturemode2_layer0[] = {
 	gsDPPipeSync(),
 	gsSPGeometryMode(0, G_ZBUFFER | G_LIGHTING),
-	gsDPSetRenderMode(G_RM_ZB_OPA_SURF, G_RM_ZB_OPA_SURF2),
 	gsSPEndDisplayList(),
 };
 

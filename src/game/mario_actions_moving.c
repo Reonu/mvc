@@ -1774,7 +1774,7 @@ s32 common_landing_cancels(struct MarioState *m, struct LandingAction *landingAc
     if (m->input & INPUT_A_PRESSED) {
         if ((gMarioState->canDoubleJump == 1) || (gMarioState->unlockEverything == 1)) {
             return setAPressAction(m, landingAction->aPressedAction, 0);
-        } else {
+        } else if (gMarioState->canJump) {
             return setAPressAction(m, ACT_JUMP, 0);
         }
         

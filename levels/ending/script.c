@@ -29,16 +29,15 @@ const LevelScript level_ending_entry[] = {
     AREA(/*index*/ 1, ending_geo_area_1),
     END_AREA(),
 
-    FREE_LEVEL_POOL(),
-    SLEEP(/*frames*/ 60),
-    BLACKOUT(/*active*/ FALSE),
-    LOAD_AREA(/*area*/ 1),
-    TRANSITION(/*transType*/ WARP_TRANSITION_FADE_FROM_COLOR, /*time*/ 75, /*color*/ 0x00, 0x00, 0x00),
-    SLEEP(/*frames*/ 120),
-    CALL(/*arg*/ 0, /*func*/ lvl_play_the_end_screen_sound),
-
-    SLEEP(/*frames*/ 1),
-    CALL(/*arg*/ 0, /*func*/ lvl_print_ending_text),
-
-    JUMP(level_ending_entry_loop), // (loop sleep 1 forever)
+    /*8*/ FREE_LEVEL_POOL(),
+    /*9*/ SLEEP(/*frames*/ 60),
+    /*10*/ BLACKOUT(/*active*/ FALSE),
+    /*11*/ LOAD_AREA(/*area*/ 1),
+    /*12*/ TRANSITION(/*transType*/ WARP_TRANSITION_FADE_FROM_COLOR, /*time*/ 75, /*color*/ 0x00, 0x00, 0x00),
+    /*14*/ SLEEP(/*frames*/ 120),
+    /*15*/ CALL(/*arg*/ 0, /*func*/ lvl_play_the_end_screen_sound),
+    // L1:
+    /*17*/ SLEEP(/*frames*/ 1),
+    /*15*/ CALL(/*arg*/ 0, /*func*/ lvl_print_ending_text),
+    /*18*/ JUMP(level_ending_entry + 17),
 };
