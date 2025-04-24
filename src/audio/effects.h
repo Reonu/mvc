@@ -6,24 +6,37 @@
 #include "internal.h"
 #include "platform_info.h"
 
-#define ADSR_STATE_DISABLED 0
-#define ADSR_STATE_INITIAL 1
-#define ADSR_STATE_START_LOOP 2
-#define ADSR_STATE_LOOP 3
-#define ADSR_STATE_FADE 4
-#define ADSR_STATE_HANG 5
-#define ADSR_STATE_DECAY 6
-#define ADSR_STATE_RELEASE 7
-#define ADSR_STATE_SUSTAIN 8
+enum ADSRStates {
+    ADSR_STATE_DISABLED,
+    ADSR_STATE_INITIAL,
+    ADSR_STATE_START_LOOP,
+    ADSR_STATE_LOOP,
+    ADSR_STATE_FADE,
+    ADSR_STATE_HANG,
+    ADSR_STATE_DECAY,
+    ADSR_STATE_RELEASE,
+    ADSR_STATE_SUSTAIN,
+    ADSR_STATE_RESTART
+};
 
-#define ADSR_ACTION_RELEASE 0x10
-#define ADSR_ACTION_DECAY 0x20
-#define ADSR_ACTION_HANG 0x40
+enum ADSRActions {
+    ADSR_ACTION_RELEASE = (1 << 4), // 0x10
+    ADSR_ACTION_DECAY   = (1 << 5), // 0x20
+    ADSR_ACTION_HANG    = (1 << 6), // 0x40
+};
 
-#define ADSR_DISABLE 0
-#define ADSR_HANG -1
-#define ADSR_GOTO -2
-#define ADSR_RESTART -3
+enum ADSRDelays {
+    ADSR_HANG    = -1,
+    ADSR_GOTO    = -2,
+    ADSR_RESTART = -3,
+    ADSR_DISABLE = -4,
+};
+
+enum VibratoModes {
+    VIBMODE_NONE       = 0,
+    VIBMODE_VIBRATO    = (1 << 0),
+    VIBMODE_PORTAMENTO = (1 << 1),
+};
 
 // Envelopes are always stored as big endian, to match sequence files which are
 // byte blobs and can embed envelopes. Hence this byteswapping macro.
@@ -40,7 +53,7 @@ void adsr_init(struct AdsrState *adsr, struct AdsrEnvelope *envelope, s16 *volOu
 #if defined(VERSION_EU) || defined(VERSION_SH)
 f32 adsr_update(struct AdsrState *adsr);
 #else
-s32 adsr_update(struct AdsrState *adsr);
+s32 adsr_update(struct Note *note);
 #endif
 
 #endif // AUDIO_EFFECTS_H

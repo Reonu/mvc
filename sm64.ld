@@ -1,6 +1,7 @@
 OUTPUT_ARCH (mips)
 
 #define LINKER /* Removes externs from preprocessed script */
+#define TARGET_N64
 #include "segments.h"
 #include "config.h"
 #undef LINKER
@@ -26,49 +27,66 @@ OUTPUT_ARCH (mips)
 #define YAY0_SEG(name, segAddr) \
    BEGIN_SEG(name##_yay0, segAddr) \
    { \
-      KEEP(BUILD_DIR/bin/name.szp.o(.data)); \
+      KEEP(BUILD_DIR/bin/name.szp.o(.data*)); \
       . = ALIGN(0x10); \
    } \
    END_SEG(name##_yay0) \
    _##name##_mio0SegmentRomStart = _##name##_yay0SegmentRomStart; \
-   _##name##_mio0SegmentRomEnd = _##name##_yay0SegmentRomEnd;
+   _##name##_mio0SegmentRomEnd   = _##name##_yay0SegmentRomEnd;
 
 #define YAY0_EU_SEG(name, segAddr) \
    BEGIN_SEG(name##_yay0, segAddr) \
    { \
-      KEEP(BUILD_DIR/bin/eu/name.szp.o(.data)); \
+      KEEP(BUILD_DIR/bin/eu/name.szp.o(.data*)); \
       . = ALIGN(0x10); \
    } \
    END_SEG(name##_yay0) \
    _##name##_mio0SegmentRomStart = _##name##_yay0SegmentRomStart; \
-   _##name##_mio0SegmentRomEnd = _##name##_yay0SegmentRomEnd;
+   _##name##_mio0SegmentRomEnd   = _##name##_yay0SegmentRomEnd;
 
 #define STANDARD_LEVEL(name) \
    BEGIN_SEG(name##_segment_7, 0x07000000) \
    { \
-      KEEP(BUILD_DIR/levels/name/leveldata.szp.o(.data)); \
+      KEEP(BUILD_DIR/levels/name/leveldata.szp.o(.data*)); \
       . = ALIGN(0x10); \
    } \
    END_SEG(name##_segment_7) \
    BEGIN_SEG(name, 0x0E000000) \
    { \
-      KEEP(BUILD_DIR/levels/name/script.o(.data)); \
-      KEEP(BUILD_DIR/levels/name/geo.o(.data)); \
+      KEEP(BUILD_DIR/levels/name/script.o(.*data*)); \
+      KEEP(BUILD_DIR/levels/name/script.o(.text*)); \
+      KEEP(BUILD_DIR/levels/name/script.o(.rodata*)); \
+      KEEP(BUILD_DIR/levels/name/geo.o(.*data*)); \
+      KEEP(BUILD_DIR/levels/name/geo.o(.text*)); \
+      KEEP(BUILD_DIR/levels/name/geo.o(.rodata*)); \
    } \
-   END_SEG(name)
+   END_SEG(name) \
+   BEGIN_NOLOAD(name) \
+   { \
+      KEEP(BUILD_DIR/levels/name/script.o(.bss*)); \
+      KEEP(BUILD_DIR/levels/name/geo.o(.bss*)); \
+   } \
+   END_NOLOAD(name)
 
 #define STANDARD_OBJECTS(name, segAddr, geoAddr) \
    BEGIN_SEG(name##_yay0, segAddr) \
    { \
-      KEEP(BUILD_DIR/actors/name.szp.o(.data)); \
+      KEEP(BUILD_DIR/actors/name.szp.o(.data*)); \
       . = ALIGN(0x10); \
    } \
    END_SEG(name##_yay0) \
    BEGIN_SEG(name##_geo, geoAddr) \
    { \
-      KEEP(BUILD_DIR/actors/name##_geo.o(.data)); \
+      KEEP(BUILD_DIR/actors/name##_geo.o(.*data*)); \
+      KEEP(BUILD_DIR/actors/name##_geo.o(.rodata*)); \
+      KEEP(BUILD_DIR/actors/name##_geo.o(.text*)); \
    } \
    END_SEG(name##_geo) \
+   BEGIN_NOLOAD(name##_geo) \
+   { \
+      KEEP(BUILD_DIR/actors/name##_geo.o(.bss*)); \
+   } \
+   END_NOLOAD(name##_geo) \
    _##name##_mio0SegmentRomStart = _##name##_yay0SegmentRomStart; \
    _##name##_mio0SegmentRomEnd = _##name##_yay0SegmentRomEnd;
 
@@ -78,12 +96,13 @@ SECTIONS
 
    BEGIN_SEG(boot, 0x04000000)
    {
-      KEEP(BUILD_DIR/asm/rom_header.o(.text));
-      KEEP(BUILD_DIR/asm/boot.o(.text));
+      KEEP(BUILD_DIR/asm/rom_header.o(.text*));
+      KEEP(BUILD_DIR/asm/ipl3.o(.text*));
    }
    END_SEG(boot)
 
-   . = 0x80000400;
+   . = (RAM_START + 0x400);
+   . = ALIGN(0x100);
    BEGIN_NOLOAD(zbuffer)
    {
       BUILD_DIR/src/buffers/zbuffer.o(.bss*);
@@ -91,6 +110,8 @@ SECTIONS
    END_NOLOAD(zbuffer)
 
    . = _zbufferSegmentBssEnd;
+   . = ALIGN(RAM_1MB);
+
    BEGIN_NOLOAD(buffers)
    {
       BUILD_DIR/src/buffers/buffers.o(.bss*);
@@ -127,139 +148,157 @@ SECTIONS
    . = _hvqbufSegmentBssEnd;
 #endif
 
+/* hardcoded symbols to satisfy preliminary link for map parser */
+#ifndef DEBUG_MAP_STACKTRACE
+      _mapDataSegmentRomStart = 0;
+      gMapEntries   = 0;
+      gMapEntrySize = 0;
+      gMapStrings   = 0;
+#endif
+
    BEGIN_SEG(main, .) SUBALIGN(16)
    {
-      KEEP(BUILD_DIR/asm/entry.o(.text));
+      KEEP(BUILD_DIR/asm/entry.o(.text*));
+      KEEP(BUILD_DIR/asm/n64_assert.o(.text*));
+#ifdef EEP
+      KEEP(BUILD_DIR/asm/vc_bin.o(.text*));
+#endif
+      KEEP(BUILD_DIR/asm/emux.o(.text*));
+      KEEP(BUILD_DIR/asm/pj64_get_count_factor_asm.o(.text*));
+      KEEP(BUILD_DIR/asm/round.o(.text*));
+      KEEP(BUILD_DIR/asm/fcr31.o(.text*));
 
-      BUILD_DIR/src/game*.o(.text);
-      BUILD_DIR/src/hvqm*.o(.text);
-      BUILD_DIR/src/gdb*.o(.text);
-      BUILD_DIR/src/usb*.o(.text);
-      BUILD_DIR/src/audio*.o(.text);
+      BUILD_DIR/src/boot*.o(.text*);
+      BUILD_DIR/src/hvqm*.o(.text*);
+      BUILD_DIR/src/usb*.o(.text*);
+      BUILD_DIR/src/audio*.o(.text*);
 #ifdef S2DEX_TEXT_ENGINE
-      lib/libs2d_engine.a:*(.text);
+      BUILD_DIR/src/s2d_engine*.o(.text*);
 #endif
-#if defined(ISVPRINT) || defined(UNF)
-      */libultra_d.a:*.o(.text);
-#else
-      */libultra_rom.a:*.o(.text);
-#endif
-      */libnustd.a:*.o(.text);
-      */libgcc.a:*.o(.text);
-      */libz.a:*.o(.text);
-      */libhvqm2.a:*.o(.text);
-      BUILD_DIR/lib/rsp.o(.text);   
+      */ULTRALIB.a:*.o(.text*);
+      */libnustd.a:*.o(.text*);
+      */libgcc.a:*.o(.text*);
+      */librtc.a:*.o(.text*);
+      */libz.a:*.o(.text*);
+      */libhvqm2.a:*.o(.text*);
+      lib/rspboot.o(.text*);
+#include "rsptext.inc.ld"
+      BUILD_DIR/lib/aspMain.o(.text*);
       lib/PR/audio/n_aspMain.o(.text*);
       lib/PR/hvqm/hvqm2sp1.o(.text*);
       _mainSegmentTextEnd = .;
-      /* Overwrite a libultra function with its modified counterpart for GCN controller support */
-      __osContGetInitData = __osContGetInitDataEx;
 
       /* data */
-      BUILD_DIR/src/game*.o(.*data*);
-      BUILD_DIR/src/gdb*.o(.*data*);
-      BUILD_DIR/src/usb*.o(.*data*);
+      BUILD_DIR/asm/n64_assert.o(.*data*);
+      BUILD_DIR/src/boot*.o(.*data*);
       BUILD_DIR/src/audio*.o(.*data*);
 #ifdef S2DEX_TEXT_ENGINE
-      lib/libs2d_engine.a:*(.*data*);
+      BUILD_DIR/src/s2d_engine*.o(.*data*);
 #endif
-#if defined(ISVPRINT) || defined(UNF)
-      */libultra_d.a:*.o(.*data*);
-#else
-      */libultra_rom.a:*.o(.*data*);
-#endif
-      */libhvqm2.a:*.o(.*data*);
-      */libz.a:*.o(.*data*);
-
-      BUILD_DIR/lib/rsp.o(.data*);
+      */ULTRALIB.a:*.o(.data*);
+      */libhvqm2.a:*.o(.data*);
+      */librtc.a:*.o(.data*);
+      */libz.a:*.o(.data*);
+#include "rspdata.inc.ld"
+      BUILD_DIR/lib/aspMain.o(.data*);
+      lib/PR/audio/n_aspMain.o(.data*);
       lib/PR/hvqm/hvqm2sp1.o(.data*);
 
       /* rodata */
-      BUILD_DIR/src/game*.o(.rodata*);
-      BUILD_DIR/src/gdb*.o(.*rodata*);
+      BUILD_DIR/src/boot*.o(.rodata*);
       BUILD_DIR/src/usb*.o(.rodata*);
       BUILD_DIR/src/audio*.o(.rodata*);
 #ifdef S2DEX_TEXT_ENGINE
-      lib/libs2d_engine.a:*(.rodata*);
+      BUILD_DIR/src/s2d_engine*.o(.rodata*);
 #endif
-#if defined(ISVPRINT) || defined(UNF)
-      */libultra_d.a:*.o(.*rodata*);
-#else
-      */libultra_rom.a:*.o(.*rodata*);
-#endif
+      */ULTRALIB.a:*.o(.rodata*);
       */libgcc.a:*.o(.rodata*);
+      */librtc.a:*.o(.rodata*);
       */libz.a:*.o(.rodata*);
 
-      BUILD_DIR/lib/rsp.o(.rodata*);
       lib/PR/hvqm/hvqm2sp1.o(.rodata*);
    }
    END_SEG(main)
    BEGIN_NOLOAD(main)
    {
-      BUILD_DIR/src/game*.o(.*bss*);
+      BUILD_DIR/src/boot*.o(.*bss*);
       BUILD_DIR/src/hvqm*.o(.*bss*);
-      BUILD_DIR/src/gdb*.o(.*bss*);
       BUILD_DIR/src/usb*.o(.*bss*);
       BUILD_DIR/src/audio*.o(.*bss*);
 #ifdef S2DEX_TEXT_ENGINE
-      lib/libs2d_engine.a:*(.*bss*);
+      BUILD_DIR/src/s2d_engine*.o(.*bss*);
 #endif
-#if defined(ISVPRINT) || defined(UNF)
-      */libultra_d.a:*.o(COMMON);
-      */libultra_d.a:*.o(.scommon);
-      */libultra_d.a:*.o(.*bss*);
-#else
-      */libultra_rom.a:*.o(COMMON);
-      */libultra_rom.a:*.o(.scommon);
-      */libultra_rom.a:*.o(.*bss*);
-#endif
+      */ULTRALIB.a:*.o(COMMON);
+      */ULTRALIB.a:*.o(.scommon);
+      */ULTRALIB.a:*.o(.*bss*);
       */libhvqm2.a:*.o(.bss*);
+      */librtc.a:*.o(.bss*);
       */libz.a:*.o(.bss*);
       . = ALIGN(0x8);
    }
    END_NOLOAD(main)
 
-   /*ASSERT((. <= SEG_ENGINE), "Error: main segment extended into engine.")*/
-
    . = _mainSegmentBssEnd;
 
    BEGIN_SEG(engine, .)
    {
-      BUILD_DIR/src/engine*.o(.text);
+      BUILD_DIR/src/game*.o(.text*);
+      BUILD_DIR/src/game/behavior_actions.o(.text*);
+      BUILD_DIR/src/game/obj_behaviors_2.o(.text*);
+      BUILD_DIR/src/game/obj_behaviors.o(.text*);
+      BUILD_DIR/src/game/object_helpers.o(.text*);
+      BUILD_DIR/src/game/rendering_graph_node.o(.text*);
+      BUILD_DIR/src/engine/math_util.o(.text*);
+      BUILD_DIR/src/engine/surface_collision.o(.text*);
+      BUILD_DIR/src/engine/surface_load.o(.text*);
+      BUILD_DIR/src/engine/graph_node.o(.text*);
+      BUILD_DIR/src/engine*.o(.text*);
+      _engineSegmentTextEnd = .;
       /* data */
+      BUILD_DIR/src/game*.o(.data*);
       BUILD_DIR/src/engine*.o(.data*);
+      BUILD_DIR/src/usb*.o(.data*);
+      /* sdata */
+      BUILD_DIR/src/game*.o(.sdata*);
       BUILD_DIR/src/engine*.o(.sdata*);
+      BUILD_DIR/src/usb*.o(.data*);
       /* rodata */
+      BUILD_DIR/src/game*.o(.rodata*);
       BUILD_DIR/src/engine*.o(.rodata*);
+      BUILD_DIR/src/usb*.o(.rodata*);
+      . = ALIGN(0x10);
    }
    END_SEG(engine)
    BEGIN_NOLOAD(engine)
    {
+      BUILD_DIR/src/game*.o(.*bss*);
       BUILD_DIR/src/engine*.o(.bss*);
       . = ALIGN(0x40);
    }
    END_NOLOAD(engine)
 
-   /*ASSERT((. <= SEG_FRAMEBUFFERS), "Error: engine segment extended into framebuffers.")*/
-
    . = _engineSegmentBssEnd;
+   . = ALIGN(RAM_1MB);
    BEGIN_NOLOAD(framebuffers)
    {
       BUILD_DIR/src/buffers/framebuffers.o(.bss*);
    }
    END_NOLOAD(framebuffers)
+   . = ALIGN(RAM_1MB);
 
    __mainPoolStart = .;
-   __mainPoolSize = RAM_END - .;
+   __mainPoolSize  = (RAM_END - .);
 
-   __expansionRamStart = 0x80400000;
-   #ifndef USE_EXT_RAM
-      ASSERT((. <= __expansionRamStart), "Error: RDRAM expanded into Expansion RAM, despite Expansion RAM not being defined.")
+   __expansionRamStart = (RAM_START + (RAM_1MB * 4));
+#ifndef USE_EXT_RAM
+   #ifndef PRELIMINARY
+         ASSERT((. <= __expansionRamStart), "Error: RDRAM expanded into Expansion RAM, despite Expansion RAM not being defined.")
    #endif
+#endif
 
    BEGIN_SEG(entry, 0x10000000)
    {
-      BUILD_DIR/levels/entry.o(.data);
+      BUILD_DIR/levels/entry.o(.data*);
    }
    END_SEG(entry)
 
@@ -300,94 +339,114 @@ SECTIONS
    /* use segmented addressing for behaviors */
    BEGIN_SEG(behavior, 0x13000000)
    {
-      KEEP(BUILD_DIR/data/behavior_data.o(.data));
+      KEEP(BUILD_DIR/data/behavior_data.o(.data*));
+      KEEP(BUILD_DIR/data/behavior_data.o(.rodata*));
+      KEEP(BUILD_DIR/data/behavior_data.o(.text*));
    }
    END_SEG(behavior)
+   BEGIN_NOLOAD(behavior)
+   {
+      KEEP(BUILD_DIR/data/behavior_data.o(.bss*));
+   }
+   END_NOLOAD(behavior)
+
 
    /* 0x8016F000 21D7D0-255EC0 [386F0] */
-   BEGIN_SEG(goddard, SEG_GODDARD)
+   BEGIN_SEG(goddard, (RAM_END - GODDARD_SIZE))
    {
-      BUILD_DIR/src/menu*.o(.text);
-      BUILD_DIR/src/menu*.o(.data*);
-      BUILD_DIR/src/menu*.o(.rodata*);
+      KEEP(BUILD_DIR/src/menu*.o(.text*));
+      _goddardSegmentTextEnd = .;
+      KEEP(BUILD_DIR/src/menu*.o(.data*));
+      KEEP(BUILD_DIR/src/menu*.o(.rodata*));
 #ifdef KEEP_MARIO_HEAD
-      BUILD_DIR/libgoddard.a:*.o(.text);
-      /* goddard subsystem data */
-      BUILD_DIR/libgoddard.a:gd_main.o(.data*);
-      BUILD_DIR/libgoddard.a:draw_objects.o(.data*);
-      BUILD_DIR/libgoddard.a:objects.o(.data*);
-      BUILD_DIR/libgoddard.a:particles.o(.data*);
-      BUILD_DIR/libgoddard.a:dynlist_proc.o(.data*);
-      BUILD_DIR/libgoddard.a:debug_utils.o(.data*);
-      BUILD_DIR/libgoddard.a:joints.o(.data*);
-      BUILD_DIR/libgoddard.a:shape_helper.o(.data*);
-      BUILD_DIR/libgoddard.a:renderer.o(.data*);
-      /* goddard subsystem rodata */
-      BUILD_DIR/libgoddard.a:gd_main.o(.rodata*);
-      BUILD_DIR/libgoddard.a:gd_memory.o(.rodata*);
-      BUILD_DIR/libgoddard.a:draw_objects.o(.rodata*);
-      BUILD_DIR/libgoddard.a:objects.o(.rodata*);
-      BUILD_DIR/libgoddard.a:skin_movement.o(.rodata*);
-      BUILD_DIR/libgoddard.a:particles.o(.rodata*);
-      BUILD_DIR/libgoddard.a:dynlist_proc.o(.rodata*);
-      BUILD_DIR/libgoddard.a:old_menu.o(.rodata*);
-      BUILD_DIR/libgoddard.a:debug_utils.o(.rodata*);
-      BUILD_DIR/libgoddard.a:joints.o(.rodata*);
-      BUILD_DIR/libgoddard.a:skin.o(.rodata*);
-      BUILD_DIR/libgoddard.a:gd_math.o(.rodata*);
-      BUILD_DIR/libgoddard.a:shape_helper.o(.rodata*);
-      BUILD_DIR/libgoddard.a:renderer.o(.rodata*);
+      KEEP(BUILD_DIR/libgoddard.a:*.o(.text*));
+      KEEP(BUILD_DIR/libgoddard.a:gd_main.o(.data*));
+      KEEP(BUILD_DIR/libgoddard.a:draw_objects.o(.data*));
+      KEEP(BUILD_DIR/libgoddard.a:objects.o(.data*));
+      KEEP(BUILD_DIR/libgoddard.a:particles.o(.data*));
+      KEEP(BUILD_DIR/libgoddard.a:dynlist_proc.o(.data*));
+      KEEP(BUILD_DIR/libgoddard.a:debug_utils.o(.data*));
+      KEEP(BUILD_DIR/libgoddard.a:joints.o(.data*));
+      KEEP(BUILD_DIR/libgoddard.a:shape_helper.o(.data*));
+      KEEP(BUILD_DIR/libgoddard.a:renderer.o(.data*));
+      KEEP(BUILD_DIR/libgoddard.a:gd_main.o(.rodata*));
+      KEEP(BUILD_DIR/libgoddard.a:gd_memory.o(.rodata*));
+      KEEP(BUILD_DIR/libgoddard.a:draw_objects.o(.rodata*));
+      KEEP(BUILD_DIR/libgoddard.a:objects.o(.rodata*));
+      KEEP(BUILD_DIR/libgoddard.a:skin_movement.o(.rodata*));
+      KEEP(BUILD_DIR/libgoddard.a:particles.o(.rodata*));
+      KEEP(BUILD_DIR/libgoddard.a:dynlist_proc.o(.rodata*));
+      KEEP(BUILD_DIR/libgoddard.a:old_menu.o(.rodata*));
+      KEEP(BUILD_DIR/libgoddard.a:debug_utils.o(.rodata*));
+      KEEP(BUILD_DIR/libgoddard.a:joints.o(.rodata*));
+      KEEP(BUILD_DIR/libgoddard.a:skin.o(.rodata*));
+      KEEP(BUILD_DIR/libgoddard.a:gd_math.o(.rodata*));
+      KEEP(BUILD_DIR/libgoddard.a:shape_helper.o(.rodata*));
+      KEEP(BUILD_DIR/libgoddard.a:renderer.o(.rodata*));
 #endif
+      . = ALIGN(16);
    }
    END_SEG(goddard)
    BEGIN_NOLOAD(goddard)
    {
-      BUILD_DIR/src/menu*.o(.bss*);
+      KEEP(BUILD_DIR/src/menu*.o(.bss*));
 #ifdef KEEP_MARIO_HEAD
-      BUILD_DIR/libgoddard.a:*.o(.bss*);
+      KEEP(BUILD_DIR/libgoddard.a:*.o(.bss*));
 #endif
+      . = ALIGN(16);
    }
    END_NOLOAD(goddard)
 
-   ASSERT((. <= (SEG_POOL_START + POOL_SIZE)), "Error: extended past pool end.")
+#ifdef PRELIMINARY
+      GODDARD_SIZE = SIZEOF(.goddard) + SIZEOF(.goddard.noload);
+#else
+      ASSERT((. <= (SEG_POOL_START + POOL_SIZE)), "Error: extended past pool end.")
+#endif
 
    /* 0x268020 0x268020-0 [0] */
    BEGIN_SEG(intro, 0x14000000)
    {
-      KEEP(BUILD_DIR/levels/intro/script.o(.data));
-      KEEP(BUILD_DIR/levels/intro/geo.o(.data));
+      KEEP(BUILD_DIR/levels/intro/script.o(.*data));
+      KEEP(BUILD_DIR/levels/intro/script.o(.rodata*));
+      KEEP(BUILD_DIR/levels/intro/script.o(.text*));
+      KEEP(BUILD_DIR/levels/intro/geo.o(.data*));
    }
    END_SEG(intro)
+   BEGIN_NOLOAD(intro)
+   {
+      KEEP(BUILD_DIR/levels/intro/script.o(.bss*));
+   }
+   END_NOLOAD(intro)
    BEGIN_SEG(intro_segment_7, 0x07000000)
    {
-      KEEP(BUILD_DIR/levels/intro/leveldata.szp.o(.data));
+      KEEP(BUILD_DIR/levels/intro/leveldata.szp.o(.data*));
       . = ALIGN(0x10);
    }
    END_SEG(intro_segment_7)
 
    YAY0_SEG(debug_level_select, 0x07000000)
-   YAY0_SEG(title_screen_bg, 0x0A000000)
+   YAY0_SEG(title_screen_bg,    0x0A000000)
 
 #ifdef KEEP_MARIO_HEAD
    BEGIN_SEG(gd_dynlists, 0x04000000)
    {
-      BUILD_DIR/libgoddard.a:dynlist_test_cube.o(.data);
-      BUILD_DIR/libgoddard.a:dynlist_unused.o(.data);
-      BUILD_DIR/libgoddard.a:dynlist_mario_face.o(.data);
-      BUILD_DIR/libgoddard.a:dynlists_mario_eyes.o(.data);
-      BUILD_DIR/libgoddard.a:dynlists_mario_eyebrows_mustache.o(.data);
-      BUILD_DIR/libgoddard.a:dynlist_mario_master.o(.data);
-      BUILD_DIR/libgoddard.a:anim_mario_mustache_right.o(.data);
-      BUILD_DIR/libgoddard.a:anim_mario_mustache_left.o(.data);
-      BUILD_DIR/libgoddard.a:anim_mario_lips_1.o(.data);
-      BUILD_DIR/libgoddard.a:anim_mario_lips_2.o(.data);
-      BUILD_DIR/libgoddard.a:anim_mario_eyebrows_1.o(.data);
-      BUILD_DIR/libgoddard.a:anim_group_1.o(.data);
-      BUILD_DIR/libgoddard.a:anim_group_2.o(.data);
+      BUILD_DIR/libgoddard.a:dynlist_test_cube.o(.data*);
+      BUILD_DIR/libgoddard.a:dynlist_unused.o(.data*);
+      BUILD_DIR/libgoddard.a:dynlist_mario_face.o(.data*);
+      BUILD_DIR/libgoddard.a:dynlists_mario_eyes.o(.data*);
+      BUILD_DIR/libgoddard.a:dynlists_mario_eyebrows_mustache.o(.data*);
+      BUILD_DIR/libgoddard.a:dynlist_mario_master.o(.data*);
+      BUILD_DIR/libgoddard.a:anim_mario_mustache_right.o(.data*);
+      BUILD_DIR/libgoddard.a:anim_mario_mustache_left.o(.data*);
+      BUILD_DIR/libgoddard.a:anim_mario_lips_1.o(.data*);
+      BUILD_DIR/libgoddard.a:anim_mario_lips_2.o(.data*);
+      BUILD_DIR/libgoddard.a:anim_mario_eyebrows_1.o(.data*);
+      BUILD_DIR/libgoddard.a:anim_group_1.o(.data*);
+      BUILD_DIR/libgoddard.a:anim_group_2.o(.data*);
       BUILD_DIR/libgoddard.a:dynlist_test_cube.o(.rodata*);
       BUILD_DIR/libgoddard.a:dynlist_unused.o(.rodata*);
-      BUILD_DIR/libgoddard.a:*.o(.data);
-      BUILD_DIR/libgoddard.a:*.o(.rodata);
+      BUILD_DIR/libgoddard.a:*.o(.data*);
+      BUILD_DIR/libgoddard.a:*.o(.rodata*);
    }
    END_SEG(gd_dynlists)
 #endif
@@ -396,48 +455,48 @@ SECTIONS
 
    BEGIN_SEG(menu, 0x14000000)
    {
-      KEEP(BUILD_DIR/levels/menu/script.o(.data));
-      KEEP(BUILD_DIR/levels/menu/geo.o(.data));
+      KEEP(BUILD_DIR/levels/menu/script.o(.data*));
+      KEEP(BUILD_DIR/levels/menu/geo.o(.data*));
    }
    END_SEG(menu)
    BEGIN_SEG(menu_segment_7, 0x07000000)
    {
-      KEEP(BUILD_DIR/levels/menu/leveldata.szp.o(.data));
+      KEEP(BUILD_DIR/levels/menu/leveldata.szp.o(.data*));
       . = ALIGN(0x10);
    }
    END_SEG(menu_segment_7)
 
    BEGIN_SEG(scripts, 0x15000000)
    {
-      BUILD_DIR/levels/scripts.o(.data);
+      BUILD_DIR/levels/scripts.o(.data*);
    }
    END_SEG(scripts)
 
-   YAY0_SEG(water_skybox, 0x0A000000)
-   YAY0_SEG(ccm_skybox, 0x0A000000)
-   YAY0_SEG(clouds_skybox, 0x0A000000)
-   YAY0_SEG(bitfs_skybox, 0x0A000000)
-   YAY0_SEG(wdw_skybox, 0x0A000000)
+   YAY0_SEG(water_skybox,       0x0A000000)
+   YAY0_SEG(ccm_skybox,         0x0A000000)
+   YAY0_SEG(clouds_skybox,      0x0A000000)
+   YAY0_SEG(bitfs_skybox,       0x0A000000)
+   YAY0_SEG(wdw_skybox,         0x0A000000)
    YAY0_SEG(cloud_floor_skybox, 0x0A000000)
-   YAY0_SEG(ssl_skybox, 0x0A000000)
-   YAY0_SEG(bbh_skybox, 0x0A000000)
-   YAY0_SEG(bidw_skybox, 0x0A000000)
-   YAY0_SEG(bits_skybox, 0x0A000000)
+   YAY0_SEG(ssl_skybox,         0x0A000000)
+   YAY0_SEG(bbh_skybox,         0x0A000000)
+   YAY0_SEG(bidw_skybox,        0x0A000000)
+   YAY0_SEG(bits_skybox,        0x0A000000)
 
    // Texture bins
-   YAY0_SEG(fire, 0x09000000)
-   YAY0_SEG(spooky, 0x09000000)
-   YAY0_SEG(generic, 0x09000000)
-   YAY0_SEG(water, 0x09000000)
-   YAY0_SEG(sky, 0x09000000)
-   YAY0_SEG(snow, 0x09000000)
-   YAY0_SEG(cave, 0x09000000)
-   YAY0_SEG(machine, 0x09000000)
+   YAY0_SEG(fire,     0x09000000)
+   YAY0_SEG(spooky,   0x09000000)
+   YAY0_SEG(generic,  0x09000000)
+   YAY0_SEG(water,    0x09000000)
+   YAY0_SEG(sky,      0x09000000)
+   YAY0_SEG(snow,     0x09000000)
+   YAY0_SEG(cave,     0x09000000)
+   YAY0_SEG(machine,  0x09000000)
    YAY0_SEG(mountain, 0x09000000)
-   YAY0_SEG(grass, 0x09000000)
-   YAY0_SEG(outside, 0x09000000)
-   YAY0_SEG(inside, 0x09000000)
-   YAY0_SEG(effect, 0x0B000000)
+   YAY0_SEG(grass,    0x09000000)
+   YAY0_SEG(outside,  0x09000000)
+   YAY0_SEG(inside,   0x09000000)
+   YAY0_SEG(effect,   0x0B000000)
 
 #define STUB_LEVEL(_0, _1, _2, _3, _4, _5, _6, _7, _8)
 #define DEFINE_LEVEL(_0, _1, _2, folder, _4, _5, _6, _7, _8, _9, _10) STANDARD_LEVEL(folder)
@@ -450,18 +509,25 @@ SECTIONS
    /* 4E9FA0-? [?] */
    BEGIN_SEG(assets, __romPos)
    {
-      KEEP(BUILD_DIR/assets/mario_anim_data.o(.data));
-      KEEP(BUILD_DIR/assets/mario_anim_data.o(.rodata));
-      KEEP(BUILD_DIR/assets/demo_data.o(.data));
-      KEEP(BUILD_DIR/sound/sound_data.o(.data));
+      KEEP(BUILD_DIR/assets/mario_anim_data.o(.data*));
+      KEEP(BUILD_DIR/assets/mario_anim_data.o(.rodata*));
+      KEEP(BUILD_DIR/assets/demo_data.o(.data*));
+      KEEP(BUILD_DIR/sound/sound_data.o(.data*));
    }
    END_SEG(assets)
-#ifdef HVQM 
+#ifdef HVQM
    BEGIN_SEG(capcom, __romPos) SUBALIGN(2)
    {
-      KEEP(BUILD_DIR/data/capcom.o(.data));
+      KEEP(BUILD_DIR/data/capcom.o(.data*));
    }
 	END_SEG(capcom)
+#endif
+
+#ifdef DEBUG_MAP_STACKTRACE
+   BEGIN_SEG(mapData, (RAM_END - 0x00100000)) {
+      KEEP(BUILD_DIR/asm/debug/map.o(.data*));
+   }
+   END_SEG(mapData)
 #endif
    /* DWARF debug sections.
       Symbols in the DWARF debugging sections are relative to the beginning

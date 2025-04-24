@@ -1,10 +1,4 @@
-Lights1 green_spring_f3d_material_lights = gdSPDefLights1(
-	0x0, 0x7F, 0x2A,
-	0x0, 0xFE, 0x54, 0x28, 0x28, 0x28);
 
-Lights1 green_spring_f3d_material_001_lights = gdSPDefLights1(
-	0x58, 0x58, 0x58,
-	0xB1, 0xB1, 0xB1, 0x28, 0x28, 0x28);
 
 Vtx green_spring_Cube_mesh_layer_1_vtx_cull[8] = {
 	{{{-55, 4, -61},0, {-16, -16},{0x0, 0x0, 0x0, 0x0}}},
@@ -195,7 +189,8 @@ Gfx mat_green_spring_f3d_material[] = {
 	gsDPPipeSync(),
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(green_spring_f3d_material_lights),
+    gsSPLightColor(LIGHT_1, 0xfe54ff),
+    gsSPLightColor(LIGHT_2, 0x7f2aff),
 	gsSPEndDisplayList(),
 };
 
@@ -204,7 +199,8 @@ Gfx mat_green_spring_f3d_material_001[] = {
 	gsDPSetCombineLERP(0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT, 0, 0, 0, SHADE, 0, 0, 0, ENVIRONMENT),
 	gsSPClearGeometryMode(G_CULL_BACK),
 	gsSPTexture(65535, 65535, 0, 0, 1),
-	gsSPSetLights1(green_spring_f3d_material_001_lights),
+    gsSPLightColor(LIGHT_1, 0xb1b1b1ff),
+    gsSPLightColor(LIGHT_2, 0x585858ff),
 	gsSPEndDisplayList(),
 };
 

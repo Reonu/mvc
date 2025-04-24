@@ -6,21 +6,32 @@
                 "${workspaceFolder}/include/n64/**",
                 "${workspaceFolder}/include/**",
                 "${workspaceFolder}/textures/**",
+                "${workspaceFolder}/build/us_n64/**",
                 "${workspaceFolder}/**"
+            ],
+            "forcedInclude": [
+                "${workspaceFolder}/include/types.h",
+                "${workspaceFolder}/include/n64/ultra64.h",
+                "${workspaceFolder}/include/sm64.h",
+                "${workspaceFolder}/include/config.h",
+                "${workspaceFolder}/include/make_const_nonconst.h",
+                "${workspaceFolder}/include/geo_commands.h",
+                "${workspaceFolder}/include/level_commands.h",
+                "${workspaceFolder}/include/segment_symbols.h",
+                "${workspaceFolder}/include/command_macros_base.h",
+                "${workspaceFolder}/include/object_constants.h"
             ],
             "defines": [
                 "TARGET_N64=1",
                 "VERSION_US=1",
                 "F3DEX_GBI_2=1",
-                "F3DZEX_GBI_2=1",
-                "F3DEX_GBI_SHARED=1",
-                "NON_MATCHING=1",
-                "AVOID_UB=1"
+                "F3DZEX_NON_GBI_2=1",
+                "F3DEX_GBI_SHARED=1"
             ],
             "compilerPath": "/usr/bin/mips-linux-gnu-gcc",
             "cStandard": "gnu17",
             "cppStandard": "gnu++14",
-            "intelliSenseMode": "linux-gcc-x64"
+            "intelliSenseMode": "linux-gcc-x86"
         }
     ],
     "version": 4

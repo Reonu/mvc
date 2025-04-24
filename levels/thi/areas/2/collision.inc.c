@@ -355,10 +355,10 @@ const Collision thi_seg7_area_2_collision[] = {
     COL_VERTEX(-2457, -3788, -2457),
     COL_VERTEX(2458, -3788, 2458),
     COL_VERTEX(-2457, -3788, 2458),
-    COL_VERTEX(2335, -3788, 61),
-    COL_VERTEX(2335, -3788, -859),
-    COL_VERTEX(1690, -3788, -859),
-    COL_VERTEX(1690, -3788, 61),
+    COL_VERTEX(2335, -3789, 61),
+    COL_VERTEX(2335, -3789, -859),
+    COL_VERTEX(1690, -3789, -859),
+    COL_VERTEX(1690, -3789, 61),
     COL_VERTEX(1997, -921, 2458),
     COL_VERTEX(-1535, -921, -2457),
     COL_VERTEX(-2457, -921, -2457),
@@ -970,7 +970,7 @@ const Collision thi_seg7_area_2_collision[] = {
     COL_TRI(244, 25, 148),
     COL_TRI_STOP(),
     COL_SPECIAL_INIT(3),
-    SPECIAL_OBJECT_WITH_YAW(/*preset*/ special_null_start,   /*pos*/ -2211,  -890,  2212, /*yaw*/ 106), // unused, probably an early way to set intial position
+    SPECIAL_OBJECT_WITH_YAW(/*preset*/ special_null_start,   /*pos*/ -2211,  -890,  2212, /*yaw*/ 106), // unused, probably an early way to set initial position
     SPECIAL_OBJECT_WITH_YAW(/*preset*/ special_level_geo_03, /*pos*/   -40,  -767, -4494, /*yaw*/   0),
     SPECIAL_OBJECT(/*preset*/ special_bubble_tree,  /*pos*/  1444,  -153,   676),
     COL_WATER_BOX_INIT(3),

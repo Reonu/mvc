@@ -2,6 +2,7 @@
 
 #include "area.h"
 #include "audio/external.h"
+#include "audio/load.h"
 #include "engine/graph_node.h"
 #include "engine/math_util.h"
 #include "level_table.h"
@@ -9,16 +10,18 @@
 #include "main.h"
 #include "paintings.h"
 #include "print.h"
-#include "profiler.h"
 #include "save_file.h"
 #include "seq_ids.h"
 #include "sm64.h"
 #include "sound_init.h"
 #include "rumble_init.h"
+#include "puppyprint.h"
+#include "profiling.h"
+
+#include "config/config_audio.h"
 
 #define MUSIC_NONE 0xFFFF
 
-static Vec3f unused80339DC0;
 static OSMesgQueue sSoundMesgQueue;
 static OSMesg sSoundMesgBuf[1];
 static struct VblankHandler sSoundVblankHandler;
@@ -30,9 +33,9 @@ static u8 sBgMusicDisabled = FALSE;
 static u16 sCurrentMusic = MUSIC_NONE;
 static u16 sCurrentShellMusic = MUSIC_NONE;
 static u16 sCurrentCapMusic = MUSIC_NONE;
+#ifdef ENABLE_VANILLA_LEVEL_SPECIFIC_CHECKS
 static u8 sPlayingInfiniteStairs = FALSE;
-UNUSED static u8 unused8032C6D8[16] = { 0 };
-static s16 sSoundMenuModeToSoundMode[] = { SOUND_MODE_STEREO, SOUND_MODE_MONO, SOUND_MODE_HEADSET };
+#endif
 // Only the 20th array element is used.
 static u32 sMenuSoundsExtra[] = {
     SOUND_MOVING_TERRAIN_SLIDE + (0 << 16),
@@ -50,7 +53,7 @@ static u32 sMenuSoundsExtra[] = {
     NO_SOUND,
     SOUND_ENV_BOAT_ROCKING1,
     SOUND_ENV_ELEVATOR3,
-    SOUND_ENV_UNKNOWN2,
+    SOUND_ENV_BOWLING_BALL_ROLL,
     SOUND_ENV_WATERFALL1,
     SOUND_ENV_WATERFALL2,
     SOUND_ENV_ELEVATOR1,
@@ -139,8 +142,8 @@ void enable_background_sound(void) {
  * Called from threads: thread5_game_loop
  */
 void set_sound_mode(u16 soundMode) {
-    if (soundMode < 3) {
-        audio_set_sound_mode(sSoundMenuModeToSoundMode[soundMode]);
+    if (soundMode < SOUND_MODE_COUNT) {
+        gSoundMode = soundMode;
     }
 }
 
@@ -155,7 +158,7 @@ void play_menu_sounds(s16 soundMenuFlags) {
     } else if (soundMenuFlags & SOUND_MENU_FLAG_HANDISAPPEAR) {
         play_sound(SOUND_MENU_HAND_DISAPPEAR, gGlobalSoundSource);
     } else if (soundMenuFlags & SOUND_MENU_FLAG_UNKNOWN1) {
-        play_sound(SOUND_MENU_UNK0C, gGlobalSoundSource);
+        play_sound(SOUND_MENU_UNK0C_FLAG_UNKNOWN1, gGlobalSoundSource);
     } else if (soundMenuFlags & SOUND_MENU_FLAG_PINCHMARIOFACE) {
         play_sound(SOUND_MENU_PINCH_MARIO_FACE, gGlobalSoundSource);
     } else if (soundMenuFlags & SOUND_MENU_FLAG_PINCHMARIOFACE2) {
@@ -168,7 +171,7 @@ void play_menu_sounds(s16 soundMenuFlags) {
         play_sound(SOUND_MENU_CAMERA_ZOOM_OUT, gGlobalSoundSource);
     }
 
-    if (soundMenuFlags & 0x100) {
+    if (soundMenuFlags & SOUND_MENU_FLAG_EXTRA) {
         play_menu_sounds_extra(20, NULL);
     }
 #if ENABLE_RUMBLE
@@ -200,6 +203,7 @@ void play_painting_eject_sound(void) {
  * Called from threads: thread5_game_loop
  */
 void play_infinite_stairs_music(void) {
+#ifdef ENABLE_VANILLA_LEVEL_SPECIFIC_CHECKS
     u8 shouldPlay = FALSE;
 
     /* Infinite stairs? */
@@ -219,6 +223,7 @@ void play_infinite_stairs_music(void) {
             func_80321080(500);
         }
     }
+#endif
 }
 
 /**
@@ -232,7 +237,10 @@ void set_background_music(u16 a, u16 seqArgs, s16 fadeTimer) {
             sound_reset(a);
         }
 
-        if (!gNeverEnteredCastle || seqArgs != SEQ_LEVEL_INSIDE_CASTLE) {
+#ifdef ENABLE_VANILLA_LEVEL_SPECIFIC_CHECKS
+        if (!gNeverEnteredCastle || seqArgs != SEQ_LEVEL_INSIDE_CASTLE)
+#endif
+        {
             play_music(SEQ_PLAYER_LEVEL, seqArgs, fadeTimer);
             sCurrentMusic = seqArgs;
         }
@@ -288,7 +296,20 @@ void stop_shell_music(void) {
 /**
  * Called from threads: thread5_game_loop
  */
+
+#ifdef PERSISTENT_CAP_MUSIC
+static s8 sDoResetMusic = FALSE;
+extern void stop_cap_music(void);
+#endif
+
 void play_cap_music(u16 seqArgs) {
+#ifdef PERSISTENT_CAP_MUSIC
+    if (sDoResetMusic) {
+        sDoResetMusic = FALSE;
+        stop_cap_music();
+    }
+#endif
+
     play_music(SEQ_PLAYER_LEVEL, seqArgs, 0);
     if (sCurrentCapMusic != MUSIC_NONE && sCurrentCapMusic != seqArgs) {
         stop_background_music(sCurrentCapMusic);
@@ -302,6 +323,9 @@ void play_cap_music(u16 seqArgs) {
 void fadeout_cap_music(void) {
     if (sCurrentCapMusic != MUSIC_NONE) {
         fadeout_background_music(sCurrentCapMusic, 600);
+#ifdef PERSISTENT_CAP_MUSIC
+        sDoResetMusic = TRUE;
+#endif
     }
 }
 
@@ -336,9 +360,6 @@ void thread4_sound(UNUSED void *arg) {
     audio_init();
     sound_init();
 
-    // Zero-out unused vector
-    vec3f_copy(unused80339DC0, gVec3fZero);
-
     osCreateMesgQueue(&sSoundMesgQueue, sSoundMesgBuf, ARRAY_COUNT(sSoundMesgBuf));
     set_vblank_handler(1, &sSoundVblankHandler, &sSoundMesgQueue, (OSMesg) 512);
 
@@ -346,14 +367,13 @@ void thread4_sound(UNUSED void *arg) {
         OSMesg msg;
 
         osRecvMesg(&sSoundMesgQueue, &msg, OS_MESG_BLOCK);
+        profiler_audio_started(); // also starts PROFILER_TIME_SUB_AUDIO_UPDATE inside
         if (gResetTimer < 25) {
-            struct SPTask *spTask;
-            profiler_log_thread4_time();
-            spTask = create_next_audio_frame_task(); 
+            struct SPTask *spTask = create_next_audio_frame_task();
             if (spTask != NULL) {
                 dispatch_audio_sptask(spTask);
             }
-            profiler_log_thread4_time();
         }
+        profiler_audio_completed(); // also completes PROFILER_TIME_SUB_AUDIO_UPDATE inside
     }
 }

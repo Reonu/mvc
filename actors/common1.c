@@ -5,6 +5,7 @@
 #include "surface_terrains.h"
 #include "types.h"
 #include "make_const_nonconst.h"
+#include "common1.h"
 
 #include "mist/model.inc.c"
 
@@ -22,6 +23,8 @@
 #include "door/model.inc.c"
 #include "door/anims/data.inc.c"
 #include "door/anims/table.inc.c"
+#include "door/collision.inc.c"
+UNUSED static const u64 binid_5 = 5;
 
 #include "bowser_key/model.inc.c"
 #include "bowser_key/anims/data.inc.c"
@@ -35,9 +38,6 @@
 #include "pebble/model.inc.c"
 
 #include "leaves/model.inc.c"
-
-// this is still weird...
-#include "warp_collision/collision.inc.c"
 
 #include "mario_cap/model.inc.c"
 

@@ -7,14 +7,6 @@
 #include "load.h"
 #include "seqplayer.h"
 
-#define PORTAMENTO_IS_SPECIAL(x) ((x).mode & 0x80)
-#define PORTAMENTO_MODE(x) ((x).mode & ~0x80)
-#define PORTAMENTO_MODE_1 1
-#define PORTAMENTO_MODE_2 2
-#define PORTAMENTO_MODE_3 3
-#define PORTAMENTO_MODE_4 4
-#define PORTAMENTO_MODE_5 5
-
 #ifdef VERSION_SH
 void seq_channel_layer_process_script_part1(struct SequenceChannelLayer *layer);
 s32 seq_channel_layer_process_script_part2(struct SequenceChannelLayer *layer);
@@ -24,8 +16,8 @@ s32 seq_channel_layer_process_script_part5(struct SequenceChannelLayer *layer, s
 #endif
 void seq_channel_layer_process_script(struct SequenceChannelLayer *layer);
 void sequence_channel_process_script(struct SequenceChannel *seqChannel);
-u8 get_instrument(struct SequenceChannel *seqChannel, u8 instId, struct Instrument **instOut,
-                  struct AdsrSettings *adsr);
+u32 get_instrument(struct SequenceChannel *seqChannel, u8 instId, struct Instrument **instOut,
+                   struct AdsrSettings *adsr);
 
 void sequence_channel_init(struct SequenceChannel *seqChannel) {
     s32 i;
@@ -35,7 +27,9 @@ void sequence_channel_init(struct SequenceChannel *seqChannel) {
     seqChannel->stopScript = FALSE;
     seqChannel->stopSomething2 = FALSE;
     seqChannel->hasInstrument = FALSE;
+#ifdef ENABLE_STEREO_HEADSET_EFFECTS
     seqChannel->stereoHeadsetEffects = FALSE;
+#endif
     seqChannel->transposition = 0;
     seqChannel->largeNotes = FALSE;
 #if defined(VERSION_EU) || defined(VERSION_SH)
@@ -72,7 +66,7 @@ void sequence_channel_init(struct SequenceChannel *seqChannel) {
 #endif
     seqChannel->vibratoRateTarget = 0x800;
     seqChannel->vibratoRateStart = 0x800;
-    seqChannel->vibratoExtentTarget = 0;
+    seqChannel->vibratoExtentTarget = VIBRATO_DISABLED_VALUE;
     seqChannel->vibratoExtentStart = 0;
     seqChannel->vibratoRateChangeDelay = 0;
     seqChannel->vibratoExtentChangeDelay = 0;
@@ -232,11 +226,7 @@ void sequence_player_init_channels(struct SequencePlayer *seqPlayer, u16 channel
                 seqChannel->noteAllocPolicy = seqPlayer->noteAllocPolicy;
             }
         }
-#if defined(VERSION_EU) || defined(VERSION_SH)
-        channelBits = channelBits >> 1;
-#else
         channelBits >>= 1;
-#endif
     }
 }
 
@@ -263,11 +253,7 @@ void sequence_player_disable_channels(struct SequencePlayer *seqPlayer, u16 chan
                 seqPlayer->channels[i] = &gSequenceChannelNone;
             }
         }
-#if defined(VERSION_EU) || defined(VERSION_SH)
-        channelBits = channelBits >> 1;
-#else
         channelBits >>= 1;
-#endif
     }
 }
 
@@ -397,7 +383,7 @@ void init_layer_freelist(void) {
     }
 }
 
-u8 m64_read_u8(struct M64ScriptState *state) {
+u32 m64_read_u8(struct M64ScriptState *state) {
 #if defined(VERSION_EU) || defined(VERSION_SH)
     return *(state->pc++);
 #else
@@ -406,13 +392,13 @@ u8 m64_read_u8(struct M64ScriptState *state) {
 #endif
 }
 
-s16 m64_read_s16(struct M64ScriptState *state) {
+s32 m64_read_s16(struct M64ScriptState *state) {
     s16 ret = *(state->pc++) << 8;
     ret = *(state->pc++) | ret;
     return ret;
 }
 
-u16 m64_read_compressed_u16(struct M64ScriptState *state) {
+u32 m64_read_compressed_u16(struct M64ScriptState *state) {
     u16 ret = *(state->pc++);
     if (ret & 0x80) {
         ret = (ret << 8) & 0x7f00;
@@ -423,9 +409,7 @@ u16 m64_read_compressed_u16(struct M64ScriptState *state) {
 
 #if defined(VERSION_SH)
 void seq_channel_layer_process_script(struct SequenceChannelLayer *layer) {
-    s32 cmd;
-
-    if (layer->enabled == FALSE) {
+    if (!layer->enabled) {
         return;
     }
 
@@ -439,7 +423,7 @@ void seq_channel_layer_process_script(struct SequenceChannelLayer *layer) {
     }
 
     seq_channel_layer_process_script_part1(layer);
-    cmd = seq_channel_layer_process_script_part2(layer);
+    s32 cmd = seq_channel_layer_process_script_part2(layer);
     if (cmd != -1) {
         cmd = seq_channel_layer_process_script_part3(layer, cmd);
         if (cmd != -1) {
@@ -460,30 +444,22 @@ void seq_channel_layer_process_script(struct SequenceChannelLayer *layer) {
 void seq_channel_layer_process_script(struct SequenceChannelLayer *layer) {
     struct SequencePlayer *seqPlayer;
     struct SequenceChannel *seqChannel;
-#ifdef VERSION_EU
-    UNUSED u32 pad0;
-#endif
     struct M64ScriptState *state;
     struct Portamento *portamento;
     struct AudioBankSound *sound;
     struct Instrument *instrument;
     struct Drum *drum;
     s32 temp_a0_5;
+    u16 sp3A = 0;
 #ifdef VERSION_EU
-    u16 sp3A;
-    s32 sameSound;
-#endif
-    UNUSED u32 pad1;
-#ifndef VERSION_EU
-    u8 sameSound;
+    s32 sameSound = TRUE;
+#else
+    u8 sameSound = TRUE;
 #endif
     u8 cmd;
     UNUSED u8 cmdSemitone;
-#ifndef VERSION_EU
-    u16 sp3A;
-#endif
     f32 tuning;
-    s32 vel;
+    s32 vel = 0;
     UNUSED s32 usedSemitone;
     f32 freqScale;
 #ifndef VERSION_EU
@@ -492,7 +468,6 @@ void seq_channel_layer_process_script(struct SequenceChannelLayer *layer) {
     f32 temp_f12;
     f32 temp_f2;
 
-    sameSound = TRUE;
     if (layer->enabled == FALSE) {
         return;
     }
@@ -585,7 +560,7 @@ void seq_channel_layer_process_script(struct SequenceChannelLayer *layer) {
 #if defined(VERSION_EU) || defined(VERSION_SH)
                     layer->pan = temp_a0_5;
 #else
-                    layer->pan = (f32) temp_a0_5 / US_FLOAT(128.0);
+                    layer->pan = (f32) temp_a0_5 / 128.0f;
 #endif
                 }
                 break;
@@ -628,9 +603,6 @@ void seq_channel_layer_process_script(struct SequenceChannelLayer *layer) {
                     } else {
                         layer->instOrWave = cmd;
                         layer->instrument = NULL;
-                    }
-
-                    if (1) {
                     }
 
                     if (cmd == 0xff) {
@@ -808,7 +780,7 @@ void seq_channel_layer_process_script(struct SequenceChannelLayer *layer) {
                         layer->pan = drum->pan;
                     }
 #else
-                    layer->pan = FLOAT_CAST(drum->pan) / US_FLOAT(128.0);
+                    layer->pan = FLOAT_CAST(drum->pan) / 128.0f;
 #endif
                     layer->sound = &drum->sound;
                     layer->freqScale = layer->sound->tuning;
@@ -888,15 +860,15 @@ void seq_channel_layer_process_script(struct SequenceChannelLayer *layer) {
 #if defined(VERSION_EU) || defined(VERSION_SH)
                         portamento->extent = temp_f2 / freqScale - 1.0f;
 #else
-                        portamento->extent = sp24 / freqScale - US_FLOAT(1.0);
+                        portamento->extent = sp24 / freqScale - 1.0f;
 #endif
 
                         if (PORTAMENTO_IS_SPECIAL(layer->portamento)) {
-                            portamento->speed = US_FLOAT(32512.0) * FLOAT_CAST(seqPlayer->tempo)
+                            portamento->speed = 32512.0f * FLOAT_CAST(seqPlayer->tempo)
                                                 / ((f32) layer->delay * (f32) gTempoInternalToExternal
                                                    * FLOAT_CAST(layer->portamentoTime));
                         } else {
-                            portamento->speed = US_FLOAT(127.0) / FLOAT_CAST(layer->portamentoTime);
+                            portamento->speed = 127.0f / FLOAT_CAST(layer->portamentoTime);
                         }
                         portamento->cur = 0.0f;
                         layer->freqScale = freqScale;
@@ -956,16 +928,7 @@ void seq_channel_layer_process_script(struct SequenceChannelLayer *layer) {
     if (layer->note != NULL && layer->note->parentLayer == layer) {
         note_vibrato_init(layer->note);
     }
-#if defined(VERSION_EU) || defined(VERSION_SH)
-    if (seqChannel) {
-    }
-#endif
 }
-
-#ifdef VERSION_EU
-u8 audioString106[] = "Audio: Note:Velocity Error %d\n";
-u8 audioString107[] = "Error: Your assignchannel is stolen.\n";
-#endif
 
 #else
 // US/JP version with macros to simulate inlining by copt. Edit if you dare.
@@ -1118,9 +1081,6 @@ s32 seq_channel_layer_process_script_part2(struct SequenceChannelLayer *layer) {
                         layer->instrument = NULL;
                     }
 
-                    if (1) {
-                    }
-
                     if (cmd == 0xff) {
                         layer->adsr.releaseRate = 0;
                     }
@@ -1178,6 +1138,7 @@ s32 seq_channel_layer_process_script_part2(struct SequenceChannelLayer *layer) {
                 cmd = m64_read_u8(state) + 0x80;
                 layer->freqScaleMultiplier = unk_sh_data_1[cmd];
                 // missing break :)
+                FALL_THROUGH;
 
             default:
                 switch (cmd & 0xf0) {
@@ -1209,7 +1170,6 @@ s32 seq_channel_layer_process_script_part4(struct SequenceChannelLayer *layer, s
     f32 freqScale;
     f32 sp24;
     f32 temp_f12;
-    UNUSED s32 pad[2];
     struct SequencePlayer *seqPlayer = seqChannel->seqPlayer;
     u8 cmd = cmd1;
     f32 temp_f2;
@@ -1297,11 +1257,11 @@ s32 seq_channel_layer_process_script_part4(struct SequenceChannelLayer *layer, s
                 portamento->extent = sp24 / freqScale - 1.0f;
 
                 if (PORTAMENTO_IS_SPECIAL(layer->portamento)) {
-                    portamento->speed = US_FLOAT(32512.0) * FLOAT_CAST(seqPlayer->tempo)
+                    portamento->speed = 32512.0f * FLOAT_CAST(seqPlayer->tempo)
                                         / ((f32) layer->delay * (f32) gTempoInternalToExternal
                                             * FLOAT_CAST(layer->portamentoTime));
                 } else {
-                    portamento->speed = US_FLOAT(127.0) / FLOAT_CAST(layer->portamentoTime);
+                    portamento->speed = 127.0f / FLOAT_CAST(layer->portamentoTime);
                 }
                 portamento->cur = 0.0f;
                 layer->freqScale = freqScale;
@@ -1326,8 +1286,8 @@ s32 seq_channel_layer_process_script_part4(struct SequenceChannelLayer *layer, s
 
 s32 seq_channel_layer_process_script_part3(struct SequenceChannelLayer *layer, s32 cmd) {
     struct M64ScriptState *state = &layer->scriptState;
-    u16 sp3A;
-    s32 vel;
+    u16 sp3A = 0;
+    s32 vel = 0;
     struct SequenceChannel *seqChannel = layer->seqChannel;
     struct SequencePlayer *seqPlayer = seqChannel->seqPlayer;
 
@@ -1390,8 +1350,7 @@ s32 seq_channel_layer_process_script_part3(struct SequenceChannelLayer *layer, s
     layer->delay = sp3A;
     layer->duration = layer->noteDuration * sp3A >> 8;
     if ((seqPlayer->muted && (seqChannel->muteBehavior & 0x50) != 0)
-        || seqChannel->stopSomething2)
-    {
+        || seqChannel->stopSomething2) {
         layer->stopSomething = TRUE;
         return -1;
     }
@@ -1400,12 +1359,11 @@ s32 seq_channel_layer_process_script_part3(struct SequenceChannelLayer *layer, s
 }
 #endif
 
-u8 get_instrument(struct SequenceChannel *seqChannel, u8 instId, struct Instrument **instOut, struct AdsrSettings *adsr) {
+u32 get_instrument(struct SequenceChannel *seqChannel, u8 instId, struct Instrument **instOut, struct AdsrSettings *adsr) {
     struct Instrument *inst;
 #if defined(VERSION_EU) || defined(VERSION_SH)
     inst = get_instrument_inner(seqChannel->bankId, instId);
-    if (inst == NULL)
-    {
+    if (inst == NULL) {
         *instOut = NULL;
         return 0;
     }
@@ -1482,7 +1440,7 @@ void set_instrument(struct SequenceChannel *seqChannel, u8 instId) {
 }
 
 void sequence_channel_set_volume(struct SequenceChannel *seqChannel, u8 volume) {
-    seqChannel->volume = FLOAT_CAST(volume) / US_FLOAT(127.0);
+    seqChannel->volume = FLOAT_CAST(volume) / 127.0f;
 }
 
 void sequence_channel_process_script(struct SequenceChannel *seqChannel) {
@@ -1524,25 +1482,21 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel) {
         for (;;) {
             cmd = m64_read_u8(state);
 #if !defined(VERSION_EU) && !defined(VERSION_SH)
-            if (cmd == 0xff) // chan_end
-            {
+            if (cmd == 0xff) { // chan_end
                 if (state->depth == 0) {
                     sequence_channel_disable(seqChannel);
                     break;
                 }
                 state->depth--, state->pc = state->stack[state->depth];
             }
-            if (cmd == 0xfe) // chan_delay1
-            {
+            if (cmd == 0xfe) { // chan_delay1
                 break;
             }
-            if (cmd == 0xfd) // chan_delay
-            {
+            if (cmd == 0xfd) { // chan_delay
                 seqChannel->delay = m64_read_compressed_u16(state);
                 break;
             }
-            if (cmd == 0xf3) // chan_hang
-            {
+            if (cmd == 0xf3) { // chan_hang
                 seqChannel->stopScript = TRUE;
                 break;
             }
@@ -1668,11 +1622,11 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel) {
                     case 0xc5: // chan_dynsetdyntable
                         if (value != -1) {
 #if defined(VERSION_EU) || defined(VERSION_SH)
-                            seqData = (*seqChannel->dynTable)[value];
+                            seqData = (*seqChannel->dynTable)[(u8) value];
                             sp38 = (u16)((seqData[0] << 8) + seqData[1]);
                             seqChannel->dynTable = (void *) (seqPlayer->seqData + sp38);
 #else
-                            sp5A = (u16)((((*seqChannel->dynTable)[value])[0] << 8) + (((*seqChannel->dynTable)[value])[1]));
+                            sp5A = (u16)((((*seqChannel->dynTable)[(u8) value])[0] << 8) + (((*seqChannel->dynTable)[(u8) value])[1]));
                             seqChannel->dynTable = (void *) (seqPlayer->seqData + sp5A);
 #endif
                         }
@@ -1699,7 +1653,7 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel) {
                         } else {
                             eu_stubbed_printf_1("SUB:ERR:BANK %d NOT CACHED.\n", cmd);
                         }
-                        // fallthrough
+                        FALL_THROUGH;
 #endif
 
                     case 0xc1: // chan_setinstr ("set program"?)
@@ -1722,7 +1676,7 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel) {
                         break;
 
                     case 0xe0: // chan_setvolscale
-                        seqChannel->volumeScale = FLOAT_CAST(m64_read_u8(state)) / US_FLOAT(128.0);
+                        seqChannel->volumeScale = FLOAT_CAST(m64_read_u8(state)) / 128.0f;
 #if defined(VERSION_EU) || defined(VERSION_SH)
                         seqChannel->changes.as_bitfields.volume = TRUE;
 #endif
@@ -1730,7 +1684,7 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel) {
 
                     case 0xde: // chan_freqscale; pitch bend using raw frequency multiplier N/2^15 (N is u16)
                         sp5A = m64_read_s16(state);
-                        seqChannel->freqScale = FLOAT_CAST(sp5A) / US_FLOAT(32768.0);
+                        seqChannel->freqScale = FLOAT_CAST(sp5A) / 32768.0f;
 #if defined(VERSION_EU) || defined(VERSION_SH)
                         seqChannel->changes.as_bitfields.freqScale = TRUE;
 #endif
@@ -1762,7 +1716,7 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel) {
                         seqChannel->newPan = m64_read_u8(state);
                         seqChannel->changes.as_bitfields.pan = TRUE;
 #else
-                        seqChannel->pan = FLOAT_CAST(m64_read_u8(state)) / US_FLOAT(128.0);
+                        seqChannel->pan = FLOAT_CAST(m64_read_u8(state)) / 128.0f;
 #endif
                         break;
 
@@ -1771,7 +1725,7 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel) {
                         seqChannel->panChannelWeight = m64_read_u8(state);
                         seqChannel->changes.as_bitfields.pan = TRUE;
 #else
-                        seqChannel->panChannelWeight = FLOAT_CAST(m64_read_u8(state)) / US_FLOAT(128.0);
+                        seqChannel->panChannelWeight = FLOAT_CAST(m64_read_u8(state)) / 128.0f;
 #endif
                         break;
 
@@ -1915,7 +1869,12 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel) {
 #endif
 
                     case 0xd0: // chan_stereoheadseteffects
+#ifdef ENABLE_STEREO_HEADSET_EFFECTS
                         seqChannel->stereoHeadsetEffects = m64_read_u8(state);
+#else
+                        // NOTE: Vanilla music does not use 0xd0, so this is safe to repurpose entirely when ENABLE_STEREO_HEADSET_EFFECTS is disabled.
+                        m64_read_u8(state);
+#endif
                         break;
 
                     case 0xd1: // chan_setnoteallocationpolicy
@@ -1941,7 +1900,7 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel) {
                                 eu_stubbed_printf_0("Audio:Track: CTBLCALL Macro Level Over Error!\n");
                             }
 #endif
-                            seqData = (*seqChannel->dynTable)[value];
+                            seqData = (*seqChannel->dynTable)[(u8) value];
 #if defined(VERSION_EU) || defined(VERSION_SH)
                             state->stack[state->depth++] = state->pc;
                             sp38 = (u16)((seqData[0] << 8) + seqData[1]);
@@ -1990,7 +1949,7 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel) {
                         break;
 
                     case 0xec:
-                        seqChannel->vibratoExtentTarget = 0;
+                        seqChannel->vibratoExtentTarget = VIBRATO_DISABLED_VALUE;
                         seqChannel->vibratoExtentStart = 0;
                         seqChannel->vibratoExtentChangeDelay = 0;
                         seqChannel->vibratoRateTarget = 0;
@@ -2059,11 +2018,11 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel) {
                         break;
 
                     case 0xb5:
-                        seqChannel->unkC8 = *(u16 *) (*seqChannel->dynTable)[value];
+                        seqChannel->unkC8 = *(u16 *) (*seqChannel->dynTable)[(u8) value];
                         break;
 
                     case 0xb6:
-                        value = (*seqChannel->dynTable)[0][value];
+                        value = (*seqChannel->dynTable)[0][(u8) value];
                         break;
 #endif
                 }
@@ -2083,7 +2042,6 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel) {
                         case 0x88:
                             sp5A = m64_read_s16(state);
                             if (seq_channel_set_layer(seqChannel, loBits) == 0) {
-                                if (1) {}
                                 seqChannel->layers[loBits]->scriptState.pc = seqPlayer->seqData + sp5A;
                             }
                             break;
@@ -2094,7 +2052,7 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel) {
 
                         case 0x98:
                             if (value != -1 && seq_channel_set_layer(seqChannel, loBits) != -1) {
-                                seqData = (*seqChannel->dynTable)[value];
+                                seqData = (*seqChannel->dynTable)[(u8) value];
                                 sp5A = ((seqData[0] << 8) + seqData[1]);
                                 seqChannel->layers[loBits]->scriptState.pc = seqPlayer->seqData + sp5A;
                             }
@@ -2160,9 +2118,6 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel) {
                     case 0x90: // chan_setlayer
                         sp5A = m64_read_s16(state);
                         if (seq_channel_set_layer(seqChannel, loBits) == 0) {
-#ifdef VERSION_EU
-                            if (1) {}
-#endif
                             seqChannel->layers[loBits]->scriptState.pc = seqPlayer->seqData + sp5A;
                         }
                         break;
@@ -2173,7 +2128,7 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel) {
 
                     case 0xb0: // chan_dynsetlayer
                         if (value != -1 && seq_channel_set_layer(seqChannel, loBits) != -1) {
-                            seqData = (*seqChannel->dynTable)[value];
+                            seqData = (*seqChannel->dynTable)[(u8) value];
                             sp5A = ((seqData[0] << 8) + seqData[1]);
                             seqChannel->layers[loBits]->scriptState.pc = seqPlayer->seqData + sp5A;
                         }
@@ -2230,9 +2185,6 @@ void sequence_channel_process_script(struct SequenceChannel *seqChannel) {
 
 void sequence_player_process_sequence(struct SequencePlayer *seqPlayer) {
     u8 cmd;
-#ifdef VERSION_SH
-    UNUSED u32 pad;
-#endif
     u8 loBits;
     u8 temp;
     s32 value = 0;
@@ -2298,10 +2250,6 @@ void sequence_player_process_sequence(struct SequencePlayer *seqPlayer) {
         if (osRecvMesg(&seqPlayer->seqDmaMesgQueue, NULL, 0) == -1) {
             return;
         }
-#ifndef AVOID_UB
-        if (temp) {
-        }
-#endif
 #else
         if (seqPlayer->seqDmaMesg == NULL) {
             return;
@@ -2313,12 +2261,12 @@ void sequence_player_process_sequence(struct SequencePlayer *seqPlayer) {
 #endif
 
     // If discarded, bail out.
-    if (IS_SEQ_LOAD_COMPLETE(seqPlayer->seqId) == FALSE
+    if (!IS_SEQ_LOAD_COMPLETE(seqPlayer->seqId)
         || (
 #ifdef VERSION_SH
         seqPlayer->defaultBank[0] != 0xff &&
 #endif
-        IS_BANK_LOAD_COMPLETE(seqPlayer->defaultBank[0]) == FALSE)) {
+        !IS_BANK_LOAD_COMPLETE(seqPlayer->defaultBank[0]))) {
         eu_stubbed_printf_1("Disappear Sequence or Bank %d\n", seqPlayer->seqId);
         sequence_player_disable(seqPlayer);
         return;
@@ -2351,10 +2299,6 @@ void sequence_player_process_sequence(struct SequencePlayer *seqPlayer) {
 
     state = &seqPlayer->scriptState;
     if (seqPlayer->delay > 1) {
-#ifndef AVOID_UB
-        if (temp) {
-        }
-#endif
         seqPlayer->delay--;
     } else {
 #if defined(VERSION_EU) || defined(VERSION_SH)
@@ -2362,8 +2306,7 @@ void sequence_player_process_sequence(struct SequencePlayer *seqPlayer) {
 #endif
         for (;;) {
             cmd = m64_read_u8(state);
-            if (cmd == 0xff) // seq_end
-            {
+            if (cmd == 0xff) { // seq_end
                 if (state->depth == 0) {
                     sequence_player_disable(seqPlayer);
                     break;
@@ -2375,14 +2318,12 @@ void sequence_player_process_sequence(struct SequencePlayer *seqPlayer) {
 #endif
             }
 
-            if (cmd == 0xfd) // seq_delay
-            {
+            if (cmd == 0xfd) { // seq_delay
                 seqPlayer->delay = m64_read_compressed_u16(state);
                 break;
             }
 
-            if (cmd == 0xfe) // seq_delay1
-            {
+            if (cmd == 0xfe) { // seq_delay1
                 seqPlayer->delay = 1;
                 break;
             }
@@ -2502,9 +2443,9 @@ void sequence_player_process_sequence(struct SequencePlayer *seqPlayer) {
                             seqPlayer->tempo = gTempoInternalToExternal;
                         }
 
-                        //if (cmd){}
+                        //if (cmd) {}
 
-                        if ((s16) seqPlayer->tempo <= 0) {
+                        if ((s16) seqPlayer->tempo < 0) {
                             seqPlayer->tempo = 0;
                         }
                         break;
@@ -2557,29 +2498,38 @@ void sequence_player_process_sequence(struct SequencePlayer *seqPlayer) {
 #else
                     case 0xdb: // seq_setvol
                         cmd = m64_read_u8(state);
+                        seqPlayer->volumeDefault = FLOAT_CAST(cmd) / 127.0f;
+                        if (seqPlayer->volumeDefault >= 1.0f)
+                            seqPlayer->volumeDefault = 1.0f;
+
                         switch (seqPlayer->state) {
                             case SEQUENCE_PLAYER_STATE_2:
                                 if (seqPlayer->fadeRemainingFrames != 0) {
-                                    f32 targetVolume = FLOAT_CAST(cmd) / US_FLOAT(127.0);
+                                    f32 targetVolume = FLOAT_CAST(cmd) / 127.0f;
                                     seqPlayer->fadeVelocity = (targetVolume - seqPlayer->fadeVolume)
                                                               / FLOAT_CAST(seqPlayer->fadeRemainingFrames);
                                     break;
                                 }
                                 // fallthrough
                             case SEQUENCE_PLAYER_STATE_0:
-                                seqPlayer->fadeVolume = FLOAT_CAST(cmd) / US_FLOAT(127.0);
+                                seqPlayer->fadeVolume = FLOAT_CAST(cmd) / 127.0f;
                                 break;
                             case SEQUENCE_PLAYER_STATE_FADE_OUT:
                             case SEQUENCE_PLAYER_STATE_4:
-                                seqPlayer->volume = FLOAT_CAST(cmd) / US_FLOAT(127.0);
+                                seqPlayer->volume = FLOAT_CAST(cmd) / 127.0f;
                                 break;
                         }
                         break;
 
                     case 0xda: // seq_changevol
                         temp = m64_read_u8(state);
-                        seqPlayer->fadeVolume =
-                            seqPlayer->fadeVolume + (f32)(s8) temp / US_FLOAT(127.0);
+                        seqPlayer->fadeVolume += (f32)(s8) temp / 127.0f;
+                        
+                        seqPlayer->volumeDefault += (f32)(s8) temp / 127.0f;
+                        if (seqPlayer->volumeDefault > 1.0f)
+                            seqPlayer->volumeDefault = 1.0f;
+                        else if (seqPlayer->volumeDefault < 0.0f)
+                            seqPlayer->volumeDefault = 0.0f;
                         break;
 #endif
 
@@ -2602,7 +2552,7 @@ void sequence_player_process_sequence(struct SequencePlayer *seqPlayer) {
 
                     case 0xd5: // seq_setmutescale
                         temp = m64_read_u8(state);
-                        seqPlayer->muteVolumeScale = (f32)(s8) temp / US_FLOAT(127.0);
+                        seqPlayer->muteVolumeScale = (f32)(s8) temp / 127.0f;
                         break;
 
                     case 0xd4: // seq_mute
@@ -2739,8 +2689,10 @@ void sequence_player_process_sequence(struct SequencePlayer *seqPlayer) {
 // This runs 240 times per second.
 void process_sequences(UNUSED s32 iterationsRemaining) {
     s32 i;
+
     for (i = 0; i < SEQUENCE_PLAYERS; i++) {
         if (gSequencePlayers[i].enabled == TRUE) {
+
 #if defined(VERSION_EU) || defined(VERSION_SH)
             sequence_player_process_sequence(&gSequencePlayers[i]);
             sequence_player_process_sound(&gSequencePlayers[i]);
@@ -2750,8 +2702,13 @@ void process_sequences(UNUSED s32 iterationsRemaining) {
 #endif
         }
     }
+
 #if defined(VERSION_JP) || defined(VERSION_US)
+    AUDIO_PROFILER_SWITCH(PROFILER_TIME_SUB_AUDIO_SEQUENCES_SCRIPT, PROFILER_TIME_SUB_AUDIO_SEQUENCES_RECLAIM);
     reclaim_notes();
+    AUDIO_PROFILER_SWITCH(PROFILER_TIME_SUB_AUDIO_SEQUENCES_RECLAIM, PROFILER_TIME_SUB_AUDIO_SEQUENCES_PROCESSING);
+#else
+    AUDIO_PROFILER_SWITCH(PROFILER_TIME_SUB_AUDIO_SEQUENCES_SCRIPT, PROFILER_TIME_SUB_AUDIO_SEQUENCES_PROCESSING);
 #endif
     process_notes();
 }
@@ -2771,6 +2728,7 @@ void init_sequence_player(u32 player) {
     seqPlayer->state = 1;
 #else
     seqPlayer->state = SEQUENCE_PLAYER_STATE_0;
+    seqPlayer->volumeDefault = 1.0f;
 #endif
     seqPlayer->fadeRemainingFrames = 0;
 #if defined(VERSION_EU) || defined(VERSION_SH)
@@ -2809,15 +2767,7 @@ void init_sequence_players(void) {
 
     for (i = 0; i < ARRAY_COUNT(gSequenceChannels); i++) {
 #endif
-        // @bug Size of wrong array. Zeroes out second half of gSequenceChannels[0],
-        // all of gSequenceChannels[1..31], and part of gSequenceLayers[0].
-        // However, this is only called at startup, so it's harmless.
-#ifdef AVOID_UB
-#define LAYERS_SIZE LAYERS_MAX
-#else
-#define LAYERS_SIZE ARRAY_COUNT(gSequenceLayers)
-#endif
-        for (j = 0; j < LAYERS_SIZE; j++) {
+        for (j = 0; j < LAYERS_MAX; j++) {
             gSequenceChannels[i].layers[j] = NULL;
         }
     }

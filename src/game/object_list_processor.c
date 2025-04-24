@@ -9,6 +9,7 @@
 #include "engine/graph_node.h"
 #include "engine/surface_collision.h"
 #include "engine/surface_load.h"
+#include "engine/math_util.h"
 #include "interaction.h"
 #include "level_update.h"
 #include "mario.h"
@@ -17,8 +18,10 @@
 #include "object_helpers.h"
 #include "object_list_processor.h"
 #include "platform_displacement.h"
-#include "profiler.h"
 #include "spawn_object.h"
+#include "puppyprint.h"
+#include "puppylights.h"
+#include "profiling.h"
 
 
 /**
@@ -31,8 +34,6 @@ s32 gDebugInfoFlags;
  * object, and therefore either returned a dynamic floor or NULL.
  */
 s32 gNumFindFloorMisses;
-
-UNUSED s32 unused_8033BEF8;
 
 /**
  * An unused debug counter with the label "WALL".
@@ -95,7 +96,7 @@ struct Object *gMarioObject;
  * second player. This is speculation, based on its position and its usage in
  * shadow.c.
  */
-struct Object *gLuigiObject;
+// struct Object *gLuigiObject;
 
 /**
  * The object whose behavior script is currently being updated.
@@ -143,15 +144,11 @@ s32 gNumStaticSurfaces;
  */
 struct MemoryPool *gObjectMemoryPool;
 
-
-s16 gCheckingSurfaceCollisionsForCamera;
-s16 gFindFloorIncludeSurfaceIntangible;
-s16 *gEnvironmentRegions;
+s16 gCollisionFlags = COLLISION_FLAGS_NONE;
+TerrainData *gEnvironmentRegions;
 s32 gEnvironmentLevels[20];
-s8 gDoorAdjacentRooms[60][2];
+struct TransitionRoomData gDoorAdjacentRooms[MAX_NUM_TRANSITION_ROOMS];
 s16 gMarioCurrentRoom;
-s16 D_8035FEE2;
-s16 D_8035FEE4;
 s16 gTHIWaterDrained;
 s16 gTTCSpeedSetting;
 s16 gMarioShotFromCannon;
@@ -188,7 +185,7 @@ s8 sObjectListUpdateOrder[] = { OBJ_LIST_SPAWNER,
 struct ParticleProperties {
     u32 particleFlag;
     u32 activeParticleFlag;
-    ModelID model;
+    ModelID16 model;
     const BehaviorScript *behavior;
 };
 
@@ -214,7 +211,7 @@ struct ParticleProperties sParticleTypes[] = {
     { PARTICLE_DIRT,                 ACTIVE_PARTICLE_DIRT,                 MODEL_NONE,                 bhvDirtParticleSpawner },
     { PARTICLE_MIST_CIRCLE,          ACTIVE_PARTICLE_MIST_CIRCLE,          MODEL_NONE,                 bhvMistCircParticleSpawner },
     { PARTICLE_TRIANGLE,             ACTIVE_PARTICLE_TRIANGLE,             MODEL_NONE,                 bhvTriangleParticleSpawner },
-    { 0, 0, MODEL_NONE, NULL },
+    { PARTICLE_NONE, ACTIVE_PARTICLE_NONE, MODEL_NONE, NULL },
 };
 
 /**
@@ -225,7 +222,7 @@ void copy_mario_state_to_object(void) {
     s32 i = 0;
     // L is real
     if (gCurrentObject != gMarioObject) {
-        i += 1;
+        i++;
     }
 
     gCurrentObject->oVelX = gMarioStates[i].vel[0];
@@ -252,7 +249,7 @@ void copy_mario_state_to_object(void) {
 /**
  * Spawn a particle at gCurrentObject's location.
  */
-void spawn_particle(u32 activeParticleFlag, s16 model, const BehaviorScript *behavior) {
+void spawn_particle(u32 activeParticleFlag, ModelID16 model, const BehaviorScript *behavior) {
     if (!(gCurrentObject->oActiveParticleFlags & activeParticleFlag)) {
         struct Object *particle;
         gCurrentObject->oActiveParticleFlags |= activeParticleFlag;
@@ -300,7 +297,7 @@ s32 update_objects_starting_at(struct ObjectNode *objList, struct ObjectNode *fi
         cur_obj_update();
 
         firstObj = firstObj->next;
-        count += 1;
+        count++;
     }
 
     return count;
@@ -385,6 +382,10 @@ s32 unload_deactivated_objects_in_list(struct ObjectNode *objList) {
         obj = obj->next;
 
         if ((gCurrentObject->activeFlags & ACTIVE_FLAG_ACTIVE) != ACTIVE_FLAG_ACTIVE) {
+#ifdef PUPPYLIGHTS
+            if (gCurrentObject->oLightID != 0xFFFF)
+                obj_disable_light(gCurrentObject);
+#endif
             // Prevent object from respawning after exiting and re-entering the
             // area
             if (!(gCurrentObject->oFlags & OBJ_FLAG_PERSISTENT_RESPAWN)) {
@@ -410,12 +411,12 @@ void set_object_respawn_info_bits(struct Object *obj, u8 bits) {
     u16 *info16;
 
     switch (obj->respawnInfoType) {
-        case RESPAWN_INFO_TYPE_32:
+        case RESPAWN_INFO_TYPE_NORMAL:
             info32 = (u32 *) obj->respawnInfo;
             *info32 |= bits << 8;
             break;
 
-        case RESPAWN_INFO_TYPE_16:
+        case RESPAWN_INFO_TYPE_MACRO_OBJECT:
             info16 = (u16 *) obj->respawnInfo;
             *info16 |= bits << 8;
             break;
@@ -457,12 +458,7 @@ void spawn_objects_from_info(UNUSED s32 unused, struct SpawnInfo *spawnInfo) {
     gWDWWaterLevelChanging = FALSE;
     gMarioOnMerryGoRound = FALSE;
 
-    //! (Spawning Displacement) On the Japanese version, Mario's platform object
-    //  isn't cleared when transitioning between areas. This can cause Mario to
-    //  receive displacement after spawning.
-#ifndef VERSION_JP
     clear_mario_platform();
-#endif
 
     if (gCurrAreaIndex == 2) {
         gCCMEnteredSlide |= 1;
@@ -470,9 +466,7 @@ void spawn_objects_from_info(UNUSED s32 unused, struct SpawnInfo *spawnInfo) {
 
     while (spawnInfo != NULL) {
         struct Object *object;
-        UNUSED s32 unused;
         const BehaviorScript *script;
-        UNUSED s16 arg16 = (s16)(spawnInfo->behaviorArg & 0xFFFF);
 
         script = segmented_to_virtual(spawnInfo->behaviorScript);
 
@@ -486,15 +480,17 @@ void spawn_objects_from_info(UNUSED s32 unused, struct SpawnInfo *spawnInfo) {
             object->oBehParams = spawnInfo->behaviorArg;
             // The second byte of the behavior parameters is copied over to a special field
             // as it is the most frequently used by objects.
-            object->oBehParams2ndByte = ((spawnInfo->behaviorArg) >> 16) & 0xFF;
+            object->oBehParams2ndByte = GET_BPARAM2(spawnInfo->behaviorArg);
 
             object->behavior = script;
             object->unused1 = 0;
 
             // Record death/collection in the SpawnInfo
-            object->respawnInfoType = RESPAWN_INFO_TYPE_32;
+            object->respawnInfoType = RESPAWN_INFO_TYPE_NORMAL;
             object->respawnInfo = &spawnInfo->behaviorArg;
 
+            // Usually this checks if bparam4 is 1 to decide if this is mario
+            // This change allows any object to use that param
             if (object->behavior == segmented_to_virtual(bhvMario)) {
                 gMarioObject = object;
                 geo_make_first_child(&object->header.gfx.node);
@@ -502,24 +498,17 @@ void spawn_objects_from_info(UNUSED s32 unused, struct SpawnInfo *spawnInfo) {
 
             geo_obj_init_spawninfo(&object->header.gfx, spawnInfo);
 
-            object->oPosX = spawnInfo->startPos[0];
-            object->oPosY = spawnInfo->startPos[1];
-            object->oPosZ = spawnInfo->startPos[2];
+            vec3s_to_vec3f(&object->oPosVec, spawnInfo->startPos);
 
-            object->oFaceAnglePitch = spawnInfo->startAngle[0];
-            object->oFaceAngleYaw = spawnInfo->startAngle[1];
-            object->oFaceAngleRoll = spawnInfo->startAngle[2];
+            vec3s_to_vec3i(&object->oFaceAngleVec, spawnInfo->startAngle);
 
-            object->oMoveAnglePitch = spawnInfo->startAngle[0];
-            object->oMoveAngleYaw = spawnInfo->startAngle[1];
-            object->oMoveAngleRoll = spawnInfo->startAngle[2];
+            vec3s_to_vec3i(&object->oMoveAngleVec, spawnInfo->startAngle);
+
+            object->oFloorHeight = find_floor(object->oPosX, object->oPosY, object->oPosZ, &object->oFloor);
         }
 
         spawnInfo = spawnInfo->next;
     }
-}
-
-void stub_obj_list_processor_1(void) {
 }
 
 /**
@@ -533,25 +522,19 @@ void clear_objects(void) {
     gMarioObject = NULL;
     gMarioCurrentRoom = 0;
 
-    for (i = 0; i < 60; i++) {
-        gDoorAdjacentRooms[i][0] = 0;
-        gDoorAdjacentRooms[i][1] = 0;
-    }
+    bzero(gDoorAdjacentRooms, sizeof(gDoorAdjacentRooms));
 
     debug_unknown_level_select_check();
 
     init_free_object_list();
     clear_object_lists(gObjectListArray);
 
-    stub_behavior_script_2();
-    stub_obj_list_processor_1();
-
     for (i = 0; i < OBJECT_POOL_CAPACITY; i++) {
         gObjectPool[i].activeFlags = ACTIVE_FLAG_DEACTIVATED;
         geo_reset_object_node(&gObjectPool[i].header.gfx);
     }
 
-    gObjectMemoryPool = mem_pool_init(0x800, MEMORY_POOL_LEFT);
+    gObjectMemoryPool = mem_pool_init(OBJECT_MEMORY_POOL, MEMORY_POOL_LEFT);
     gObjectLists = gObjectListArray;
 
     clear_dynamic_surfaces();
@@ -561,9 +544,18 @@ void clear_objects(void) {
  * Update spawner and surface objects.
  */
 void update_terrain_objects(void) {
+    PROFILER_GET_SNAPSHOT_TYPE(PROFILER_DELTA_COLLISION);
     gObjectCounter = update_objects_in_list(&gObjectLists[OBJ_LIST_SPAWNER]);
-    //! This was meant to be +=
-    gObjectCounter = update_objects_in_list(&gObjectLists[OBJ_LIST_SURFACE]);
+    profiler_update(PROFILER_TIME_SPAWNER, profiler_get_delta(PROFILER_DELTA_COLLISION) - first);
+
+#ifdef PUPPYPRINT_DEBUG
+    first = profiler_get_delta(PROFILER_DELTA_COLLISION);
+#endif
+    gObjectCounter += update_objects_in_list(&gObjectLists[OBJ_LIST_SURFACE]);
+    profiler_update(PROFILER_TIME_DYNAMIC, profiler_get_delta(PROFILER_DELTA_COLLISION) - first);
+
+    // If the dynamic surface pool has overflowed, throw an error.
+    assert((uintptr_t)gDynamicSurfacePoolEnd <= (uintptr_t)gDynamicSurfacePool + DYNAMIC_SURFACE_POOL_SIZE, "Dynamic surface pool size exceeded");
 }
 
 /**
@@ -571,13 +563,19 @@ void update_terrain_objects(void) {
  * the order specified by sObjectListUpdateOrder.
  */
 void update_non_terrain_objects(void) {
-    UNUSED s32 unused;
     s32 listIndex;
 
     s32 i = 2;
     while ((listIndex = sObjectListUpdateOrder[i]) != -1) {
+        PROFILER_GET_SNAPSHOT_TYPE(PROFILER_DELTA_COLLISION);
+        if (listIndex == OBJ_LIST_PLAYER) {
+            profiler_update(PROFILER_TIME_BEHAVIOR_BEFORE_MARIO, profiler_get_delta(PROFILER_DELTA_COLLISION) - first);
+        }
         gObjectCounter += update_objects_in_list(&gObjectLists[listIndex]);
-        i += 1;
+        if (listIndex == OBJ_LIST_PLAYER) {
+            profiler_update(PROFILER_TIME_MARIO, profiler_get_delta(PROFILER_DELTA_COLLISION) - first);
+        }
+        i++;
     }
 }
 
@@ -585,13 +583,12 @@ void update_non_terrain_objects(void) {
  * Unload deactivated objects in any object list.
  */
 void unload_deactivated_objects(void) {
-    UNUSED s32 unused;
     s32 listIndex;
 
     s32 i = 0;
     while ((listIndex = sObjectListUpdateOrder[i]) != -1) {
         unload_deactivated_objects_in_list(&gObjectLists[listIndex]);
-        i += 1;
+        i++;
     }
 
     // TIME_STOP_UNKNOWN_0 was most likely intended to be used to track whether
@@ -620,31 +617,42 @@ UNUSED static u16 unused_get_elapsed_time(u64 *cycleCounts, s32 index) {
 }
 
 /**
+ * Clear all floors tied to dynamic collision, as they become invalid once the dynamic
+ * surfaces are cleared.
+ * 
+ * NOTE: Checking over the full object pool is slower than checking against the linked lists of active
+ * objects until the active object pool is around half capacity, after which, this is faster.
+ * Change this function to use a linked list instead if you add any additional logic here whatsoever.
+ */
+void clear_dynamic_surface_references(void) {
+    for (s32 i = 0; i < OBJECT_POOL_CAPACITY; i++) {
+        if (gObjectPool[i].oFloor && gObjectPool[i].oFloor->flags & SURFACE_FLAG_DYNAMIC) {
+            gObjectPool[i].oFloor = NULL;
+        }
+    }
+}
+
+/**
  * Update all objects. This includes script execution, object collision detection,
  * and object surface management.
  */
 void update_objects(UNUSED s32 unused) {
-    s64 cycleCounts[30];
-
-    cycleCounts[0] = get_current_clock();
 
     gTimeStopState &= ~TIME_STOP_MARIO_OPENED_DOOR;
 
     gNumRoomedObjectsInMarioRoom = 0;
     gNumRoomedObjectsNotInMarioRoom = 0;
-    gCheckingSurfaceCollisionsForCamera = FALSE;
+    gCollisionFlags &= ~COLLISION_FLAG_CAMERA;
 
     reset_debug_objectinfo();
-    stub_debug_5();
+    stub_debug_control();
 
     gObjectLists = gObjectListArray;
 
     // If time stop is not active, unload object surfaces
-    cycleCounts[1] = get_clock_difference(cycleCounts[0]);
     clear_dynamic_surfaces();
 
     // Update spawners and objects with surfaces
-    cycleCounts[2] = get_clock_difference(cycleCounts[0]);
     update_terrain_objects();
 
     // If Mario was touching a moving platform at the end of last frame, apply
@@ -654,24 +662,20 @@ void update_objects(UNUSED s32 unused) {
     apply_mario_platform_displacement();
 
     // Detect which objects are intersecting
-    cycleCounts[3] = get_clock_difference(cycleCounts[0]);
     detect_object_collisions();
 
     // Update all other objects that haven't been updated yet
-    cycleCounts[4] = get_clock_difference(cycleCounts[0]);
     update_non_terrain_objects();
+    
+    // Take a snapshot of the current collision processing time.
+    UNUSED u32 firstPoint = profiler_get_delta(PROFILER_DELTA_COLLISION); 
 
     // Unload any objects that have been deactivated
-    cycleCounts[5] = get_clock_difference(cycleCounts[0]);
     unload_deactivated_objects();
 
     // Check if Mario is on a platform object and save this object
-    cycleCounts[6] = get_clock_difference(cycleCounts[0]);
     update_mario_platform();
 
-    cycleCounts[7] = get_clock_difference(cycleCounts[0]);
-
-    cycleCounts[0] = 0;
     try_print_debug_mario_object_info();
 
     // If time stop was enabled this frame, activate it now so that it will
@@ -683,4 +687,6 @@ void update_objects(UNUSED s32 unused) {
     }
 
     gPrevFrameObjectCount = gObjectCounter;
+    // Set the recorded behaviour time, minus the difference between the snapshotted collision time and the actual collision time.
+    profiler_update(PROFILER_TIME_BEHAVIOR_AFTER_MARIO, profiler_get_delta(PROFILER_DELTA_COLLISION) - firstPoint);
 }
